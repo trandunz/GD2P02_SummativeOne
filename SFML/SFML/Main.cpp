@@ -1,9 +1,7 @@
-#include "SFML/Graphics.hpp"
-#include "box2d/box2d.h"
+#include "LevelManager.h"
 
-sf::RenderWindow* RenderWindow = nullptr;
 sf::Event EventHandle;
-b2World World({ 0.0f,9.81f });
+sf::Clock MainClock;
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings);
 
@@ -14,9 +12,12 @@ void Render();
 
 int Cleanup();
 
+void CalculateDeltaTime();
+
+
 int main()
 {
-	InitRenderWindow({ 800, 800 }, "Title", sf::Style::Default, sf::ContextSettings());
+	InitRenderWindow({ 1200, 600 }, "Title", sf::Style::Default, sf::ContextSettings());
 
 	Start();
 	Update();
@@ -27,53 +28,61 @@ int main()
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings)
 {
-	if (RenderWindow != nullptr)
-	{
-		RenderWindow->create(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
-	}
-	else
-	{
-		RenderWindow = new sf::RenderWindow(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
-	}
+	Helper::RenderWindow.create(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
 }
 
 void Start()
 {
+	Helper::RenderWindow.setVerticalSyncEnabled(true);
 
+	LevelManager::LoadLevel(new Level());
 }
 
 void Update()
 {
-	while (RenderWindow->isOpen())
+	while (Helper::RenderWindow.isOpen())
 	{
+		CalculateDeltaTime();
 		PollEvents();
+
+		LevelManager::CurrentLevel->Update();
+		
 		Render();
 	}
 }
 
 void PollEvents()
 {
-	if (RenderWindow->pollEvent(EventHandle))
+	if (Helper::RenderWindow.pollEvent(EventHandle))
 	{
 		if (EventHandle.type == sf::Event::Closed)
 		{
-			RenderWindow->close();
+			Helper::RenderWindow.close();
 		}
+
+		LevelManager::CurrentLevel->PollEvents(EventHandle);
 	}
 }
 
 void Render()
 {
-	RenderWindow->clear();
+	Helper::RenderWindow.clear();
 
-	RenderWindow->display();
+	Helper::RenderWindow.draw(*LevelManager::CurrentLevel);
+
+	Helper::RenderWindow.display();
 }
 
 int Cleanup()
 {
-	if (RenderWindow != nullptr)
-		delete RenderWindow;
-	RenderWindow = nullptr;
+	LevelManager::CleanupLevel();
 
 	return 0;
+}
+
+void CalculateDeltaTime()
+{
+	sf::Int32 currentTime = MainClock.getElapsedTime().asMilliseconds();
+	Helper::DeltaTime = currentTime - Helper::LastTime;
+	Helper::LastTime = currentTime;
 }

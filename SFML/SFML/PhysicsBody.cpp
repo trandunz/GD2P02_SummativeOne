@@ -1,16 +1,23 @@
 #include "PhysicsBody.h"
 
-PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _size, sf::Vector2f _startPos)
+PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, b2BodyType _bodyType, float _restitution, float _density)
 {
 	m_World = &_world;
-	SetupBody(_startPos, _size, 0.6f);
+	m_Position = _startPos;
+	m_Size = _size;
+	m_BodyType = _bodyType;
+	SetupBody();
 }
 
 PhysicsBody::~PhysicsBody()
 {
-	m_World->DestroyBody(m_Body);
-	m_Body = nullptr;
+	DestroyBody();
 	m_World = nullptr;
+}
+
+void PhysicsBody::Update()
+{
+	m_Position =  { Helper::Scale * m_Body->GetPosition().x, Helper::Scale * m_Body->GetPosition().y };
 }
 
 void PhysicsBody::ApplyImpulse(sf::Vector2f _impulse)
@@ -20,53 +27,54 @@ void PhysicsBody::ApplyImpulse(sf::Vector2f _impulse)
 
 void PhysicsBody::SetBodyType(b2BodyType _bodyType)
 {
-	m_Body->GetFixtureList()[0].GetBody()->SetType(_bodyType);
+	m_BodyType = _bodyType;
+	SetupBody();
 }
 
 void PhysicsBody::SetPosition(sf::Vector2f _position)
 {
-	m_Position = { _position.x / Helper::Scale, _position.y / Helper::Scale, };
+	m_Position = _position;
+
 	if (m_Body)
-		m_Body->SetTransform({ _position.x / Helper::Scale, _position.y / Helper::Scale, }, 0.0f);
+		m_Body->SetTransform({ m_Position.x / Helper::Scale, m_Position.y / Helper::Scale}, 0.0f);
 }
 
 sf::Vector2f PhysicsBody::GetPosition()
 {
-	if (m_Body)
-	{
-		return {m_Body->GetPosition().x * Helper::Scale ,m_Body->GetPosition().y * Helper::Scale };
-	}
-	else
-	{
-		return sf::Vector2f();
-	}
+	return m_Position;
 }
 
 void PhysicsBody::SetSize(sf::Vector2f _size)
 {
-	if (m_Body)
-		m_World->DestroyBody(m_Body);
-	m_Body = nullptr;
-
-	SetupBody(m_Position, _size);
+	m_Size = _size;
+	SetupBody();
 }
 
-void PhysicsBody::SetupBody(sf::Vector2f _position, sf::Vector2f _size, float _restitution, float _density)
+void PhysicsBody::DestroyBody()
 {
+	if (m_Body != nullptr)
+	{
+		m_World->DestroyBody(m_Body);
+		m_Body = nullptr;
+	}
+}
+
+void PhysicsBody::SetupBody()
+{
+	DestroyBody();
+
 	b2BodyDef bodyDef;
 	bodyDef.allowSleep = true;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = b2Vec2(_position.x / Helper::Scale, _position.y / Helper::Scale);
+	bodyDef.type = m_BodyType;
+	bodyDef.position = b2Vec2(m_Position.x / Helper::Scale, m_Position.y / Helper::Scale);
 	m_Body = m_World->CreateBody(&bodyDef);
 
-	m_Position = _position;
-
 	b2PolygonShape shape;
-	shape.SetAsBox((_size.x / 2) / Helper::Scale, (_size.y / 2) / Helper::Scale);
+	shape.SetAsBox((m_Size.x / 2) / Helper::Scale, (m_Size.y / 2) / Helper::Scale);
 
 	b2FixtureDef fixtureDef;
-	fixtureDef.density = _density;
+	fixtureDef.density = 1.0f;
 	fixtureDef.shape = &shape;
-	fixtureDef.restitution = _restitution;
+	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);
 }

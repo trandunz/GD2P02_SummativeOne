@@ -10,3 +10,8 @@ void Helper::SetOriginCentre(sf::Sprite& _sprite)
 {
 	_sprite.setOrigin({ _sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2 });
 }
+
+void Helper::SetOriginCentre(sf::Text& _text)
+{
+	_text.setOrigin({ _text.getLocalBounds().width / 2, _text.getLocalBounds().height / 2 });
+}

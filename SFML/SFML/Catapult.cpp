@@ -2,7 +2,7 @@
 
 Catapult::Catapult(sf::Vector2f _position)
 {
-	SetTexture("Catapult.png");
+	SetTexture("Wood/BigWheel (1).png");
 	m_Mesh.setPosition(_position);
 	m_Mesh.setScale({ 1.5f,1.5f });
 	m_FirePosition = { m_Mesh.getPosition().x, m_Mesh.getPosition().y - m_Mesh.getLocalBounds().height/2 };
@@ -16,8 +16,16 @@ Catapult::~Catapult()
 void Catapult::LoadBird(GameObject& _bird)
 {
 	m_LoadedBird = &_bird;
-	m_LoadedBird->DeleteBody();
+	m_LoadedBird->DestroyBody();
 	m_FireVector = Helper::RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(Helper::RenderWindow)) - m_FirePosition;
+	
+	sf::Vector2f mousePos = { (float)sf::Mouse::getPosition(Helper::RenderWindow).x, (float)sf::Mouse::getPosition(Helper::RenderWindow).y };
+	m_FireVector = mousePos - m_FirePosition;
+
+	if (Mag(m_FireVector) > 100.0f)
+	{
+		m_FireVector = Normalize(m_FireVector) * 100.0f;
+	}
 	m_LoadedBird->SetPosition(m_FirePosition + m_FireVector);
 }
 

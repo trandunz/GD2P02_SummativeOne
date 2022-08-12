@@ -2,26 +2,34 @@
 #include "Helper.h"
 #include "Catapult.h"
 #include "GameObject.h"
+#include <SFML/Audio.hpp>
 
 class Level : public sf::Drawable
 {
 public:
 	Level();
-	~Level();
+	virtual ~Level();
 
-	void PollEvents(sf::Event& _event);
-	void Update();
+	virtual void PollEvents(sf::Event& _event);
+	virtual void Update();
 
 	b2World* World;
 
-private:
+protected:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	void CreateStaticBodys();
-	void CreateDynamicBodys();
+private:
+	void CreateCollisionLess();
+	void CreateStatics();
+	void CreateBirds();
+	void CreatePigs();
+	void CreateDestructables();
 
 	Catapult m_Catapult{ { 200.0f, 450.0f } };
-	std::vector<GameObject*> StaticObjects{};
-	std::vector<GameObject*> DynamicObjects{};
+	std::vector<GameObject*> CollisionLess{};
+	std::vector<GameObject*> Statics{};
+	std::vector<GameObject*> Birds{};
+	std::vector<GameObject*> Pigs{};
+	std::vector<GameObject*> Destructables{};
 };
 

@@ -3,57 +3,42 @@
 GameObject::GameObject(b2World& _world, sf::Vector2f _startPos)
 {
 	m_World = &_world;
-
-	SetTexture("Ball.png");
-
-	m_Mesh.setPosition(_startPos);
-	m_Mesh.setColor(sf::Color::White);
-
-	//m_PhysicsBody = new PhysicsBody
-	//(
-	//	*m_World,
-	//	{ m_Mesh.getLocalBounds().width,m_Mesh.getLocalBounds().height }, // Size
-	//	{ m_Mesh.getPosition().x, m_Mesh.getPosition().y } // Pos
-	//);
+	m_Mesh = new Mesh("Wood/Plank (1).png");
+	m_Mesh->SetPosition(_startPos);
 }
 
 GameObject::~GameObject()
 {
-	if (m_PhysicsBody)
-		delete m_PhysicsBody;
-	m_PhysicsBody = nullptr;
+	DestroyBody();
 	m_World = nullptr;
-}
 
-void GameObject::DeleteBody()
-{
-	if (m_PhysicsBody)
-		delete m_PhysicsBody;
-	m_PhysicsBody = nullptr;
+	if (m_Mesh)
+		delete m_Mesh;
+	m_Mesh = nullptr;
 }
 
 void GameObject::SetPosition(sf::Vector2f _position)
 {
-	m_Mesh.setPosition(_position);
+	m_Mesh->SetPosition(_position);
 
-	if (m_PhysicsBody)
+	if (m_PhysicsBody != nullptr)
 		m_PhysicsBody->SetPosition(_position);
 }
 
 void GameObject::SetTexture(std::string _fileName)
 {
-	m_Texture.loadFromFile("Resources/Sprites/" + _fileName);
-	m_Mesh.setTexture(m_Texture, true);
-	Helper::SetOriginCentre(m_Mesh);
-	if (m_PhysicsBody)
+	m_Mesh->SetTexture(_fileName);
+	if (m_PhysicsBody != nullptr)
 	{
-		m_PhysicsBody->SetSize({ m_Mesh.getLocalBounds().width,m_Mesh.getLocalBounds().height });
+		m_PhysicsBody->SetSize({ m_Mesh->GetLocalBounds().width,m_Mesh->GetLocalBounds().height });
 	}
 }
 
 void GameObject::SetBodyType(b2BodyType _bodyType)
 {
-	if (m_PhysicsBody)
+	m_BodyType = _bodyType;
+
+	if (m_PhysicsBody != nullptr)
 		m_PhysicsBody->SetBodyType(_bodyType);
 }
 
@@ -63,29 +48,41 @@ void GameObject::Start()
 
 void GameObject::Update()
 {
-	if (m_PhysicsBody)
+	if (m_PhysicsBody != nullptr)
 	{
-		m_Mesh.setPosition(m_PhysicsBody->GetPosition());
+		m_PhysicsBody->Update();
+		m_Mesh->SetPosition(m_PhysicsBody->GetPosition());
 	}
 }
 
 void GameObject::Launch(sf::Vector2f _impulse)
 {
-	if (m_PhysicsBody)
-		delete m_PhysicsBody;
-	m_PhysicsBody = nullptr;
+	CreateBody();
+	m_PhysicsBody->ApplyImpulse(_impulse);
+}
 
+void GameObject::CreateBody()
+{
+	DestroyBody();
 	m_PhysicsBody = new PhysicsBody
 	(
 		*m_World,
-		{ m_Mesh.getLocalBounds().width,m_Mesh.getLocalBounds().height }, // Size
-		{ m_Mesh.getPosition().x, m_Mesh.getPosition().y } // Pos
+		m_Mesh->GetPosition(), // Size
+		{ m_Mesh->GetLocalBounds().width,m_Mesh->GetLocalBounds().height }, // Pos
+		m_BodyType
 	);
+}
 
-	m_PhysicsBody->ApplyImpulse(_impulse);
+void GameObject::DestroyBody()
+{
+	if (m_PhysicsBody != nullptr)
+	{
+		delete m_PhysicsBody;
+		m_PhysicsBody = nullptr;
+	}
 }
 
 void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(m_Mesh);
+	target.draw(*m_Mesh);
 }

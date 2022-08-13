@@ -88,12 +88,19 @@ void PhysicsBody::SetupBody()
 
 	b2PolygonShape* polygonShape  = dynamic_cast<b2PolygonShape*>(m_Shape);
 	if (polygonShape != nullptr)
+	{
 		polygonShape->SetAsBox((m_Size.x / 2) / Helper::Scale, (m_Size.y / 2) / Helper::Scale);
+		polygonShape = nullptr;
+	}
 	else
 	{
 		b2CircleShape* circleShape = dynamic_cast<b2CircleShape*>(m_Shape);
 		if (circleShape != nullptr)
-			circleShape->m_radius = m_Size.x / Helper::Scale;
+		{
+			circleShape->m_radius = (m_Size.x / 2) / Helper::Scale;
+			circleShape->m_p.SetZero();
+		}
+		circleShape = nullptr;
 	}
 
 	b2FixtureDef fixtureDef;

@@ -37,6 +37,8 @@ void Start()
 	Helper::RenderWindow.setVerticalSyncEnabled(true);
 	Helper::RenderWindow.setFramerateLimit(60);
 
+	Helper::TimesNewRoman.loadFromFile("Resources/Fonts/TNR.ttf");
+
 	LevelManager::LoadLevel(new MainMenu());
 }
 

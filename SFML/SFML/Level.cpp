@@ -52,7 +52,7 @@ void Level::PollEvents(sf::Event& _event)
 {
 	if (_event.type == sf::Event::MouseButtonPressed)
 	{
-		//m_Catapult.LoadBird(*Statics.back());
+		m_Catapult.LoadBird(*Birds.back());
 	}
 
 	if (_event.type == sf::Event::MouseButtonReleased)
@@ -68,7 +68,7 @@ void Level::PollEvents(sf::Event& _event)
 
 void Level::Update()
 {
-	World->Step(1 / 60.0f, 6, 2);
+	World->Step(1 / 60.0f, 10, 10);
 
 	for (auto& object : Statics)
 	{
@@ -94,6 +94,10 @@ void Level::Update()
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	for (auto& object : CollisionLess)
+	{
+		target.draw(*object);
+	}
 	for (auto& object : Statics)
 	{
 		target.draw(*object);
@@ -110,20 +114,32 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*object);
 	}
-	for (auto& object : CollisionLess)
-	{
-		target.draw(*object);
-	}
+	
 
 	target.draw(m_Catapult);
 }
 
 void Level::CreateCollisionLess()
 {
+	CollisionLess.emplace_back(new GameObject(*World, { 1280/2,720/2}));
+	CollisionLess.back()->SetTexture("Background.jpg");
+	CollisionLess.back()->SetScale({2.65f,2.65f });
 }
 
 void Level::CreateStatics()
 {
+	Statics.emplace_back(new GameObject(*World, { -62,706 }));
+	Statics.emplace_back(new GameObject(*World, { 62 * 3,706 }));
+
+	Statics.emplace_back(new GameObject(*World, { 62 * 7,706 + 80 }));
+	Statics.emplace_back(new GameObject(*World, { 62 * 11,706 + 80 }));
+	Statics.emplace_back(new GameObject(*World, { 62 * 15,706 }));
+	Statics.emplace_back(new GameObject(*World, { 62 * 19,706 }));
+	for (auto& floor : Statics)
+	{
+		floor->SetTexture("Dirt.png");
+	}
+
 	for (auto& object : Statics)
 	{
 		object->SetBodyType(b2_staticBody);
@@ -133,6 +149,18 @@ void Level::CreateStatics()
 
 void Level::CreateBirds()
 {
+	Birds.emplace_back(new GameObject(*World, { 30,566 }));
+	Birds.emplace_back(new GameObject(*World, { 70,566 }));
+	Birds.emplace_back(new GameObject(*World, { 110,566 }));
+	Birds.emplace_back(new GameObject(*World, { 150,566 }));
+	Birds.emplace_back(new GameObject(*World, { 190,566 }));
+	for (auto& bird : Birds)
+	{
+		bird->SetTexture("Bird.png");
+		bird->SetScale({ 0.25f,0.25f });
+		bird->SetShapeType(new b2CircleShape());
+	}
+
 	for (auto& object : Birds)
 	{
 		object->SetBodyType(b2_dynamicBody);

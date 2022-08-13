@@ -12,6 +12,8 @@ GameObject::~GameObject()
 	DestroyBody();
 	m_World = nullptr;
 
+	m_ShapeType = nullptr;
+
 	if (m_Mesh)
 		delete m_Mesh;
 	m_Mesh = nullptr;
@@ -25,6 +27,11 @@ void GameObject::SetPosition(sf::Vector2f _position)
 		m_PhysicsBody->SetPosition(_position);
 }
 
+void GameObject::SetScale(sf::Vector2f _scale)
+{
+	m_Mesh->SetScale(_scale);
+}
+
 void GameObject::SetTexture(std::string _fileName)
 {
 	m_Mesh->SetTexture(_fileName);
@@ -32,6 +39,14 @@ void GameObject::SetTexture(std::string _fileName)
 	{
 		m_PhysicsBody->SetSize({ m_Mesh->GetLocalBounds().width,m_Mesh->GetLocalBounds().height });
 	}
+}
+
+void GameObject::SetShapeType(b2Shape* _shapeType)
+{
+	if (m_ShapeType)
+		delete m_ShapeType;
+	m_ShapeType = nullptr;
+	m_ShapeType = _shapeType;
 }
 
 void GameObject::SetBodyType(b2BodyType _bodyType)
@@ -68,7 +83,8 @@ void GameObject::CreateBody()
 	(
 		*m_World,
 		m_Mesh->GetPosition(), // Size
-		{ m_Mesh->GetLocalBounds().width,m_Mesh->GetLocalBounds().height }, // Pos
+		{ m_Mesh->GetGlobalBounds().width,m_Mesh->GetGlobalBounds().height }, // Pos
+		m_ShapeType,
 		m_BodyType
 	);
 }
@@ -79,6 +95,7 @@ void GameObject::DestroyBody()
 	{
 		delete m_PhysicsBody;
 		m_PhysicsBody = nullptr;
+		m_ShapeType = nullptr;
 	}
 }
 

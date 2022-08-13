@@ -7,9 +7,11 @@ public:
 	~Mesh();
 
 	void SetTexture(std::string _spriteName);
+	void SetScale(sf::Vector2f _scale);
 	void SetPosition(sf::Vector2f _position);
 	inline sf::Vector2f GetPosition() {return m_Sprite.getPosition();}
 	sf::FloatRect GetLocalBounds();
+	sf::FloatRect GetGlobalBounds();
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

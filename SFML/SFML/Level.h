@@ -25,7 +25,7 @@ private:
 	void CreatePigs();
 	void CreateDestructables();
 
-	Catapult m_Catapult{ { 200.0f, 450.0f } };
+	Catapult m_Catapult{ { 225.0f, 520.0f } };
 	std::vector<GameObject*> CollisionLess{};
 	std::vector<GameObject*> Statics{};
 	std::vector<GameObject*> Birds{};

@@ -2,10 +2,10 @@
 
 Catapult::Catapult(sf::Vector2f _position)
 {
-	SetTexture("Wood/BigWheel (1).png");
+	SetTexture("Slingshot.png");
 	m_Mesh.setPosition(_position);
-	m_Mesh.setScale({ 1.5f,1.5f });
-	m_FirePosition = { m_Mesh.getPosition().x, m_Mesh.getPosition().y - m_Mesh.getLocalBounds().height/2 };
+	m_Mesh.setScale({ 0.12f,0.12f });
+	m_FirePosition = { m_Mesh.getPosition().x, m_Mesh.getPosition().y - m_Mesh.getGlobalBounds().height/2 };
 }
 
 Catapult::~Catapult()

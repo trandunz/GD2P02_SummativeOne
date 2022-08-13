@@ -16,7 +16,7 @@ private:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	float m_LaunchStrength = 2.0f;
+	float m_LaunchStrength = 0.5f;
 
 	GameObject* m_LoadedBird = nullptr;
 	sf::Sprite m_Mesh;

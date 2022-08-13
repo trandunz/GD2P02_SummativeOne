@@ -71,4 +71,10 @@ void MainMenu::CreateMeshes()
 
 void MainMenu::CreateButtons()
 {
+	m_Buttons.emplace_back(new Button("Play", (sf::Vector2f)Helper::RenderWindow.getSize() / 2.0f,
+		[]()
+		{
+			LevelManager::LoadLevel(new Level);
+		},
+		{ 2.0f,2.0f }));
 }

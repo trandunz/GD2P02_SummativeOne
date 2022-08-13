@@ -1,11 +1,15 @@
 #include "PhysicsBody.h"
 
-PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, b2BodyType _bodyType, float _restitution, float _density)
+PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, b2Shape* _shape, b2BodyType _bodyType, float _restitution, float _density)
 {
 	m_World = &_world;
 	m_Position = _startPos;
 	m_Size = _size;
 	m_BodyType = _bodyType;
+	if (_shape == nullptr)
+		m_Shape = new b2PolygonShape();
+	else
+		m_Shape = _shape;
 	SetupBody();
 }
 
@@ -13,6 +17,10 @@ PhysicsBody::~PhysicsBody()
 {
 	DestroyBody();
 	m_World = nullptr;
+
+	if (m_Shape)
+		delete m_Shape;
+	m_Shape = nullptr;
 }
 
 void PhysicsBody::Update()
@@ -23,6 +31,14 @@ void PhysicsBody::Update()
 void PhysicsBody::ApplyImpulse(sf::Vector2f _impulse)
 {
 	m_Body->ApplyLinearImpulseToCenter({ _impulse.x, _impulse.y}, true);
+}
+
+void PhysicsBody::SetShape(b2Shape* _shape)
+{
+	if (m_Shape)
+		delete m_Shape;
+	m_Shape = nullptr;
+	m_Shape = _shape;
 }
 
 void PhysicsBody::SetBodyType(b2BodyType _bodyType)
@@ -66,15 +82,23 @@ void PhysicsBody::SetupBody()
 	b2BodyDef bodyDef;
 	bodyDef.allowSleep = true;
 	bodyDef.type = m_BodyType;
+	bodyDef.bullet = true;
 	bodyDef.position = b2Vec2(m_Position.x / Helper::Scale, m_Position.y / Helper::Scale);
 	m_Body = m_World->CreateBody(&bodyDef);
 
-	b2PolygonShape shape;
-	shape.SetAsBox((m_Size.x / 2) / Helper::Scale, (m_Size.y / 2) / Helper::Scale);
+	b2PolygonShape* polygonShape  = dynamic_cast<b2PolygonShape*>(m_Shape);
+	if (polygonShape != nullptr)
+		polygonShape->SetAsBox((m_Size.x / 2) / Helper::Scale, (m_Size.y / 2) / Helper::Scale);
+	else
+	{
+		b2CircleShape* circleShape = dynamic_cast<b2CircleShape*>(m_Shape);
+		if (circleShape != nullptr)
+			circleShape->m_radius = m_Size.x / Helper::Scale;
+	}
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1.0f;
-	fixtureDef.shape = &shape;
+	fixtureDef.shape = m_Shape;
 	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);
 }

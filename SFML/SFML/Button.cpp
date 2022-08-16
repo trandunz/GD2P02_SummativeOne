@@ -1,10 +1,11 @@
 #include "Button.h"
+#include "TextureLoader.h"
 
-Button::Button(std::string _label, sf::Vector2f _position, std::function<void()> _onPressLambda, sf::Vector2f _scale)
+Button::Button(std::string _label, sf::Vector2f _position, callback_function _onPressLambda, sf::Vector2f _scale)
 {
-	m_Label.setFont(Helper::TimesNewRoman);
+	m_Label.setFont(Statics::TimesNewRoman);
 	m_Label.setString(_label);
-	m_Label.setCharacterSize(36); 
+	m_Label.setCharacterSize(24); 
 	m_Label.setFillColor(sf::Color::Black);
 	SetTexture("Button.png");
 	SetScale(_scale);
@@ -19,9 +20,9 @@ Button::~Button()
 
 void Button::CallOnPress()
 {
-	if (m_OnPressFunction)
+	if (m_OnPressFunction != nullptr)
 	{
-		sf::Vector2f mousePos = { (float)sf::Mouse::getPosition(Helper::RenderWindow).x, (float)sf::Mouse::getPosition(Helper::RenderWindow).y };
+		sf::Vector2f mousePos = { (float)sf::Mouse::getPosition(Statics::RenderWindow).x, (float)sf::Mouse::getPosition(Statics::RenderWindow).y };
 		if (m_Sprite.getGlobalBounds().contains(mousePos))
 		{
 			m_OnPressFunction();
@@ -43,8 +44,8 @@ void Button::SetPosition(sf::Vector2f _position)
 void Button::SetScale(sf::Vector2f _scale)
 {
 	m_Sprite.setScale(_scale);
-	m_Label.setCharacterSize(m_Label.getCharacterSize() * Mag(_scale));
-	Helper::SetOriginCentre(m_Label);
+	m_Label.setCharacterSize(m_Label.getCharacterSize() * (unsigned)Mag(_scale));
+	SetOriginCentre(m_Label);
 }
 
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -56,7 +57,6 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Button::SetTexture(std::string _fileName)
 {
-	m_Texture.loadFromFile("Resources/Sprites/" + _fileName);
-	m_Sprite.setTexture(m_Texture, true);
-	Helper::SetOriginCentre(m_Sprite);
+	m_Sprite.setTexture(TextureLoader::LoadTexture(_fileName), true);
+	SetOriginCentre(m_Sprite);
 }

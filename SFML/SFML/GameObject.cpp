@@ -19,6 +19,19 @@ GameObject::~GameObject()
 	m_Mesh = nullptr;
 }
 
+b2Vec2 GameObject::GetBodyPosition()
+{
+	if (m_PhysicsBody != nullptr)
+		return m_PhysicsBody->GetB2Position();
+	else
+		return {};
+}
+
+sf::Vector2f GameObject::GetPosition()
+{
+	return m_Mesh->GetPosition();
+}
+
 void GameObject::SetPosition(sf::Vector2f _position)
 {
 	m_Mesh->SetPosition(_position);
@@ -70,6 +83,11 @@ void GameObject::Update()
 	}
 }
 
+sf::Vector2f GameObject::GetLaunchVelocity(sf::Vector2f _launchVector)
+{
+	return _launchVector;
+}
+
 void GameObject::Launch(sf::Vector2f _impulse)
 {
 	CreateBody();
@@ -82,6 +100,7 @@ void GameObject::CreateBody()
 	m_PhysicsBody = new PhysicsBody
 	(
 		*m_World,
+		this,
 		m_Mesh->GetPosition(), // Size
 		{ m_Mesh->GetGlobalBounds().width,m_Mesh->GetGlobalBounds().height }, // Pos
 		m_ShapeType,

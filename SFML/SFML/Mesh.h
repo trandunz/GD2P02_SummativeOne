@@ -1,5 +1,7 @@
 #pragma once
-#include "Helper.h"
+#include "Statics.h"
+#include "Math.h"
+
 class Mesh : public sf::Drawable
 {
 public:
@@ -16,6 +18,5 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	sf::Sprite m_Sprite;
-	sf::Texture m_Texture;
 };
 

@@ -1,26 +1,25 @@
 #pragma once
-#include "Level.h"
+#include <vector>
 #include "Button.h"
-#include "LevelManager.h"
+#include "LevelLoader.h"
+#include "Level.h"
+#include "Mesh.h"
 
-class MainMenu :
-    public Level
+class MainMenu : public Level
 {
 public:
     MainMenu();
     ~MainMenu();
 
-    virtual void PollEvents(sf::Event& _event) override;
+    virtual void PollEvents() override;
     virtual void Update() override;
+    virtual void Draw() override;
 
 private:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     void CreateMeshes();
     void CreateButtons();
 
-    sf::Music m_Music;
-    std::vector<Mesh*> m_Meshes{};
-    std::vector<Button*> m_Buttons{};
+    std::vector<Mesh> m_Meshes{};
+    std::vector<Button> m_Buttons{};
 };
 

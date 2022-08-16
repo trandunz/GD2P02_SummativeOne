@@ -13,14 +13,15 @@ public:
 
 private:
 	void SetTexture(std::string _fileName);
+	sf::Vector2f GetTrajectoryPoint(float _predictionTime);
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	float m_LaunchStrength = 0.5f;
+	float m_LaunchStrength = 0.2f;
 
 	GameObject* m_LoadedBird = nullptr;
 	sf::Sprite m_Mesh;
-	sf::Texture m_Texture;
+	sf::VertexArray m_TrajectoryLine;
 
 	sf::Vector2f m_FirePosition;
 	sf::Vector2f m_FireVector;

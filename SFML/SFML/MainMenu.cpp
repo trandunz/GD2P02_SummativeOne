@@ -1,12 +1,10 @@
 #include "MainMenu.h"
+#include "LevelOne.h"
+#include"AudioManager.h"
 
 MainMenu::MainMenu()
 {
-	World = new b2World({ 0,10.0f });
-
-	m_Music.openFromFile("Resources/Sounds/ThemeSong.WAV");
-	m_Music.play();
-	m_Music.setLoop(true);
+	AudioManager::PlayMusic("ThemeSong.WAV");
 
 	CreateMeshes();
 	CreateButtons();
@@ -14,34 +12,17 @@ MainMenu::MainMenu()
 
 MainMenu::~MainMenu()
 {
-	for (auto& sprite : m_Meshes)
-	{
-		if (sprite)
-			delete sprite;
-		sprite = nullptr;
-	}
 	m_Meshes.clear();
-
-	for (auto& button : m_Buttons)
-	{
-		if (button)
-			delete button;
-		button = nullptr;
-	}
 	m_Buttons.clear();
-
-	if (World)
-		delete World;
-	World = nullptr;
 }
 
-void MainMenu::PollEvents(sf::Event& _event)
+void MainMenu::PollEvents()
 {
-	if (_event.type == sf::Event::MouseButtonPressed)
+	if (Statics::EventHandler.type == sf::Event::MouseButtonPressed)
 	{
 		for (auto& button : m_Buttons)
 		{
-			button->CallOnPress();
+			button.CallOnPress();
 		}
 	}
 }
@@ -51,30 +32,42 @@ void MainMenu::Update()
 
 }
 
-void MainMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void MainMenu::Draw()
 {
 	for (auto& sprite : m_Meshes)
 	{
-		target.draw(*sprite);
+		Statics::RenderWindow.draw(sprite);
 	}
 	for (auto& button : m_Buttons)
 	{
-		target.draw(*button);
+		Statics::RenderWindow.draw(button);
 	}
 }
 
 void MainMenu::CreateMeshes()
 {
-	sf::Vector2f ScreenCentre = Helper::RenderWindow.getView().getCenter();
-	m_Meshes.emplace_back(new Mesh("Title.png", { ScreenCentre.x, 100 }));
+	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
+	m_Meshes.emplace_back(Mesh("Title.png", { ScreenCentre.x, 100 }));
 }
 
 void MainMenu::CreateButtons()
 {
-	m_Buttons.emplace_back(new Button("Play", (sf::Vector2f)Helper::RenderWindow.getSize() / 2.0f,
+	m_Buttons.emplace_back(Button("Level One", { 640,300},
 		[]()
 		{
-			LevelManager::LoadLevel(new Level);
+			LevelLoader::LoadLevel(new LevelOne);
+		},
+		{ 2.0f,2.0f }));
+	m_Buttons.emplace_back(Button("Level Two", { 640,450 },
+		[]()
+		{
+			LevelLoader::LoadLevel(new LevelOne);
+		},
+		{ 2.0f,2.0f }));
+	m_Buttons.emplace_back(Button("Level Three", { 640,600 },
+		[]()
+		{
+			LevelLoader::LoadLevel(new LevelOne);
 		},
 		{ 2.0f,2.0f }));
 }

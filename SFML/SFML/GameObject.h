@@ -8,6 +8,8 @@ public:
 	GameObject(b2World& _world, sf::Vector2f _startPos);
 	virtual ~GameObject();
 
+	b2Vec2 GetBodyPosition();
+	sf::Vector2f GetPosition();
 	void SetPosition(sf::Vector2f _position);
 	void SetScale(sf::Vector2f _scale);;
 
@@ -21,6 +23,7 @@ public:
 	void CreateBody();
 	void DestroyBody();
 
+	sf::Vector2f GetLaunchVelocity(sf::Vector2f _launchVector);
 	void Launch(sf::Vector2f _impulse);
 
 protected:

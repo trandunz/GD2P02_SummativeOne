@@ -1,10 +1,11 @@
 #include "Mesh.h"
+#include "TextureLoader.h"
 
 Mesh::Mesh(std::string _spriteName, sf::Vector2f _position, sf::Vector2f _scale)
 {
 	SetTexture(_spriteName);
 	m_Sprite.setScale(_scale);
-	Helper::SetOriginCentre(m_Sprite);
+	SetOriginCentre(m_Sprite);
 	m_Sprite.setPosition(_position);
 }
 
@@ -14,9 +15,8 @@ Mesh::~Mesh()
 
 void Mesh::SetTexture(std::string _spriteName)
 {
-	m_Texture.loadFromFile("Resources/Sprites/" + _spriteName);
-	m_Sprite.setTexture(m_Texture, true);
-	Helper::SetOriginCentre(m_Sprite);
+	m_Sprite.setTexture(TextureLoader::LoadTexture(_spriteName), true);
+	SetOriginCentre(m_Sprite);
 }
 
 void Mesh::SetScale(sf::Vector2f _scale)

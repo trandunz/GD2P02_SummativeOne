@@ -1,7 +1,7 @@
-#include "LevelManager.h"
-
-sf::Event EventHandle;
-sf::Clock MainClock;
+#include "AudioManager.h"
+#include "TextureLoader.h"
+#include "MainMenu.h"
+#include "Statics.h"
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings);
 
@@ -12,14 +12,11 @@ void Render();
 
 int Cleanup();
 
-void CalculateDeltaTime();
 void HandleResizing();
 
 
 int main()
 {
-	InitRenderWindow({ 1280, 720 }, "Angry Birds", sf::Style::Default, sf::ContextSettings());
-
 	Start();
 	Update();
 	Render();
@@ -29,27 +26,31 @@ int main()
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings)
 {
-	Helper::RenderWindow.create(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
+	Statics::RenderWindow.create(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
 }
 
 void Start()
 {
-	Helper::RenderWindow.setVerticalSyncEnabled(true);
-	Helper::RenderWindow.setFramerateLimit(60);
+	// Init RenderWindow
+	InitRenderWindow({ 1280, 720 }, "Angry Birds", sf::Style::Default, sf::ContextSettings());
+	Statics::RenderWindow.setFramerateLimit(60);
+	Statics::RenderWindow.setKeyRepeatEnabled(false);
 
-	Helper::TimesNewRoman.loadFromFile("Resources/Fonts/TNR.ttf");
+	// Main Font
+	Statics::TimesNewRoman.loadFromFile("Resources/Fonts/TNR.ttf");
 
-	LevelManager::LoadLevel(new MainMenu());
+	// Load Main Menu
+	LevelLoader::LoadLevel(new MainMenu());
 }
 
 void Update()
 {
-	while (Helper::RenderWindow.isOpen())
+	while (Statics::RenderWindow.isOpen())
 	{
-		CalculateDeltaTime();
+		Statics::CalculateDeltaTime();
 		PollEvents();
 
-		LevelManager::CurrentLevel->Update();
+		LevelLoader::Update();
 		
 		Render();
 	}
@@ -57,52 +58,47 @@ void Update()
 
 void PollEvents()
 {
-	if (Helper::RenderWindow.pollEvent(EventHandle))
+	if (Statics::RenderWindow.pollEvent(Statics::EventHandler))
 	{
-		if ((EventHandle.type == sf::Event::KeyPressed
+		if ((Statics::EventHandler.type == sf::Event::KeyPressed
 			&& sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			|| EventHandle.type == sf::Event::Closed)
+			|| Statics::EventHandler.type == sf::Event::Closed)
 		{
-			Helper::RenderWindow.close();
+			Statics::RenderWindow.close();
 		}
-		if (EventHandle.type == sf::Event::Resized)
+		if (Statics::EventHandler.type == sf::Event::Resized)
 			HandleResizing();
 
-		LevelManager::CurrentLevel->PollEvents(EventHandle);
+		LevelLoader::PollEvents();
 	}
 }
 
 void Render()
 {
-	Helper::RenderWindow.clear();
+	Statics::RenderWindow.clear();
 
-	Helper::RenderWindow.draw(*LevelManager::CurrentLevel);
+	LevelLoader::Draw();
 
-	Helper::RenderWindow.display();
+	Statics::RenderWindow.display();
 }
 
 int Cleanup()
 {
-	LevelManager::CleanupLevel();
+	LevelLoader::CleanupLevel();
+	TextureLoader::CleanupTextures();
+	AudioManager::Cleanup();
 
 	return 0;
 }
 
-void CalculateDeltaTime()
-{
-	sf::Int32 currentTime = MainClock.getElapsedTime().asMilliseconds();
-	Helper::DeltaTime = currentTime - Helper::LastTime;
-	Helper::LastTime = currentTime;
-}
-
 void HandleResizing()
 {
-	sf::Vector2f size = (sf::Vector2f)Helper::RenderWindow.getSize();
+	sf::Vector2f size = (sf::Vector2f)Statics::RenderWindow.getSize();
 
 	if (size.x < 426)
 		size.x = 426;
 	if (size.y < 240)
 		size.y = 240;
 
-	Helper::RenderWindow.setSize((sf::Vector2u)size);
+	Statics::RenderWindow.setSize((sf::Vector2u)size);
 }

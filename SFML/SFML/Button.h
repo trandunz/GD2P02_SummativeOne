@@ -1,11 +1,14 @@
 #pragma once
-#include "Helper.h"
+
+typedef void (*callback_function)(void);
+
+#include "Statics.h"
 #include "Math.h"
-#include <functional>
+
 class Button : public sf::Drawable
 {
 public:
-	Button(std::string _label, sf::Vector2f _position, std::function<void()> _onPressLambda, sf::Vector2f _scale = {1,1});
+	Button(std::string _label, sf::Vector2f _position, callback_function _onPressLambda = nullptr, sf::Vector2f _scale = {1,1});
 	~Button();
 
 	void CallOnPress();
@@ -17,9 +20,8 @@ private:
 	
 	void SetTexture(std::string _fileName);
 
-	std::function<void()> m_OnPressFunction = nullptr;
+	callback_function m_OnPressFunction = nullptr;
 	sf::Sprite m_Sprite;
-	sf::Texture m_Texture;
 	sf::Text m_Label;
 };
 

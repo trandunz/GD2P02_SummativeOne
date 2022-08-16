@@ -1,14 +1,22 @@
 #pragma once
 
-typedef void (*callback_function)(void);
-
 #include "Statics.h"
 #include "Math.h"
+
+typedef void (*callback_function)(void);
+
+struct ButtonProperties
+{
+	std::string Label{};
+	sf::Vector2f Position{};
+	callback_function OnPressLambda = nullptr;
+	sf::Vector2f Scale = { 1,1 };
+};
 
 class Button : public sf::Drawable
 {
 public:
-	Button(std::string _label, sf::Vector2f _position, callback_function _onPressLambda = nullptr, sf::Vector2f _scale = {1,1});
+	Button(ButtonProperties _properties);
 	~Button();
 
 	void CallOnPress();
@@ -20,7 +28,7 @@ private:
 	
 	void SetTexture(std::string _fileName);
 
-	callback_function m_OnPressFunction = nullptr;
+	ButtonProperties m_Properties;
 	sf::Sprite m_Sprite;
 	sf::Text m_Label;
 };

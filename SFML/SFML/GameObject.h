@@ -17,18 +17,16 @@ public:
 	void SetShapeType(b2Shape* _shapeType);
 	void SetBodyType(b2BodyType _bodyType);
 
-	void Start();
-	void Update();
+	virtual void Start();
+	virtual void Update();
 
 	void CreateBody();
 	void DestroyBody();
 
-	sf::Vector2f GetLaunchVelocity(sf::Vector2f _launchVector);
-	void Launch(sf::Vector2f _impulse);
-
 protected:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	
+	UserData m_b2UserData;
 	b2World* m_World = nullptr;
 	b2Shape* m_ShapeType = nullptr;
 	b2BodyType m_BodyType = b2_staticBody;

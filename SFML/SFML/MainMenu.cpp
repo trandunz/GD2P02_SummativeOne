@@ -52,22 +52,22 @@ void MainMenu::CreateMeshes()
 
 void MainMenu::CreateButtons()
 {
-	m_Buttons.emplace_back(Button("Level One", { 640,300},
+	m_Buttons.emplace_back(Button({ "Level One", { 640,300},
 		[]()
 		{
 			LevelLoader::LoadLevel(new LevelOne);
 		},
-		{ 2.0f,2.0f }));
-	m_Buttons.emplace_back(Button("Level Two", { 640,450 },
+		{ 2.0f,2.0f } }));
+	m_Buttons.emplace_back(Button({"Level Two", { 640,450 },
 		[]()
 		{
 			LevelLoader::LoadLevel(new LevelOne);
 		},
-		{ 2.0f,2.0f }));
-	m_Buttons.emplace_back(Button("Level Three", { 640,600 },
+		{ 2.0f,2.0f }}));
+	m_Buttons.emplace_back(Button({ "Level Three", { 640,600 },
 		[]()
 		{
 			LevelLoader::LoadLevel(new LevelOne);
 		},
-		{ 2.0f,2.0f }));
+		{ 2.0f,2.0f } }));
 }

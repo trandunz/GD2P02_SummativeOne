@@ -5,6 +5,9 @@ GameObject::GameObject(b2World& _world, sf::Vector2f _startPos)
 	m_World = &_world;
 	m_Mesh = new Mesh("Wood/Plank (1).png");
 	m_Mesh->SetPosition(_startPos);
+	m_b2UserData = UserData();
+	m_b2UserData.identifier = "GameObject";
+	m_b2UserData.data = this;
 }
 
 GameObject::~GameObject()
@@ -83,24 +86,13 @@ void GameObject::Update()
 	}
 }
 
-sf::Vector2f GameObject::GetLaunchVelocity(sf::Vector2f _launchVector)
-{
-	return _launchVector;
-}
-
-void GameObject::Launch(sf::Vector2f _impulse)
-{
-	CreateBody();
-	m_PhysicsBody->ApplyImpulse(_impulse);
-}
-
 void GameObject::CreateBody()
 {
 	DestroyBody();
 	m_PhysicsBody = new PhysicsBody
 	(
 		*m_World,
-		this,
+		m_b2UserData,
 		m_Mesh->GetPosition(), // Size
 		{ m_Mesh->GetGlobalBounds().width,m_Mesh->GetGlobalBounds().height }, // Pos
 		m_ShapeType,

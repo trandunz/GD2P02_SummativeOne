@@ -1,31 +1,31 @@
 #include "Button.h"
 #include "TextureLoader.h"
 
-Button::Button(std::string _label, sf::Vector2f _position, callback_function _onPressLambda, sf::Vector2f _scale)
+Button::Button(ButtonProperties _properties)
 {
 	m_Label.setFont(Statics::TimesNewRoman);
-	m_Label.setString(_label);
+	m_Label.setString(_properties.Label);
 	m_Label.setCharacterSize(24); 
 	m_Label.setFillColor(sf::Color::Black);
+	m_Properties = _properties;
 	SetTexture("Button.png");
-	SetScale(_scale);
-	SetPosition(_position);
-	m_OnPressFunction = _onPressLambda;
+	SetScale(_properties.Scale);
+	SetPosition(_properties.Position);
 }
 
 Button::~Button()
 {
-	m_OnPressFunction = nullptr;
+	m_Properties.OnPressLambda = nullptr;
 }
 
 void Button::CallOnPress()
 {
-	if (m_OnPressFunction != nullptr)
+	if (m_Properties.OnPressLambda != nullptr)
 	{
 		sf::Vector2f mousePos = { (float)sf::Mouse::getPosition(Statics::RenderWindow).x, (float)sf::Mouse::getPosition(Statics::RenderWindow).y };
 		if (m_Sprite.getGlobalBounds().contains(mousePos))
 		{
-			m_OnPressFunction();
+			m_Properties.OnPressLambda();
 		}
 	}
 }

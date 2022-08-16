@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Bird.h"
 
 class Catapult : public sf::Drawable
 {
@@ -7,7 +7,7 @@ public:
 	Catapult(sf::Vector2f _position);
 	~Catapult();
 
-	void LoadBird(GameObject& _bird);
+	void LoadBird(Bird& _bird);
 	void MoveBird();
 	void ReleaseBird();
 
@@ -19,7 +19,7 @@ private:
 
 	float m_LaunchStrength = 0.2f;
 
-	GameObject* m_LoadedBird = nullptr;
+	Bird* m_LoadedBird = nullptr;
 	sf::Sprite m_Mesh;
 	sf::VertexArray m_TrajectoryLine;
 

@@ -16,7 +16,7 @@ Catapult::~Catapult()
 	m_LoadedBird = nullptr;
 }
 
-void Catapult::LoadBird(GameObject& _bird)
+void Catapult::LoadBird(Bird& _bird)
 {
 	m_LoadedBird = &_bird;
 	m_LoadedBird->DestroyBody();

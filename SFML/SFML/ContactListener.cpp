@@ -1,5 +1,11 @@
 #include "ContactListener.h"
-#include "GameObject.h"
+#include "Bird.h"
+
+struct UserData
+{
+	std::string identifier;
+	uintptr_t data;
+};
 
 void ContactListener::BeginContact(b2Contact* _contact)
 {
@@ -33,20 +39,11 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 		auto& body1UserData = _contact->GetFixtureA()->GetBody()->GetUserData();
 		if (body1UserData.pointer)
 		{
-			GameObject* object = reinterpret_cast<GameObject*>(body1UserData.pointer);
-			if (object)
+			UserData* userData = reinterpret_cast<UserData*>(body1UserData.pointer);
+			if (userData->identifier == "Bird")
 			{
-				std::cout << "Collided!" << std::endl;
-			}
-		}
-
-		auto& body2UserData = _contact->GetFixtureB()->GetBody()->GetUserData();
-		if (body2UserData.pointer)
-		{
-			GameObject* object = reinterpret_cast<GameObject*>(body1UserData.pointer);
-			if (object)
-			{
-				std::cout << "Collided!" << std::endl;
+				Bird* bird = reinterpret_cast<Bird*>(userData->data);
+				std::cout << bird->GetPosition().x << std::endl;
 			}
 		}
 	}

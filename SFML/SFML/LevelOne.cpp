@@ -151,11 +151,11 @@ void LevelOne::CreateStatics()
 
 void LevelOne::CreateBirds()
 {
-	Birds.emplace_back(new GameObject(*m_World, { 30,566 }));
-	Birds.emplace_back(new GameObject(*m_World, { 70,566 }));
-	Birds.emplace_back(new GameObject(*m_World, { 110,566 }));
-	Birds.emplace_back(new GameObject(*m_World, { 150,566 }));
-	Birds.emplace_back(new GameObject(*m_World, { 190,566 }));
+	Birds.emplace_back(new Bird(*m_World, { 30,566 }));
+	Birds.emplace_back(new Bird(*m_World, { 70,566 }));
+	Birds.emplace_back(new Bird(*m_World, { 110,566 }));
+	Birds.emplace_back(new Bird(*m_World, { 150,566 }));
+	Birds.emplace_back(new Bird(*m_World, { 190,566 }));
 	for (auto& bird : Birds)
 	{
 		bird->SetTexture("Bird.png");

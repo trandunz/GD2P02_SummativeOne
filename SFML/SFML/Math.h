@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <sstream>
+#include <iomanip>
 
 inline float Mag(sf::Vector2f _vector)
 {
@@ -24,6 +26,13 @@ inline void SetOriginCentre(sf::Sprite& _sprite)
 inline void SetOriginCentre(sf::Text& _text)
 {
 	_text.setOrigin({ _text.getLocalBounds().width / 2, _text.getLocalBounds().height / 1.25f });
+}
+
+inline std::string FloatToString(float _float, int _precision = 2)
+{
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(_precision) << _float;
+	return stream.str();
 }
 
 

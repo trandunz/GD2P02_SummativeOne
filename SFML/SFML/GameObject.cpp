@@ -7,7 +7,7 @@ GameObject::GameObject(b2World& _world, sf::Vector2f _startPos)
 	m_Mesh->SetPosition(_startPos);
 	m_b2UserData = UserData();
 	m_b2UserData.identifier = "GameObject";
-	m_b2UserData.data = this;
+	m_b2UserData.data = reinterpret_cast<uintptr_t>(this);
 }
 
 GameObject::~GameObject()

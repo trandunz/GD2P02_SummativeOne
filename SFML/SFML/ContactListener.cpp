@@ -1,11 +1,6 @@
 #include "ContactListener.h"
 #include "Bird.h"
-
-struct UserData
-{
-	std::string identifier;
-	uintptr_t data;
-};
+#include "Pig.h"
 
 void ContactListener::BeginContact(b2Contact* _contact)
 {
@@ -24,17 +19,16 @@ void ContactListener::PreSolve(b2Contact* _contact, const b2Manifold* _oldManifo
 
 void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _impulse)
 {
-	bool strongCollision = false;
-	for (auto& impule : _impulse->normalImpulses)
+	float largestImpulse = 0.0f;
+	for (auto& impulse : _impulse->normalImpulses)
 	{
-		if (impule > 10.0f)
+		if (impulse > 10.0f && impulse > largestImpulse)
 		{
-			strongCollision = true;
-			break;
+			largestImpulse = impulse;
 		}
 	}
 
-	if (strongCollision)
+	if (largestImpulse > 5.0f)
 	{
 		auto& body1UserData = _contact->GetFixtureA()->GetBody()->GetUserData();
 		if (body1UserData.pointer)
@@ -43,7 +37,30 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			if (userData->identifier == "Bird")
 			{
 				Bird* bird = reinterpret_cast<Bird*>(userData->data);
-				std::cout << bird->GetPosition().x << std::endl;
+				std::cout << "Bird Took " + FloatToString(largestImpulse) + " Force" << std::endl;
+			}
+			else if (userData->identifier == "Pig")
+			{
+				Pig* pig = reinterpret_cast<Pig*>(userData->data);
+				std::cout << "Pig Took " + FloatToString(largestImpulse) + " Force" << std::endl;
+				pig->TakeDamage(10.0f);
+			}
+		}
+
+		auto& body2UserData = _contact->GetFixtureB()->GetBody()->GetUserData();
+		if (body2UserData.pointer)
+		{
+			UserData* userData = reinterpret_cast<UserData*>(body2UserData.pointer);
+			if (userData->identifier == "Bird")
+			{
+				Bird* bird = reinterpret_cast<Bird*>(userData->data);
+				std::cout << "Bird Took " + FloatToString(largestImpulse) + " Force" << std::endl;
+			}
+			else if (userData->identifier == "Pig")
+			{
+				Pig* pig = reinterpret_cast<Pig*>(userData->data);
+				std::cout << "Pig Took " + FloatToString(largestImpulse) + " Force" << std::endl;
+				pig->TakeDamage(10.0f);
 			}
 		}
 	}

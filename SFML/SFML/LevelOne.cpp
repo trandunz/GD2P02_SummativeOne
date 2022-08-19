@@ -15,36 +15,11 @@ LevelOne::LevelOne()
 
 LevelOne::~LevelOne()
 {
-	for (auto& object : Statics)
-	{
-		if (object)
-			delete object;
-		object = nullptr;
-	}
-	for (auto& object : Birds)
-	{
-		if (object)
-			delete object;
-		object = nullptr;
-	}
-	for (auto& object : Pigs)
-	{
-		if (object)
-			delete object;
-		object = nullptr;
-	}
-	for (auto& object : Destructables)
-	{
-		if (object)
-			delete object;
-		object = nullptr;
-	}
-	for (auto& object : CollisionLess)
-	{
-		if (object)
-			delete object;
-		object = nullptr;
-	}
+	CleanupVector(Statics);
+	CleanupVector(CollisionLess);
+	CleanupVector(Birds);
+	CleanupVector(Pigs);
+	CleanupVector(Destructables);
 
 	if (m_World)
 		delete m_World;
@@ -93,6 +68,12 @@ void LevelOne::Update()
 	{
 		object->Update();
 	}
+
+	CleanupDestroyedGameObjects(Statics);
+	CleanupDestroyedGameObjects(Destructables);
+	CleanupDestroyedGameObjects(CollisionLess);
+	CleanupDestroyedPigs(Pigs);
+	CleanupDestroyedBirds(Birds);
 }
 
 void LevelOne::Draw()
@@ -171,9 +152,9 @@ void LevelOne::CreateBirds()
 
 void LevelOne::CreatePigs()
 {
-	Pigs.emplace_back(new GameObject(*m_World, { 1000,566 }));
-	Pigs.emplace_back(new GameObject(*m_World, { 1050,566 }));
-	Pigs.emplace_back(new GameObject(*m_World, { 1100,566 }));
+	Pigs.emplace_back(new Pig(*m_World, { 1000,566 }));
+	Pigs.emplace_back(new Pig(*m_World, { 1050,566 }));
+	Pigs.emplace_back(new Pig(*m_World, { 1100,566 }));
 
 	for (auto& pig : Pigs)
 	{

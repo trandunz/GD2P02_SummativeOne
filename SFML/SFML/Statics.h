@@ -3,6 +3,12 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
+struct UserData
+{
+	std::string identifier;
+	uintptr_t data;
+};
+
 class Statics
 {
 public:

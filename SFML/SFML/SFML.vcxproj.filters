@@ -60,6 +60,9 @@
     <ClCompile Include="Bird.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Pig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhysicsBody.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bird.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

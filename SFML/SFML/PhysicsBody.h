@@ -3,12 +3,6 @@
 #include "Statics.h"
 #include "Math.h"
 
-struct UserData
-{
-	std::string identifier;
-	void* data;
-};
-
 class PhysicsBody
 {
 public:

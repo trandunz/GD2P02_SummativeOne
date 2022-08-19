@@ -167,6 +167,7 @@
     <ClCompile Include="Catapult.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Statics.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="LevelOne.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Catapult.h" />
     <ClInclude Include="ContactListener.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Pig.h" />
     <ClInclude Include="Statics.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelLoader.h" />

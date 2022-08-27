@@ -102,7 +102,7 @@ void PhysicsBody::SetupBody()
 	DestroyBody();
 
 	b2BodyDef bodyDef;
-	bodyDef.allowSleep = true;
+	bodyDef.allowSleep = false;
 	bodyDef.type = m_BodyType;
 	bodyDef.bullet = true;
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
@@ -112,6 +112,7 @@ void PhysicsBody::SetupBody()
 	if (polygonShape != nullptr)
 	{
 		polygonShape->SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		m_Shape = polygonShape;
 		polygonShape = nullptr;
 	}
 	else
@@ -120,7 +121,7 @@ void PhysicsBody::SetupBody()
 		if (circleShape != nullptr)
 		{
 			circleShape->m_radius = (m_Size.x / 2) / Statics::Scale;
-			circleShape->m_p.SetZero();
+			m_Shape = circleShape;
 		}
 		circleShape = nullptr;
 	}
@@ -130,6 +131,7 @@ void PhysicsBody::SetupBody()
 	fixtureDef.shape = m_Shape;
 	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);
+	m_Body->SetFixedRotation(false);
 }
 
 void PhysicsBody::SetupBody(UserData& _userData)
@@ -137,7 +139,7 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	DestroyBody();
 
 	b2BodyDef bodyDef;
-	bodyDef.allowSleep = true;
+	bodyDef.allowSleep = false;
 	bodyDef.type = m_BodyType;
 	bodyDef.bullet = true;
 	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(&_userData);
@@ -156,7 +158,6 @@ void PhysicsBody::SetupBody(UserData& _userData)
 		if (circleShape != nullptr)
 		{
 			circleShape->m_radius = (m_Size.x / 2) / Statics::Scale;
-			circleShape->m_p.SetZero();
 		}
 		circleShape = nullptr;
 	}
@@ -166,4 +167,5 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	fixtureDef.shape = m_Shape;
 	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);
+	m_Body->SetFixedRotation(false);
 }

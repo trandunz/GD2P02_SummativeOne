@@ -4,8 +4,8 @@
 Mesh::Mesh(std::string _spriteName, sf::Vector2f _position, sf::Vector2f _scale)
 {
 	SetTexture(_spriteName);
-	m_Sprite.setScale(_scale);
 	SetOriginCentre(m_Sprite);
+	m_Sprite.setScale(_scale);
 	m_Sprite.setPosition(_position);
 }
 
@@ -27,6 +27,11 @@ void Mesh::SetScale(sf::Vector2f _scale)
 void Mesh::SetPosition(sf::Vector2f _position)
 {
 	m_Sprite.setPosition(_position);
+}
+
+void Mesh::SetRotation(float _radians)
+{
+	m_Sprite.setRotation(_radians * 180.f / PI);
 }
 
 sf::FloatRect Mesh::GetLocalBounds()

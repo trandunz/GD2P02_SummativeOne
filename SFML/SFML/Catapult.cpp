@@ -22,7 +22,7 @@ void Catapult::LoadBird(Bird& _bird)
 	m_LoadedBird->DestroyBody();
 	m_FireVector = Statics::RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(Statics::RenderWindow)) - m_FirePosition;
 	
-	sf::Vector2f mousePos = { (float)sf::Mouse::getPosition(Statics::RenderWindow).x, (float)sf::Mouse::getPosition(Statics::RenderWindow).y };
+	 sf::Vector2f mousePos = Statics::RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(Statics::RenderWindow));
 	m_FireVector = mousePos - m_FirePosition;
 
 	if (Mag(m_FireVector) > 100.0f)
@@ -37,7 +37,7 @@ void Catapult::MoveBird()
 	m_TrajectoryLine.clear();
 	if (m_LoadedBird)
 	{
-		sf::Vector2f mousePos = {(float) sf::Mouse::getPosition(Statics::RenderWindow).x, (float)sf::Mouse::getPosition(Statics::RenderWindow).y };
+		sf::Vector2f mousePos = Statics::RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(Statics::RenderWindow));
 		m_FireVector = mousePos - m_FirePosition;
 
 		if (Mag(m_FireVector) > 100.0f)

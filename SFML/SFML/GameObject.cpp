@@ -22,6 +22,18 @@ GameObject::~GameObject()
 	m_Mesh = nullptr;
 }
 
+b2Body* GameObject::GetBody()
+{
+	if (m_PhysicsBody != nullptr)
+	{
+		return m_PhysicsBody->GetBody();
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
 b2Vec2 GameObject::GetBodyPosition()
 {
 	if (m_PhysicsBody != nullptr)
@@ -41,6 +53,14 @@ void GameObject::SetPosition(sf::Vector2f _position)
 
 	if (m_PhysicsBody != nullptr)
 		m_PhysicsBody->SetPosition(_position);
+}
+
+void GameObject::SetRotation(float _degrees)
+{
+	if (m_PhysicsBody != nullptr)
+	{
+		m_PhysicsBody->SetRotation(_degrees);
+	}
 }
 
 void GameObject::SetScale(sf::Vector2f _scale)
@@ -83,6 +103,7 @@ void GameObject::Update()
 	{
 		m_PhysicsBody->Update();
 		m_Mesh->SetPosition(m_PhysicsBody->GetPosition());
+		m_Mesh->SetRotation(m_PhysicsBody->GetRotation());
 	}
 }
 
@@ -93,8 +114,8 @@ void GameObject::CreateBody()
 	(
 		*m_World,
 		m_b2UserData,
-		m_Mesh->GetPosition(), // Size
-		{ m_Mesh->GetGlobalBounds().width,m_Mesh->GetGlobalBounds().height }, // Pos
+		m_Mesh->GetPosition(), // Pos
+		{ m_Mesh->GetGlobalBounds().width,m_Mesh->GetGlobalBounds().height }, // Size
 		m_ShapeType,
 		m_BodyType
 	);

@@ -19,9 +19,14 @@ public:
 
 	void SetPosition(sf::Vector2f _position);
 	sf::Vector2f GetPosition();
+	void SetRotation(float _degrees);
+	float GetRotation();
 	b2Vec2 GetB2Position();
 
 	void SetSize(sf::Vector2f _size);
+
+	b2Body* GetBody();
+	b2World* GetWorld();
 
 private:
 	void DestroyBody();
@@ -33,6 +38,7 @@ private:
 	b2BodyType m_BodyType = b2_staticBody;
 	b2World* m_World = nullptr;
 	sf::Vector2f m_Position{};
+	float m_Rotation{};
 	b2Shape* m_Shape = nullptr;
 	b2Body* m_Body = nullptr;
 };

@@ -1,25 +1,30 @@
 #include "LevelOne.h"
 #include "AudioManager.h"
+#include "JointManager.h"
 
 LevelOne::LevelOne()
 {
 	AudioManager::StopMusic();
 	m_World = new b2World({ 0,10.0f });
 	m_World->SetContactListener(&m_ContactListener);
+	JointManager::GetInstance().SetWorld(*m_World);
 	CreateCollisionLess();
 	CreateStatics();
 	CreateBirds();
 	CreatePigs();
 	CreateDestructables();
+	CreateJoints();
 }
 
 LevelOne::~LevelOne()
 {
+	JointManager::GetInstance().ForceCleanupJoints();
 	CleanupVector(m_Statics);
 	CleanupVector(m_CollisionLess);
 	CleanupVector(m_Birds);
 	CleanupVector(m_Pigs);
 	CleanupVector(m_Destructables);
+	
 
 	if (m_World)
 		delete m_World;
@@ -48,25 +53,25 @@ void LevelOne::Update()
 {
 	m_World->Step(1 / 60.0f, 10, 10);
 
-	for (auto& object : m_Statics)
+	for (auto& staticObject : m_Statics)
 	{
-		object->Update();
+		staticObject->Update();
 	}
-	for (auto& object : m_Birds)
+	for (auto& bird : m_Birds)
 	{
-		object->Update();
+		bird->Update();
 	}
-	for (auto& object : m_Pigs)
+	for (auto& pig : m_Pigs)
 	{
-		object->Update();
+		pig->Update();
 	}
-	for (auto& object : m_Destructables)
+	for (auto& destructable : m_Destructables)
 	{
-		object->Update();
+		destructable->Update();
 	}
-	for (auto& object : m_CollisionLess)
+	for (auto& collisionLess : m_CollisionLess)
 	{
-		object->Update();
+		collisionLess->Update();
 	}
 
 	CleanupDestroyedGameObjects(m_Statics);
@@ -74,6 +79,7 @@ void LevelOne::Update()
 	CleanupDestroyedGameObjects(m_CollisionLess);
 	CleanupDestroyedPigs(m_Pigs);
 	CleanupDestroyedBirds(m_Birds);
+	JointManager::GetInstance().CleanupMarkedJoints();
 }
 
 void LevelOne::Draw()
@@ -153,9 +159,8 @@ void LevelOne::CreateBirds()
 
 void LevelOne::CreatePigs()
 {
-	m_Pigs.emplace_back(new Pig(*m_World, { 1000,566 }));
-	m_Pigs.emplace_back(new Pig(*m_World, { 1050,566 }));
-	m_Pigs.emplace_back(new Pig(*m_World, { 1100,566 }));
+	m_Pigs.emplace_back(new Pig(*m_World, { 950,350 }));
+	m_Pigs.emplace_back(new Pig(*m_World, { 1050,350 }));
 
 	for (auto& pig : m_Pigs)
 	{
@@ -173,7 +178,84 @@ void LevelOne::CreatePigs()
 
 void LevelOne::CreateDestructables()
 {
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1050,566 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1050,500 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1050,500 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1000,400 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(90.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1000, 400 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+}
+
+void LevelOne::CreateJoints()
+{
+	b2DistanceJointDef distanceJoint{};
+	distanceJoint.bodyA = m_Destructables[0]->GetBody();
+	distanceJoint.bodyB = m_Destructables[1]->GetBody();
+	distanceJoint.collideConnected = false;
+	distanceJoint.length = 0.0f;
+	distanceJoint.minLength = 0.0f;
+	distanceJoint.maxLength = 0.0f;
+	
+	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+}
+
+void LevelOne::CleanupDestroyedGameObjects(std::vector<GameObject*>& _vector)
+{
+	auto it = _vector.begin();
+	while (it != _vector.end())
+	{
+		if ((*it)->Destroy)
+		{
+			delete (*it);
+			(*it) = nullptr;
+			it = _vector.erase(it);
+			continue;
+		}
+		it++;
+	}
+}
+
+void LevelOne::CleanupDestroyedPigs(std::vector<Pig*>& _vector)
+{
+	auto it = _vector.begin();
+	while (it != _vector.end())
+	{
+		if ((*it)->Destroy)
+		{
+			delete (*it);
+			(*it) = nullptr;
+			it = _vector.erase(it);
+			continue;
+		}
+		it++;
+	}
+}
+
+void LevelOne::CleanupDestroyedBirds(std::vector<Bird*>& _vector)
+{
+	auto it = _vector.begin();
+	while (it != _vector.end())
+	{
+		if ((*it)->Destroy)
+		{
+			delete (*it);
+			(*it) = nullptr;
+			it = _vector.erase(it);
+			continue;
+		}
+		it++;
+	}
+}
+
+void LevelOne::CleanupDestroyedDestructables(std::vector<Destructable*>& _vector)
+{
+	auto it = _vector.begin();
+	while (it != _vector.end())
+	{
+		if ((*it)->Destroy)
+		{
+			delete (*it);
+			(*it) = nullptr;
+			it = _vector.erase(it);
+			continue;
+		}
+		it++;
+	}
 }

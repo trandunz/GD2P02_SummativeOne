@@ -3,6 +3,8 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
+#define PI 3.141592654
+
 struct UserData
 {
 	std::string identifier;

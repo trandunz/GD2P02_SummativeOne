@@ -1,9 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <box2d/b2_math.h>
 #include <sstream>
 #include <iomanip>
 
 inline float Mag(sf::Vector2f _vector)
+{
+	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
+}
+
+inline float Mag(b2Vec2 _vector)
 {
 	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
 }

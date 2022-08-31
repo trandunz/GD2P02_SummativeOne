@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Audio.hpp>
 #include "ContactListener.h"
-#include "Statics.h"
+#include "Utility.h"
 #include "Catapult.h"
 #include "Level.h"
 #include "Pig.h"
@@ -23,9 +23,8 @@ private:
 	void CreateBirds();
 	void CreatePigs();
 	void CreateDestructables();
+	void CreateJoints();
 
-	template <typename T>
-	void CleanupVector(std::vector <T*>& _vector);
 	void CleanupDestroyedGameObjects(std::vector <GameObject*>& _vector);
 	void CleanupDestroyedPigs(std::vector <Pig*>& _vector);
 	void CleanupDestroyedBirds(std::vector <Bird*>& _vector);
@@ -41,79 +40,3 @@ private:
 	std::vector<Pig*> m_Pigs{};
 	std::vector<Destructable*> m_Destructables{};
 };
-
-inline void LevelOne::CleanupDestroyedGameObjects(std::vector<GameObject*>& _vector)
-{
-	auto it = _vector.begin();
-	while (it != _vector.end())
-	{
-		if ((*it)->Destroy)
-		{
-			delete (*it);
-			(*it) = nullptr;
-			it = _vector.erase(it);
-			continue;
-		}
-		it++;
-	}
-}
-
-inline void LevelOne::CleanupDestroyedPigs(std::vector<Pig*>& _vector)
-{
-	auto it = _vector.begin();
-	while (it != _vector.end())
-	{
-		if ((*it)->Destroy)
-		{
-			delete (*it);
-			(*it) = nullptr;
-			it = _vector.erase(it);
-			continue;
-		}
-		it++;
-	}
-}
-
-inline void LevelOne::CleanupDestroyedBirds(std::vector<Bird*>& _vector)
-{
-	auto it = _vector.begin();
-	while (it != _vector.end())
-	{
-		if ((*it)->Destroy)
-		{
-			delete (*it);
-			(*it) = nullptr;
-			it = _vector.erase(it);
-			continue;
-		}
-		it++;
-	}
-}
-
-inline void LevelOne::CleanupDestroyedDestructables(std::vector<Destructable*>& _vector)
-{
-	auto it = _vector.begin();
-	while (it != _vector.end())
-	{
-		if ((*it)->Destroy)
-		{
-			delete (*it);
-			(*it) = nullptr;
-			it = _vector.erase(it);
-			continue;
-		}
-		it++;
-	}
-}
-
-template<typename T>
-inline void LevelOne::CleanupVector(std::vector<T*>& _vector)
-{
-	auto it = _vector.begin();
-	while (it != _vector.end())
-	{
-		delete (*it);
-		(*it) = nullptr;
-		it = _vector.erase(it);
-	}
-}

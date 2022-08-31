@@ -39,6 +39,7 @@ PhysicsBody::~PhysicsBody()
 void PhysicsBody::Update()
 {
 	m_Position =  { Statics::Scale * m_Body->GetPosition().x, Statics::Scale * m_Body->GetPosition().y };
+	m_Rotation = m_Body->GetTransform().q.GetAngle();
 }
 
 void PhysicsBody::ApplyImpulse(sf::Vector2f _impulse)
@@ -73,6 +74,19 @@ sf::Vector2f PhysicsBody::GetPosition()
 	return m_Position;
 }
 
+void PhysicsBody::SetRotation(float _degrees)
+{
+	m_Rotation = _degrees * (PI / 180.f);
+
+	if (m_Body)
+		m_Body->SetTransform({ m_Position.x / Statics::Scale, m_Position.y / Statics::Scale }, m_Rotation);
+}
+
+float PhysicsBody::GetRotation()
+{
+	return m_Rotation;
+}
+
 b2Vec2 PhysicsBody::GetB2Position()
 {
 	if (m_Body != nullptr)
@@ -86,6 +100,16 @@ void PhysicsBody::SetSize(sf::Vector2f _size)
 {
 	m_Size = _size;
 	SetupBody();
+}
+
+b2Body* PhysicsBody::GetBody()
+{
+	return m_Body;
+}
+
+b2World* PhysicsBody::GetWorld()
+{
+	return m_World;
 }
 
 void PhysicsBody::DestroyBody()
@@ -108,22 +132,22 @@ void PhysicsBody::SetupBody()
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
 	m_Body = m_World->CreateBody(&bodyDef);
 
-	b2PolygonShape* polygonShape = dynamic_cast<b2PolygonShape*>(m_Shape);
-	if (polygonShape != nullptr)
+	b2CircleShape* circleShape = dynamic_cast<b2CircleShape*>(m_Shape);
+	if (circleShape != nullptr)
 	{
-		polygonShape->SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
-		m_Shape = polygonShape;
-		polygonShape = nullptr;
+		circleShape->m_radius = (m_Size.x / 2) / Statics::Scale;
+		m_Shape = circleShape;
+		circleShape = nullptr;
 	}
 	else
 	{
-		b2CircleShape* circleShape = dynamic_cast<b2CircleShape*>(m_Shape);
-		if (circleShape != nullptr)
+		b2PolygonShape* polygonShape = dynamic_cast<b2PolygonShape*>(m_Shape);
+		if (polygonShape != nullptr)
 		{
-			circleShape->m_radius = (m_Size.x / 2) / Statics::Scale;
-			m_Shape = circleShape;
+			polygonShape->SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+			m_Shape = polygonShape;
+			polygonShape = nullptr;
 		}
-		circleShape = nullptr;
 	}
 
 	b2FixtureDef fixtureDef;

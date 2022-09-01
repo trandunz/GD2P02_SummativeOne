@@ -1,28 +1,22 @@
 #include "PhysicsBody.h"
 
-PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, b2Shape* _shape, b2BodyType _bodyType, float _restitution, float _density)
+PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, BODYSHAPE _shape, b2BodyType _bodyType, float _restitution, float _density)
 {
 	m_World = &_world;
 	m_Position = _startPos;
 	m_Size = _size;
 	m_BodyType = _bodyType;
-	if (_shape == nullptr)
-		m_Shape = new b2PolygonShape();
-	else
-		m_Shape = _shape;
+	m_BodyShape = _shape;
 	SetupBody();
 }
 
-PhysicsBody::PhysicsBody(b2World& _world, UserData& _userData, sf::Vector2f _startPos, sf::Vector2f _size, b2Shape* _shape, b2BodyType _bodyType, float _restitution, float _density)
+PhysicsBody::PhysicsBody(b2World& _world, UserData& _userData, sf::Vector2f _startPos, sf::Vector2f _size, BODYSHAPE _shape, b2BodyType _bodyType, float _restitution, float _density)
 {
 	m_World = &_world;
 	m_Position = _startPos;
 	m_Size = _size;
 	m_BodyType = _bodyType;
-	if (_shape == nullptr)
-		m_Shape = new b2PolygonShape();
-	else
-		m_Shape = _shape;
+	m_BodyShape = _shape;
 	SetupBody(_userData);
 }
 
@@ -30,10 +24,6 @@ PhysicsBody::~PhysicsBody()
 {
 	DestroyBody();
 	m_World = nullptr;
-
-	if (m_Shape)
-		delete m_Shape;
-	m_Shape = nullptr;
 }
 
 void PhysicsBody::Update()
@@ -47,12 +37,9 @@ void PhysicsBody::ApplyImpulse(sf::Vector2f _impulse)
 	m_Body->SetLinearVelocity(m_Body->GetLinearVelocity() + b2Vec2{ _impulse.x, _impulse.y });
 }
 
-void PhysicsBody::SetShape(b2Shape* _shape)
+void PhysicsBody::SetShape(BODYSHAPE _shape)
 {
-	if (m_Shape)
-		delete m_Shape;
-	m_Shape = nullptr;
-	m_Shape = _shape;
+	m_BodyShape = _shape;
 }
 
 void PhysicsBody::SetBodyType(b2BodyType _bodyType)
@@ -128,34 +115,48 @@ void PhysicsBody::SetupBody()
 	b2BodyDef bodyDef;
 	bodyDef.allowSleep = false;
 	bodyDef.type = m_BodyType;
-	bodyDef.bullet = true;
+	bodyDef.bullet = false;
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
 	m_Body = m_World->CreateBody(&bodyDef);
 
-	b2CircleShape* circleShape = dynamic_cast<b2CircleShape*>(m_Shape);
-	if (circleShape != nullptr)
+	b2Shape* shape{ nullptr };
+	switch (m_BodyShape)
 	{
-		circleShape->m_radius = (m_Size.x / 2) / Statics::Scale;
-		m_Shape = circleShape;
-		circleShape = nullptr;
+	case BODYSHAPE::POLYGON:
+	{
+		b2PolygonShape polygonShape;
+		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		shape = new b2PolygonShape(polygonShape);
+		break;
 	}
-	else
+	case BODYSHAPE::CIRCLE:
 	{
-		b2PolygonShape* polygonShape = dynamic_cast<b2PolygonShape*>(m_Shape);
-		if (polygonShape != nullptr)
-		{
-			polygonShape->SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
-			m_Shape = polygonShape;
-			polygonShape = nullptr;
-		}
+		b2CircleShape circleShape;
+		circleShape.m_radius = (m_Size.x / 2) / Statics::Scale;
+		shape = new b2CircleShape(circleShape);
+		break;
+	}
+	default:
+	{
+		b2PolygonShape polygonShape;
+		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		shape = new b2PolygonShape(polygonShape);
+		break;
+	}
 	}
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1.0f;
-	fixtureDef.shape = m_Shape;
+	fixtureDef.shape = &*shape;
 	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);
 	m_Body->SetFixedRotation(false);
+
+	if (shape != nullptr)
+	{
+		delete shape;
+		shape = nullptr;
+	}
 }
 
 void PhysicsBody::SetupBody(UserData& _userData)
@@ -165,31 +166,47 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	b2BodyDef bodyDef;
 	bodyDef.allowSleep = false;
 	bodyDef.type = m_BodyType;
-	bodyDef.bullet = true;
+	bodyDef.bullet = false;
 	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(&_userData);
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
 	m_Body = m_World->CreateBody(&bodyDef);
-
-	b2PolygonShape* polygonShape = dynamic_cast<b2PolygonShape*>(m_Shape);
-	if (polygonShape != nullptr)
+	
+	b2Shape* shape{ nullptr };
+	switch (m_BodyShape)
 	{
-		polygonShape->SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
-		polygonShape = nullptr;
+	case BODYSHAPE::POLYGON:
+	{
+		b2PolygonShape polygonShape;
+		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		shape = new b2PolygonShape(polygonShape);
+		break;
 	}
-	else
+	case BODYSHAPE::CIRCLE:
 	{
-		b2CircleShape* circleShape = dynamic_cast<b2CircleShape*>(m_Shape);
-		if (circleShape != nullptr)
-		{
-			circleShape->m_radius = (m_Size.x / 2) / Statics::Scale;
-		}
-		circleShape = nullptr;
+		b2CircleShape circleShape;
+		circleShape.m_radius = (m_Size.x / 2) / Statics::Scale;
+		shape = new b2CircleShape(circleShape);
+		break;
+	}
+	default:
+	{
+		b2PolygonShape polygonShape;
+		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		shape = new b2PolygonShape(polygonShape);
+		break;
+	}
 	}
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1.0f;
-	fixtureDef.shape = m_Shape;
+	fixtureDef.shape = &*shape;
 	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);
 	m_Body->SetFixedRotation(false);
+
+	if (shape != nullptr)
+	{
+		delete shape;
+		shape = nullptr;
+	}
 }

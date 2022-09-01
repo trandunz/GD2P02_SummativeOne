@@ -4,9 +4,11 @@
 Mesh::Mesh(std::string _spriteName, sf::Vector2f _position, sf::Vector2f _scale)
 {
 	SetTexture(_spriteName);
-	SetOriginCentre(m_Sprite);
+	
 	m_Sprite.setScale(_scale);
+	SetOriginCentre(m_Sprite);
 	m_Sprite.setPosition(_position);
+
 }
 
 Mesh::~Mesh()

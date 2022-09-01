@@ -148,12 +148,8 @@ void LevelOne::CreateBirds()
 	{
 		bird->SetTexture("Bird.png");
 		bird->SetScale({ 0.25f,0.25f });
-		bird->SetShapeType(new b2CircleShape());
-	}
-
-	for (auto& object : m_Birds)
-	{
-		object->SetBodyType(b2_dynamicBody);
+		bird->SetShapeType(BODYSHAPE::CIRCLE);
+		bird->SetBodyType(b2_dynamicBody);
 	}
 }
 
@@ -166,7 +162,7 @@ void LevelOne::CreatePigs()
 	{
 		pig->SetTexture("Bird.png");
 		pig->SetScale({ 0.25f,0.25f });
-		pig->SetShapeType(new b2CircleShape());
+		pig->SetShapeType(BODYSHAPE::CIRCLE);
 	}
 
 	for (auto& pig : m_Pigs)

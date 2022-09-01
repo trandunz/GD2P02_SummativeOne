@@ -26,7 +26,7 @@ inline sf::Vector2f Normalize(sf::Vector2f _vector)
 
 inline void SetOriginCentre(sf::Sprite& _sprite)
 {
-	_sprite.setOrigin({ _sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2 });
+	_sprite.setOrigin({ _sprite.getGlobalBounds().width / 2, _sprite.getGlobalBounds().height / 2 });
 }
 
 inline void SetOriginCentre(sf::Text& _text)

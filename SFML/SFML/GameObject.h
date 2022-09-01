@@ -16,7 +16,7 @@ public:
 	void SetScale(sf::Vector2f _scale);;
 
 	void SetTexture(std::string _location);
-	void SetShapeType(b2Shape* _shapeType);
+	void SetShapeType(BODYSHAPE _shapeType);
 	void SetBodyType(b2BodyType _bodyType);
 
 	virtual void Start();
@@ -32,7 +32,7 @@ protected:
 	
 	UserData m_b2UserData;
 	b2World* m_World = nullptr;
-	b2Shape* m_ShapeType = nullptr;
+	BODYSHAPE m_BodyShape = BODYSHAPE::POLYGON;
 	b2BodyType m_BodyType = b2_staticBody;
 	PhysicsBody* m_PhysicsBody = nullptr;
 	Mesh* m_Mesh = nullptr;

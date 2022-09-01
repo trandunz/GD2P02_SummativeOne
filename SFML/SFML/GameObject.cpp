@@ -15,8 +15,6 @@ GameObject::~GameObject()
 	DestroyBody();
 	m_World = nullptr;
 
-	m_ShapeType = nullptr;
-
 	if (m_Mesh)
 		delete m_Mesh;
 	m_Mesh = nullptr;
@@ -77,12 +75,9 @@ void GameObject::SetTexture(std::string _fileName)
 	}
 }
 
-void GameObject::SetShapeType(b2Shape* _shapeType)
+void GameObject::SetShapeType(BODYSHAPE _shapeType)
 {
-	if (m_ShapeType)
-		delete m_ShapeType;
-	m_ShapeType = nullptr;
-	m_ShapeType = _shapeType;
+	m_BodyShape = _shapeType;
 }
 
 void GameObject::SetBodyType(b2BodyType _bodyType)
@@ -116,7 +111,7 @@ void GameObject::CreateBody()
 		m_b2UserData,
 		m_Mesh->GetPosition(), // Pos
 		{ m_Mesh->GetGlobalBounds().width,m_Mesh->GetGlobalBounds().height }, // Size
-		m_ShapeType,
+		m_BodyShape,
 		m_BodyType
 	);
 }
@@ -127,7 +122,6 @@ void GameObject::DestroyBody()
 	{
 		delete m_PhysicsBody;
 		m_PhysicsBody = nullptr;
-		m_ShapeType = nullptr;
 	}
 }
 

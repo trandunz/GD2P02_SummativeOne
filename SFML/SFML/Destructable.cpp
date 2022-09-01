@@ -78,31 +78,26 @@ void Destructable::InitBasedOnType()
 		case SHAPE::PLANK:
 		{
 			SetTexture(subFolder + "Plank (1).png");
-			SetShapeType(new b2PolygonShape);
 			break;
 		}
 		case SHAPE::SQUARE:
 		{
 			SetTexture(subFolder + "Square (1).png");
-			SetShapeType(new b2PolygonShape);
 			break;
 		}
 		case SHAPE::TRIANGLE:
 		{
 			SetTexture(subFolder + "Triangle (1).png");
-			SetShapeType(new b2PolygonShape);
 			break;
 		}
 		case SHAPE::WIDE:
 		{
 			SetTexture(subFolder + "WideBlock (1).png");
-			SetShapeType(new b2PolygonShape);
 			break;
 		}
 		case SHAPE::WHEEL:
 		{
 			SetTexture(subFolder + "BigWheel (1).png");
-			SetShapeType(new b2CircleShape);
 			break;
 		}
 		default:

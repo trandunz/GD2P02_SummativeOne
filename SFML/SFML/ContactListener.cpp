@@ -33,15 +33,15 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 		auto& body1UserData = _contact->GetFixtureA()->GetBody()->GetUserData();
 		if (body1UserData.pointer)
 		{
-			UserData* userData = reinterpret_cast<UserData*>(body1UserData.pointer);
+			UserData* userData = (UserData*)(body1UserData.pointer);
 			if (userData->identifier == "Bird")
 			{
-				Bird* bird = reinterpret_cast<Bird*>(userData->data);
+				Bird* bird = (Bird*)(userData->data);
 				std::cout << "Bird Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 			}
 			else if (userData->identifier == "Pig")
 			{
-				Pig* pig = reinterpret_cast<Pig*>(userData->data);
+				Pig* pig = (Pig*)(userData->data);
 				std::cout << "Pig Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 				pig->TakeDamage(10.0f);
 			}
@@ -50,15 +50,15 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 		auto& body2UserData = _contact->GetFixtureB()->GetBody()->GetUserData();
 		if (body2UserData.pointer)
 		{
-			UserData* userData = reinterpret_cast<UserData*>(body2UserData.pointer);
+			UserData* userData = (UserData*)(body2UserData.pointer);
 			if (userData->identifier == "Bird")
 			{
-				Bird* bird = reinterpret_cast<Bird*>(userData->data);
+				Bird* bird = (Bird*)(userData->data);
 				std::cout << "Bird Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 			}
 			else if (userData->identifier == "Pig")
 			{
-				Pig* pig = reinterpret_cast<Pig*>(userData->data);
+				Pig* pig = (Pig*)(userData->data);
 				std::cout << "Pig Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 				pig->TakeDamage(10.0f);
 			}

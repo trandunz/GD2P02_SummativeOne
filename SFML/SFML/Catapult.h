@@ -1,7 +1,7 @@
 #pragma once
 #include "Bird.h"
 
-class Catapult : public sf::Drawable
+class Catapult
 {
 public:
 	Catapult(sf::Vector2f _position);
@@ -11,16 +11,17 @@ public:
 	void MoveBird();
 	void ReleaseBird();
 
+	void DrawFront();
+	void DrawBack();
 private:
-	void SetTexture(std::string _fileName);
+	void SetTexture(sf::Sprite& _sprite, std::string _fileName);
 	sf::Vector2f GetTrajectoryPoint(float _predictionTime);
-
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	float m_LaunchStrength = 0.2f;
 
 	Bird* m_LoadedBird = nullptr;
-	sf::Sprite m_Mesh;
+	sf::Sprite m_FrontMesh;
+	sf::Sprite m_BackMesh;
 	sf::VertexArray m_TrajectoryLine;
 
 	sf::Vector2f m_FirePosition;

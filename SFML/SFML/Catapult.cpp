@@ -5,10 +5,13 @@ Catapult::Catapult(sf::Vector2f _position)
 {
 	m_TrajectoryLine.setPrimitiveType(sf::Lines);
 
-	SetTexture("Slingshot.png");
-	m_Mesh.setPosition(_position);
-	m_Mesh.setScale({ 0.12f,0.12f });
-	m_FirePosition = { m_Mesh.getPosition().x, m_Mesh.getPosition().y - m_Mesh.getGlobalBounds().height/2 };
+	SetTexture(m_BackMesh, "Slingshot_Back.png");
+	m_BackMesh.setPosition(_position);
+	m_BackMesh.setScale({ 0.12f,0.12f });
+	SetTexture(m_FrontMesh, "Slingshot_Front.png");
+	m_FrontMesh.setPosition(_position);
+	m_FrontMesh.setScale({ 0.12f,0.12f });
+	m_FirePosition = { m_FrontMesh.getPosition().x, m_FrontMesh.getPosition().y - m_FrontMesh.getGlobalBounds().height/2 };
 }
 
 Catapult::~Catapult()
@@ -72,10 +75,22 @@ void Catapult::ReleaseBird()
 	m_LoadedBird = nullptr;
 }
 
-void Catapult::SetTexture(std::string _fileName)
+void Catapult::DrawFront()
 {
-	m_Mesh.setTexture(TextureLoader::LoadTexture(_fileName), true);
-	SetOriginCentre(m_Mesh);
+	Statics::RenderWindow.draw(m_FrontMesh);
+	
+}
+
+void Catapult::DrawBack()
+{
+	Statics::RenderWindow.draw(m_BackMesh);
+	Statics::RenderWindow.draw(m_TrajectoryLine);
+}
+
+void Catapult::SetTexture(sf::Sprite& _sprite, std::string _fileName)
+{
+	_sprite.setTexture(TextureLoader::LoadTexture(_fileName), true);
+	SetOriginCentre(_sprite);
 }
 
 sf::Vector2f Catapult::GetTrajectoryPoint(float _predictionTime)
@@ -91,10 +106,4 @@ sf::Vector2f Catapult::GetTrajectoryPoint(float _predictionTime)
 		return  { Prediction .x * Statics::Scale, Prediction .y * Statics::Scale };
 	}
 	return {};
-}
-
-void Catapult::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(m_Mesh);
-	target.draw(m_TrajectoryLine);
 }

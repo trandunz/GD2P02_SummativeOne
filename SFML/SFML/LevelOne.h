@@ -33,6 +33,8 @@ private:
 	ContactListener m_ContactListener;
 	Catapult m_Catapult{ { 225.0f, 520.0f } };
 
+	int m_NextBirdIndex{ 0 };
+
 	std::vector<GameObject*> m_CollisionLess{};
 	std::vector<GameObject*> m_Statics{};
 	std::vector<Bird*> m_Birds{};

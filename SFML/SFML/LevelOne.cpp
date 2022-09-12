@@ -34,14 +34,15 @@ void LevelOne::PollEvents()
 {
 	if (Statics::EventHandler.type == sf::Event::MouseButtonPressed)
 	{
-		m_Catapult.LoadBird(*m_Birds.back());
+		if (m_NextBirdIndex < m_Birds.size())
+		{
+			m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
+		}
 	}
-
 	if (Statics::EventHandler.type == sf::Event::MouseButtonReleased)
 	{
 		m_Catapult.ReleaseBird();
 	}
-
 	if (Statics::EventHandler.type == sf::Event::MouseMoved)
 	{
 		m_Catapult.MoveBird();
@@ -91,6 +92,8 @@ void LevelOne::Draw()
 	{
 		Statics::RenderWindow.draw(*object);
 	}
+
+	m_Catapult.DrawBack();
 	for (auto& object : m_Destructables)
 	{
 		Statics::RenderWindow.draw(*object);
@@ -103,8 +106,7 @@ void LevelOne::Draw()
 	{
 		Statics::RenderWindow.draw(*object);
 	}
-
-	Statics::RenderWindow.draw(m_Catapult);
+	m_Catapult.DrawFront();
 }
 
 void LevelOne::CreateCollisionLess()

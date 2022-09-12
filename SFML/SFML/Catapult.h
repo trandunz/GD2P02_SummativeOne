@@ -13,6 +13,8 @@ public:
 
 	void DrawFront();
 	void DrawBack();
+
+	bool IsLoaded();
 private:
 	void SetTexture(sf::Sprite& _sprite, std::string _fileName);
 	sf::Vector2f GetTrajectoryPoint(float _predictionTime);

@@ -35,17 +35,19 @@ void LevelOne::PollEvents()
 	if (Statics::EventHandler.type == sf::Event::MouseButtonPressed)
 	{
 		if (m_NextBirdIndex < m_Birds.size())
-		{
 			m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
-		}
-	}
-	if (Statics::EventHandler.type == sf::Event::MouseButtonReleased)
-	{
-		m_Catapult.ReleaseBird();
 	}
 	if (Statics::EventHandler.type == sf::Event::MouseMoved)
 	{
 		m_Catapult.MoveBird();
+	}
+	if (Statics::EventHandler.type == sf::Event::MouseButtonReleased)
+	{
+		if (m_Catapult.IsLoaded())
+			for (int i = m_NextBirdIndex; i < m_Birds.size(); i++)
+				m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
+
+		m_Catapult.ReleaseBird();
 	}
 }
 
@@ -136,11 +138,11 @@ void LevelOne::CreateStatics()
 
 void LevelOne::CreateBirds()
 {
-	m_Birds.emplace_back(new Bird(*m_World, { 30,566 }));
-	m_Birds.emplace_back(new Bird(*m_World, { 70,566 }));
-	m_Birds.emplace_back(new Bird(*m_World, { 110,566 }));
-	m_Birds.emplace_back(new Bird(*m_World, { 150,566 }));
 	m_Birds.emplace_back(new Bird(*m_World, { 190,566 }));
+	m_Birds.emplace_back(new Bird(*m_World, { 150,566 }));
+	m_Birds.emplace_back(new Bird(*m_World, { 110,566 }));
+	m_Birds.emplace_back(new Bird(*m_World, { 70,566 }));
+	m_Birds.emplace_back(new Bird(*m_World, { 30,566 }));
 
 	for (auto& bird : m_Birds)
 	{

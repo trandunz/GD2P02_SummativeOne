@@ -87,6 +87,11 @@ void Catapult::DrawBack()
 	Statics::RenderWindow.draw(m_TrajectoryLine);
 }
 
+bool Catapult::IsLoaded()
+{
+	return m_LoadedBird;
+}
+
 void Catapult::SetTexture(sf::Sprite& _sprite, std::string _fileName)
 {
 	_sprite.setTexture(TextureLoader::LoadTexture(_fileName), true);

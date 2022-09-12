@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <vector>
+#include <queue>
 
 #define PI 3.141592654
 

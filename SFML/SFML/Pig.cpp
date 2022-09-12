@@ -34,7 +34,9 @@ void Pig::TakeDamage(float _amount)
 	if (m_DamageTimer <= 0.0f)
 	{
 		m_DamageTimer = m_DamageInterval;
+
 		m_CurrentHealth -= _amount;
+
 		if (m_CurrentHealth < 0.0f)
 			m_CurrentHealth = 0.0f;
 	}

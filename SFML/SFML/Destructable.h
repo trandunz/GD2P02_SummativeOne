@@ -23,6 +23,15 @@ public:
 		STONE,
 		ICE
 	};
+	enum class DAMAGELEVEL
+	{
+		UNASSIGNED = 0,
+
+		FRESH,
+		TIER1,
+		TIER2,
+		TIER3
+	};
 
 	Destructable(b2World& _world, sf::Vector2f _startPos, SHAPE _shape = SHAPE::UNASSIGNED, TYPE _type = TYPE::UNASSIGNED);
 	~Destructable();
@@ -33,7 +42,9 @@ public:
 	void TakeDamage(float _amount);
 private:
 	void InitBasedOnType();
+	void UpdateDamageLevelFromHealth();
 
+	DAMAGELEVEL m_DamageLevel;
 	TYPE m_Type;
 	SHAPE m_Shape;
 	float m_DamageTimer = 0.0f;

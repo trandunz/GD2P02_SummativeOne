@@ -1,6 +1,7 @@
 #include "ContactListener.h"
 #include "Bird.h"
 #include "Pig.h"
+#include "Destructable.h"
 
 void ContactListener::BeginContact(b2Contact* _contact)
 {
@@ -28,7 +29,7 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 		}
 	}
 
-	if (largestImpulse > 5.0f)
+	if (largestImpulse > 10.0f)
 	{
 		auto& body1UserData = _contact->GetFixtureA()->GetBody()->GetUserData();
 		if (body1UserData.pointer)
@@ -37,13 +38,16 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			if (userData->identifier == "Bird")
 			{
 				Bird* bird = (Bird*)(userData->data);
-				std::cout << "Bird Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 			}
 			else if (userData->identifier == "Pig")
 			{
 				Pig* pig = (Pig*)(userData->data);
-				std::cout << "Pig Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 				pig->TakeDamage(10.0f);
+			}
+			else if (userData->identifier == "Destructable")
+			{
+				Destructable* destructable = (Destructable*)(userData->data);
+				destructable->TakeDamage(3.0f);
 			}
 		}
 
@@ -54,13 +58,16 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			if (userData->identifier == "Bird")
 			{
 				Bird* bird = (Bird*)(userData->data);
-				std::cout << "Bird Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 			}
 			else if (userData->identifier == "Pig")
 			{
 				Pig* pig = (Pig*)(userData->data);
-				std::cout << "Pig Took " + FloatToString(largestImpulse) + " Force" << std::endl;
 				pig->TakeDamage(10.0f);
+			}
+			else if (userData->identifier == "Destructable")
+			{
+				Destructable* destructable = (Destructable*)(userData->data);
+				destructable->TakeDamage(3.0f);
 			}
 		}
 	}

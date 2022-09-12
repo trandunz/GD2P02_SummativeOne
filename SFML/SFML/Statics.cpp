@@ -7,7 +7,7 @@ sf::Clock Statics::Time{};
 float Statics::DeltaTime{};
 float Statics::LastTime{};
 float Statics::UnscaledDeltaTime{};
-float Statics::TimeScale{};
+float Statics::TimeScale{1.0f};
 
 float Statics::Scale = 30.0f;
 

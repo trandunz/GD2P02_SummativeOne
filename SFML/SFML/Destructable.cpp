@@ -39,8 +39,12 @@ void Destructable::TakeDamage(float _amount)
 	{
 		m_DamageTimer = m_DamageInterval;
 		m_CurrentHealth -= _amount;
+
 		if (m_CurrentHealth < 0.0f)
 			m_CurrentHealth = 0.0f;
+
+		UpdateDamageLevelFromHealth();
+		InitBasedOnType();
 	}
 }
 
@@ -71,37 +75,85 @@ void Destructable::InitBasedOnType()
 		break;
 	}
 
+	std::string shape = "";
+	switch (m_Shape)
+	{
+	case SHAPE::PLANK:
+	{
+		shape = "Plank (";
+		break;
+	}
+	case SHAPE::SQUARE:
+	{
+		shape = "Square (";
+		break;
+	}
+	case SHAPE::TRIANGLE:
+	{
+		shape = "Triangle (";
+		break;
+	}
+	case SHAPE::WIDE:
+	{
+		shape = "WideBlock (";
+		break;
+	}
+	case SHAPE::WHEEL:
+	{
+		shape = "BigWheel (";
+		break;
+	}
+	default:
+		break;
+	}
+
 	if (m_Mesh)
 	{
-		switch (m_Shape)
+		switch (m_DamageLevel)
 		{
-		case SHAPE::PLANK:
+		case DAMAGELEVEL::FRESH:
 		{
-			SetTexture(subFolder + "Plank (1).png");
+			SetTexture(subFolder + shape + "1).png");
 			break;
 		}
-		case SHAPE::SQUARE:
+		case DAMAGELEVEL::TIER1:
 		{
-			SetTexture(subFolder + "Square (1).png");
+			SetTexture(subFolder + shape + "2).png");
 			break;
 		}
-		case SHAPE::TRIANGLE:
+		case DAMAGELEVEL::TIER2:
 		{
-			SetTexture(subFolder + "Triangle (1).png");
+			SetTexture(subFolder + shape + "3).png");
 			break;
 		}
-		case SHAPE::WIDE:
+		case DAMAGELEVEL::TIER3:
 		{
-			SetTexture(subFolder + "WideBlock (1).png");
-			break;
-		}
-		case SHAPE::WHEEL:
-		{
-			SetTexture(subFolder + "BigWheel (1).png");
+			SetTexture(subFolder + shape + "4).png");
 			break;
 		}
 		default:
 			break;
 		}
+	}
+}
+
+void Destructable::UpdateDamageLevelFromHealth()
+{
+	float damageIncrement = m_MaxHealth / 4.0f;
+	if (m_CurrentHealth <= damageIncrement)
+	{
+		m_DamageLevel = DAMAGELEVEL::TIER3;
+	}
+	else if (m_CurrentHealth <= damageIncrement * 2)
+	{
+		m_DamageLevel = DAMAGELEVEL::TIER2;
+	}
+	else if (m_CurrentHealth <= damageIncrement * 3)
+	{
+		m_DamageLevel = DAMAGELEVEL::TIER1;
+	}
+	else
+	{
+		m_DamageLevel = DAMAGELEVEL::FRESH;
 	}
 }

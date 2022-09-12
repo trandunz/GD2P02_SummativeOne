@@ -13,39 +13,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\SceneManagement">
+      <UniqueIdentifier>{65d83a45-df0a-4aa2-a3e8-9ad6c2bd69b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Statics">
+      <UniqueIdentifier>{a06fe90e-7e73-45af-8d24-e891fd000472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{d236d40c-d23f-4676-9b28-0da4d27697f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\UI">
+      <UniqueIdentifier>{333891f8-a0f6-4115-b304-f19179f22a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Physics">
+      <UniqueIdentifier>{f84979d3-2307-4412-aff3-f005de39263c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Rendering">
+      <UniqueIdentifier>{3f5b0476-6144-4cc3-99d4-43b47d79a2a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Prefabs">
+      <UniqueIdentifier>{62b0638e-7576-4c69-bbb1-7e3b313b79e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{5b4c3857-16e8-4006-822d-17cc9c47ac5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\UI">
+      <UniqueIdentifier>{84d7804d-3f9f-4976-979d-433bc9d29413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Rendering">
+      <UniqueIdentifier>{7c6b9d80-50a3-44cd-b589-9bfbe6fa5aa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Physics">
+      <UniqueIdentifier>{41a9e267-3e38-4819-8576-0a960bd6ef82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Prefabs">
+      <UniqueIdentifier>{659584fe-8679-42e8-8f92-87d72cef95d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Statics">
+      <UniqueIdentifier>{c7c9cce3-4a8a-4946-86a7-0bacbcfeb1af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManagement">
+      <UniqueIdentifier>{50afb1df-3d3b-4b9a-8eec-402288b7ad53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Statics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Catapult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelOne.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureLoader.cpp">
@@ -57,56 +69,53 @@
     <ClCompile Include="ContactListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bird.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Destructable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DistanceJoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="JointManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bird.cpp">
+      <Filter>Source Files\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Catapult.cpp">
+      <Filter>Source Files\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Destructable.cpp">
+      <Filter>Source Files\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="DistanceJoint.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBody.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Pig.cpp">
+      <Filter>Source Files\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source Files\Statics</Filter>
+    </ClCompile>
+    <ClCompile Include="Statics.cpp">
+      <Filter>Source Files\Statics</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Source Files\SceneManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelOne.cpp">
+      <Filter>Source Files\SceneManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\SceneManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PhysicsBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Statics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Level.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Catapult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelOne.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,23 +125,56 @@
     <ClInclude Include="ContactListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bird.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Destructable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DistanceJoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="JointManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Header Files\SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Header Files\SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelOne.h">
+      <Filter>Header Files\SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Statics.h">
+      <Filter>Header Files\Statics</Filter>
+    </ClInclude>
     <ClInclude Include="Utility.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Statics</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Header Files\Statics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsBody.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Bird.h">
+      <Filter>Header Files\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Catapult.h">
+      <Filter>Header Files\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Destructable.h">
+      <Filter>Header Files\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="DistanceJoint.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Pig.h">
+      <Filter>Header Files\Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,4 @@
 #pragma once
-#include <SFML/Audio.hpp>
 #include "ContactListener.h"
 #include "Utility.h"
 #include "Catapult.h"

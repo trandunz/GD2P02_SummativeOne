@@ -15,6 +15,7 @@ public:
 	inline sf::Vector2f GetPosition() {return m_Sprite.getPosition();}
 	sf::FloatRect GetLocalBounds();
 	sf::FloatRect GetGlobalBounds();
+	sf::Vector2f GetSize();
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

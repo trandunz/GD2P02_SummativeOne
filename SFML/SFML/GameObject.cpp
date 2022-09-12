@@ -56,9 +56,7 @@ void GameObject::SetPosition(sf::Vector2f _position)
 void GameObject::SetRotation(float _degrees)
 {
 	if (m_PhysicsBody != nullptr)
-	{
 		m_PhysicsBody->SetRotation(_degrees);
-	}
 }
 
 void GameObject::SetScale(sf::Vector2f _scale)
@@ -69,10 +67,6 @@ void GameObject::SetScale(sf::Vector2f _scale)
 void GameObject::SetTexture(std::string _fileName)
 {
 	m_Mesh->SetTexture(_fileName);
-	if (m_PhysicsBody != nullptr)
-	{
-		m_PhysicsBody->SetSize({ m_Mesh->GetLocalBounds().width,m_Mesh->GetLocalBounds().height });
-	}
 }
 
 void GameObject::SetShapeType(BODYSHAPE _shapeType)
@@ -100,6 +94,10 @@ void GameObject::Update()
 		m_Mesh->SetPosition(m_PhysicsBody->GetPosition());
 		m_Mesh->SetRotation(m_PhysicsBody->GetRotation());
 	}
+	else
+	{
+		m_Mesh->SetRotation(0);
+	}
 }
 
 void GameObject::CreateBody()
@@ -110,7 +108,7 @@ void GameObject::CreateBody()
 		*m_World,
 		m_b2UserData,
 		m_Mesh->GetPosition(), // Pos
-		{ m_Mesh->GetGlobalBounds().width,m_Mesh->GetGlobalBounds().height }, // Size
+		{ m_Mesh->GetSize().x,m_Mesh->GetSize().y }, // Size
 		m_BodyShape,
 		m_BodyType
 	);

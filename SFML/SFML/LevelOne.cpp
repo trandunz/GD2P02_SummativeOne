@@ -24,7 +24,6 @@ LevelOne::~LevelOne()
 	CleanupVector(m_Birds);
 	CleanupVector(m_Pigs);
 	CleanupVector(m_Destructables);
-	
 
 	if (m_World)
 		delete m_World;
@@ -51,7 +50,7 @@ void LevelOne::PollEvents()
 
 void LevelOne::Update()
 {
-	m_World->Step(1 / 60.0f, 10, 10);
+	m_World->Step(Statics::TimeScale / 60.0f, 10, 10);
 
 	for (auto& staticObject : m_Statics)
 	{
@@ -124,13 +123,10 @@ void LevelOne::CreateStatics()
 	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 11,706 + 80 }));
 	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 15,706 }));
 	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 19,706 }));
-	for (auto& floor : m_Statics)
-	{
-		floor->SetTexture("Dirt.png");
-	}
 
 	for (auto& object : m_Statics)
 	{
+		object->SetTexture("Dirt.png");
 		object->SetBodyType(b2_staticBody);
 		object->CreateBody();
 	}
@@ -155,18 +151,14 @@ void LevelOne::CreateBirds()
 
 void LevelOne::CreatePigs()
 {
-	m_Pigs.emplace_back(new Pig(*m_World, { 950,350 }));
-	m_Pigs.emplace_back(new Pig(*m_World, { 1050,350 }));
+	m_Pigs.emplace_back(new Pig(*m_World, { 950,300 }));
+	m_Pigs.emplace_back(new Pig(*m_World, { 1050,300 }));
 
 	for (auto& pig : m_Pigs)
 	{
-		pig->SetTexture("Bird.png");
+		pig->SetTexture("Pig.png");
 		pig->SetScale({ 0.25f,0.25f });
 		pig->SetShapeType(BODYSHAPE::CIRCLE);
-	}
-
-	for (auto& pig : m_Pigs)
-	{
 		pig->SetBodyType(b2_dynamicBody);
 		pig->CreateBody();
 	}
@@ -174,9 +166,9 @@ void LevelOne::CreatePigs()
 
 void LevelOne::CreateDestructables()
 {
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1000,400 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1000,450 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
 	m_Destructables.back()->SetRotation(90.0f);
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1000, 400 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1000, 350 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
 }
 
 void LevelOne::CreateJoints()
@@ -189,7 +181,7 @@ void LevelOne::CreateJoints()
 	distanceJoint.minLength = 0.0f;
 	distanceJoint.maxLength = 0.0f;
 	
-	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+	//JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
 }
 
 void LevelOne::CleanupDestroyedGameObjects(std::vector<GameObject*>& _vector)

@@ -28,8 +28,8 @@ PhysicsBody::~PhysicsBody()
 
 void PhysicsBody::Update()
 {
-	m_Position =  { Statics::Scale * m_Body->GetPosition().x, Statics::Scale * m_Body->GetPosition().y };
 	m_Rotation = m_Body->GetTransform().q.GetAngle();
+	m_Position = Statics::Scale * sf::Vector2f{m_Body->GetPosition().x, m_Body->GetPosition().y};
 }
 
 void PhysicsBody::ApplyImpulse(sf::Vector2f _impulse)
@@ -53,7 +53,7 @@ void PhysicsBody::SetPosition(sf::Vector2f _position)
 	m_Position = _position;
 
 	if (m_Body)
-		m_Body->SetTransform({ m_Position.x / Statics::Scale, m_Position.y / Statics::Scale}, 0.0f);
+		m_Body->SetTransform({ m_Position.x / Statics::Scale, m_Position.y / Statics::Scale}, m_Rotation);
 }
 
 sf::Vector2f PhysicsBody::GetPosition()
@@ -63,7 +63,7 @@ sf::Vector2f PhysicsBody::GetPosition()
 
 void PhysicsBody::SetRotation(float _degrees)
 {
-	m_Rotation = _degrees * (PI / 180.f);
+	m_Rotation = _degrees * ((float)PI / 180.0f);
 
 	if (m_Body)
 		m_Body->SetTransform({ m_Position.x / Statics::Scale, m_Position.y / Statics::Scale }, m_Rotation);
@@ -113,7 +113,7 @@ void PhysicsBody::SetupBody()
 	DestroyBody();
 
 	b2BodyDef bodyDef;
-	bodyDef.allowSleep = false;
+	bodyDef.allowSleep = true;
 	bodyDef.type = m_BodyType;
 	bodyDef.bullet = false;
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
@@ -125,21 +125,21 @@ void PhysicsBody::SetupBody()
 	case BODYSHAPE::POLYGON:
 	{
 		b2PolygonShape polygonShape;
-		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		polygonShape.SetAsBox((m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
 		shape = new b2PolygonShape(polygonShape);
 		break;
 	}
 	case BODYSHAPE::CIRCLE:
 	{
 		b2CircleShape circleShape;
-		circleShape.m_radius = (m_Size.x / 2) / Statics::Scale;
+		circleShape.m_radius = (m_Size.x / 2.0f) / Statics::Scale;
 		shape = new b2CircleShape(circleShape);
 		break;
 	}
 	default:
 	{
 		b2PolygonShape polygonShape;
-		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		polygonShape.SetAsBox((m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
 		shape = new b2PolygonShape(polygonShape);
 		break;
 	}
@@ -164,7 +164,7 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	DestroyBody();
 
 	b2BodyDef bodyDef;
-	bodyDef.allowSleep = false;
+	bodyDef.allowSleep = true;
 	bodyDef.type = m_BodyType;
 	bodyDef.bullet = false;
 	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(&_userData);
@@ -177,21 +177,21 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	case BODYSHAPE::POLYGON:
 	{
 		b2PolygonShape polygonShape;
-		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		polygonShape.SetAsBox((m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
 		shape = new b2PolygonShape(polygonShape);
 		break;
 	}
 	case BODYSHAPE::CIRCLE:
 	{
 		b2CircleShape circleShape;
-		circleShape.m_radius = (m_Size.x / 2) / Statics::Scale;
+		circleShape.m_radius = (m_Size.x / 2.0f) / Statics::Scale;
 		shape = new b2CircleShape(circleShape);
 		break;
 	}
 	default:
 	{
 		b2PolygonShape polygonShape;
-		polygonShape.SetAsBox((m_Size.x / 2) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
+		polygonShape.SetAsBox((m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale);
 		shape = new b2PolygonShape(polygonShape);
 		break;
 	}

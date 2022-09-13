@@ -1,7 +1,7 @@
 #include "Statics.h"
 
 sf::RenderWindow Statics::RenderWindow{};
-sf::Event Statics::EventHandler{};
+sf::Event Statics::EventHandle{};
 
 sf::Clock Statics::Time{};
 float Statics::DeltaTime{};

@@ -41,3 +41,8 @@ void Pig::TakeDamage(float _amount)
 			m_CurrentHealth = 0.0f;
 	}
 }
+
+float Pig::GetScoreValue()
+{
+	return 5000.0f;
+}

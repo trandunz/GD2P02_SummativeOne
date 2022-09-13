@@ -11,5 +11,7 @@ public:
 
 	sf::Vector2f GetLaunchVelocity(sf::Vector2f _launchVector);
 	void Launch(sf::Vector2f _impulse);
+
+	float GetScoreValue();
 };
 

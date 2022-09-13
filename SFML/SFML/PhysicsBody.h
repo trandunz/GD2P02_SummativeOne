@@ -34,6 +34,7 @@ public:
 	b2Body* GetBody();
 	b2World* GetWorld();
 
+	void DestroyJoints();
 private:
 	void DestroyBody();
 

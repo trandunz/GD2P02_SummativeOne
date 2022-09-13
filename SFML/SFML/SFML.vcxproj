@@ -169,6 +169,7 @@
     <ClCompile Include="Destructable.cpp" />
     <ClCompile Include="DistanceJoint.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="JointManager.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Statics.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
+    <ClCompile Include="VFX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -190,6 +192,7 @@
     <ClInclude Include="Destructable.h" />
     <ClInclude Include="DistanceJoint.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="JointManager.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="Statics.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="PhysicsBody.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="VFX.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

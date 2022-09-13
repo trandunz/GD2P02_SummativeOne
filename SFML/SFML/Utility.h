@@ -31,4 +31,24 @@ inline void CleanupQueue(std::queue<T*>& _queue)
 	_queue.resize(0);
 }
 
+template<typename K, typename V>
+inline void CleanupMap(std::map<K, V*>& _map)
+{
+	for (auto& item : _map)
+	{
+		if (item)
+		{
+			delete item;
+			item = nullptr;
+		}
+	}
+	_map.clear();
+}
+
+template<typename K, typename V>
+inline void CleanupMap(std::map<K, V>& _map)
+{
+	_map.clear();
+}
+
 

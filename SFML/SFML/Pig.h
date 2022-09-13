@@ -11,6 +11,8 @@ public:
 	virtual void Update() override;
 
 	void TakeDamage(float _amount);
+
+	float GetScoreValue();
 private:
 	float m_DamageTimer = 0.0f;
 	float m_DamageInterval = 0.3f;

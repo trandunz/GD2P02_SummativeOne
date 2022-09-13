@@ -35,7 +35,7 @@ void Catapult::LoadBird(Bird& _bird)
 	m_LoadedBird->SetPosition(m_FirePosition + m_FireVector);
 
 	m_TrajectoryLine.clear();
-	for (float i = 0; i < 240; i++)
+	for (float i = 0; i < 150; i++)
 	{
 		sf::Vector2f trajectoryPosition = GetTrajectoryPoint(i);
 		m_TrajectoryLine.append({ { trajectoryPosition.x, trajectoryPosition.y },sf::Color::Black });
@@ -57,7 +57,7 @@ void Catapult::MoveBird()
 
 		m_LoadedBird->SetPosition(m_FirePosition + m_FireVector);
 
-		for (float i = 0; i < 240; i++)
+		for (float i = 0; i < 150; i++)
 		{
 			sf::Vector2f trajectoryPosition = GetTrajectoryPoint(i);
 			m_TrajectoryLine.append({ { trajectoryPosition.x, trajectoryPosition.y },sf::Color::Black });

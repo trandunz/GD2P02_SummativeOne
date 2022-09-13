@@ -99,6 +99,28 @@ b2World* PhysicsBody::GetWorld()
 	return m_World;
 }
 
+void PhysicsBody::DestroyJoints()
+{
+	if (m_Body != nullptr)
+	{
+		std::vector<b2Joint*> jointsToDestroy{};
+		for (auto jointEdge = m_Body->GetJointList(); jointEdge; jointEdge = jointEdge->next)
+		{
+			jointsToDestroy.push_back(jointEdge->joint);
+		}
+		for (auto& joint : jointsToDestroy)
+		{
+			if (joint != nullptr)
+			{
+				m_World->DestroyJoint(joint);
+				joint = nullptr;
+			}
+		}
+		jointsToDestroy.clear();
+		jointsToDestroy.resize(0);
+	}
+}
+
 void PhysicsBody::DestroyBody()
 {
 	if (m_Body != nullptr)

@@ -8,10 +8,15 @@ DistanceJoint::DistanceJoint(b2World& _world, b2DistanceJointDef _def)
 
 DistanceJoint::~DistanceJoint()
 {
-	if (m_Joint != nullptr)
+	for (auto joint = m_World->GetJointList(); joint; joint = joint->GetNext())
 	{
-		m_World->DestroyJoint(m_Joint);
-		m_Joint = nullptr;
+		if (m_Joint == joint)
+		{
+			m_World->DestroyJoint(joint);
+			joint = nullptr;
+			break;
+		}
 	}
+	m_Joint = nullptr;
 	m_World = nullptr;
 }

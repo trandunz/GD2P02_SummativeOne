@@ -18,7 +18,7 @@ MainMenu::~MainMenu()
 
 void MainMenu::PollEvents()
 {
-	if (Statics::EventHandler.type == sf::Event::MouseButtonPressed)
+	if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
 	{
 		for (auto& button : m_Buttons)
 		{

@@ -58,15 +58,15 @@ void Update()
 
 void PollEvents()
 {
-	if (Statics::RenderWindow.pollEvent(Statics::EventHandler))
+	if (Statics::RenderWindow.pollEvent(Statics::EventHandle))
 	{
-		if ((Statics::EventHandler.type == sf::Event::KeyPressed
+		if ((Statics::EventHandle.type == sf::Event::KeyPressed
 			&& sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			|| Statics::EventHandler.type == sf::Event::Closed)
+			|| Statics::EventHandle.type == sf::Event::Closed)
 		{
 			Statics::RenderWindow.close();
 		}
-		if (Statics::EventHandler.type == sf::Event::Resized)
+		if (Statics::EventHandle.type == sf::Event::Resized)
 			HandleResizing();
 
 		LevelLoader::PollEvents();

@@ -48,6 +48,13 @@ void Button::SetScale(sf::Vector2f _scale)
 	SetOriginCentre(m_Label);
 }
 
+void Button::ResetScale()
+{
+	m_Sprite.setScale(m_Properties.Scale);
+	m_Label.setCharacterSize(m_Label.getCharacterSize() * (unsigned)Mag(m_Properties.Scale));
+	SetOriginCentre(m_Label);
+}
+
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_Sprite);

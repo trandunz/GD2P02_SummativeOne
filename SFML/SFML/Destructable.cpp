@@ -16,6 +16,10 @@ Destructable::Destructable(b2World& _world, sf::Vector2f _startPos, SHAPE _shape
 
 Destructable::~Destructable()
 {
+	if (m_PhysicsBody)
+	{
+		m_PhysicsBody->DestroyJoints();
+	}
 }
 
 void Destructable::Start()
@@ -46,6 +50,11 @@ void Destructable::TakeDamage(float _amount)
 		UpdateDamageLevelFromHealth();
 		InitBasedOnType();
 	}
+}
+
+float Destructable::GetScoreValue()
+{
+	return 500.0f;
 }
 
 void Destructable::InitBasedOnType()

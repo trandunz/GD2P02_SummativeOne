@@ -114,6 +114,12 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files\SceneManagement</Filter>
     </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="VFX.cpp">
+      <Filter>Source Files\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureLoader.h">
@@ -175,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="Pig.h">
       <Filter>Header Files\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Header Files\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="VFX.h">
+      <Filter>Header Files\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

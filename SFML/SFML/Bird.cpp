@@ -31,3 +31,8 @@ void Bird::Launch(sf::Vector2f _impulse)
 	CreateBody();
 	m_PhysicsBody->ApplyImpulse(_impulse);
 }
+
+float Bird::GetScoreValue()
+{
+	return 10000.0f;
+}

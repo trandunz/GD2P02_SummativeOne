@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <map>
 
 #define PI 3.141592654
 
@@ -16,7 +17,7 @@ struct UserData
 class Statics
 {
 public:
-	static sf::Event EventHandler;
+	static sf::Event EventHandle;
 	static sf::RenderWindow RenderWindow;
 	
 	static void CalculateDeltaTime();

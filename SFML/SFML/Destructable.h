@@ -40,6 +40,7 @@ public:
 	virtual void Update() override;
 
 	void TakeDamage(float _amount);
+	float GetScoreValue();
 private:
 	void InitBasedOnType();
 	void UpdateDamageLevelFromHealth();

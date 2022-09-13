@@ -16,6 +16,7 @@ struct ButtonProperties
 class Button : public sf::Drawable
 {
 public:
+	Button() {}
 	Button(ButtonProperties _properties);
 	~Button();
 
@@ -23,6 +24,7 @@ public:
 	void SetLabel(std::string _newLabel);
 	void SetPosition(sf::Vector2f _position);
 	void SetScale(sf::Vector2f _scale);
+	void ResetScale();
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	

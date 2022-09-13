@@ -15,9 +15,9 @@ public:
 	void DrawBack();
 
 	bool IsLoaded();
+	sf::Vector2f GetTrajectoryPoint(float _predictionTime);
 private:
 	void SetTexture(sf::Sprite& _sprite, std::string _fileName);
-	sf::Vector2f GetTrajectoryPoint(float _predictionTime);
 
 	float m_LaunchStrength = 0.2f;
 

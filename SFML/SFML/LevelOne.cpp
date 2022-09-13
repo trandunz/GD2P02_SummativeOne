@@ -1,9 +1,21 @@
 #include "LevelOne.h"
 #include "AudioManager.h"
 #include "JointManager.h"
+#include "GUI.h"
+#include "VFX.h"
+
+float LevelOne::m_CameraReturnDelay{ 1.0f };
+float LevelOne::m_CameraDelayTimer{ 0.0f };
 
 LevelOne::LevelOne()
 {
+	m_View.setSize(Statics::RenderWindow.getDefaultView().getSize());
+	m_View.setCenter(Statics::RenderWindow.getDefaultView().getCenter());
+	m_CameraStartPos = m_View.getCenter();
+	m_CameraTargetPos = m_CameraStartPos;
+	m_CameraTargetPos.x = 1000;
+	Statics::RenderWindow.setView(m_View);
+
 	AudioManager::StopMusic();
 	m_World = new b2World({ 0,10.0f });
 	m_World->SetContactListener(&m_ContactListener);
@@ -14,6 +26,13 @@ LevelOne::LevelOne()
 	CreatePigs();
 	CreateDestructables();
 	CreateJoints();
+
+	GUI::GetInstance().CreateText("Score",
+		{
+			{Statics::RenderWindow.getSize().x - 100.0f, 20.0f},
+			"Score: 10000",
+			sf::Color::Black
+		});
 }
 
 LevelOne::~LevelOne()
@@ -28,26 +47,40 @@ LevelOne::~LevelOne()
 	if (m_World)
 		delete m_World;
 	m_World = nullptr;
+
+	VFX::GetInstance().CleanupElements();
+	GUI::GetInstance().CleanupElements();
 }
 
 void LevelOne::PollEvents()
 {
-	if (Statics::EventHandler.type == sf::Event::MouseButtonPressed)
+	if (m_FireTimer <= 0)
 	{
-		if (m_NextBirdIndex < m_Birds.size())
-			m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
-	}
-	if (Statics::EventHandler.type == sf::Event::MouseMoved)
-	{
-		m_Catapult.MoveBird();
-	}
-	if (Statics::EventHandler.type == sf::Event::MouseButtonReleased)
-	{
-		if (m_Catapult.IsLoaded())
-			for (int i = m_NextBirdIndex; i < m_Birds.size(); i++)
-				m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
+		if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
+		{
+			if (m_NextBirdIndex < m_Birds.size())
+				m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
+		}
+		if (Statics::EventHandle.type == sf::Event::MouseMoved)
+		{
+			m_Catapult.MoveBird();
+		}
+		if (Statics::EventHandle.type == sf::Event::MouseButtonReleased)
+		{
+			if (m_Catapult.IsLoaded())
+			{
+				if (m_Catapult.GetTrajectoryPoint(200).x > 500)
+				{
+					m_CameraLerpAmount = 0;
+					m_FireTimer = m_FireTime;
+				}
 
-		m_Catapult.ReleaseBird();
+				for (int i = m_NextBirdIndex; i < m_Birds.size(); i++)
+					m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
+			}
+
+			m_Catapult.ReleaseBird();
+		}
 	}
 }
 
@@ -82,10 +115,54 @@ void LevelOne::Update()
 	CleanupDestroyedPigs(m_Pigs);
 	CleanupDestroyedBirds(m_Birds);
 	JointManager::GetInstance().CleanupMarkedJoints();
+
+	if (m_FireTimer > 0)
+	{
+		if (m_CameraDelayTimer > 0.0f && m_CameraLerpAmount >= 1.0f)
+		{
+			m_CameraDelayTimer -= Statics::DeltaTime;
+		}
+		else
+		{
+			if (m_LerpRight)
+			{
+				m_CameraLerpAmount += (Statics::DeltaTime / m_FireTime) * 2;
+
+				if (m_CameraLerpAmount >= 1.0f)
+				{
+					m_CameraLerpAmount = 1.0f;
+					m_LerpRight = false;
+					m_CameraDelayTimer = m_CameraReturnDelay;
+				}
+			}
+			else
+			{
+				m_CameraLerpAmount -= (Statics::DeltaTime / m_FireTime) * 2;
+				if (m_CameraLerpAmount <= 0.0f)
+				{
+					m_CameraLerpAmount = 0.0f;
+					m_LerpRight = true;
+				}
+			}
+
+			m_FireTimer -= Statics::DeltaTime;
+		}
+	}
+
+	m_View.setCenter({
+		std::lerp(m_CameraStartPos.x, m_CameraTargetPos.x, m_CameraLerpAmount)
+		, std::lerp(m_CameraStartPos.y, m_CameraTargetPos.y, m_CameraLerpAmount) });
+
+	VFX::GetInstance().Update();
+
+	GUI::GetInstance().SetText("Score", "Score: " + FloatToString(GetScore(), 0));
+	GUI::GetInstance().Update();
 }
 
 void LevelOne::Draw()
 {
+	Statics::RenderWindow.setView(m_View);
+
 	for (auto& object : m_CollisionLess)
 	{
 		Statics::RenderWindow.draw(*object);
@@ -109,6 +186,20 @@ void LevelOne::Draw()
 		Statics::RenderWindow.draw(*object);
 	}
 	m_Catapult.DrawFront();
+
+	Statics::RenderWindow.draw(VFX::GetInstance());
+	Statics::RenderWindow.draw(GUI::GetInstance());
+}
+
+void LevelOne::ResetCameraReturnDelay()
+{
+	m_CameraDelayTimer = m_CameraReturnDelay;
+}
+
+float& LevelOne::GetScore()
+{
+	static float score{};
+	return score;
 }
 
 void LevelOne::CreateCollisionLess()
@@ -116,21 +207,23 @@ void LevelOne::CreateCollisionLess()
 	m_CollisionLess.emplace_back(new GameObject(*m_World, { 1280 / 2,720 / 2 }));
 	m_CollisionLess.back()->SetTexture("Background.jpg");
 	m_CollisionLess.back()->SetScale({ 2.65f,2.65f });
+	m_CollisionLess.emplace_back(new GameObject(*m_World, { 3 * (1280 / 2) ,720 / 2 }));
+	m_CollisionLess.back()->SetTexture("Background.jpg");
+	m_CollisionLess.back()->SetScale({ 2.65f,2.65f });
 }
 
 void LevelOne::CreateStatics()
 {
-	m_Statics.emplace_back(new GameObject(*m_World, { -62,706 }));
-	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 3,706 }));
-
-	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 7,706 + 80 }));
-	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 11,706 + 80 }));
-	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 15,706 }));
-	m_Statics.emplace_back(new GameObject(*m_World, { 62 * 19,706 }));
+	m_Statics.emplace_back(new GameObject(*m_World, { -173,680 }));
+	m_Statics.emplace_back(new GameObject(*m_World, { 173,680 }));
+	for (int i = 0; i < 5; i++)
+	{
+		m_Statics.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),680}));
+	}
 
 	for (auto& object : m_Statics)
 	{
-		object->SetTexture("Dirt.png");
+		object->SetTexture("Ground.png");
 		object->SetBodyType(b2_staticBody);
 		object->CreateBody();
 	}
@@ -185,7 +278,7 @@ void LevelOne::CreateJoints()
 	distanceJoint.minLength = 0.0f;
 	distanceJoint.maxLength = 0.0f;
 	
-	//JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
 }
 
 void LevelOne::CleanupDestroyedGameObjects(std::vector<GameObject*>& _vector)

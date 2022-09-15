@@ -1,8 +1,6 @@
 #pragma once
-#include "Button.h"
 #include "LevelLoader.h"
 #include "Level.h"
-#include "Mesh.h"
 
 class MainMenu : public Level
 {
@@ -17,8 +15,5 @@ public:
 private:
     void CreateMeshes();
     void CreateButtons();
-
-    std::vector<Mesh> m_Meshes{};
-    std::vector<Button> m_Buttons{};
 };
 

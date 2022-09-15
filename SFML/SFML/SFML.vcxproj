@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -171,6 +171,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="JointManager.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Statics.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="JointManager.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="Statics.h" />
     <ClInclude Include="Level.h" />

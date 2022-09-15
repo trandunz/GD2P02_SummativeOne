@@ -1,7 +1,8 @@
 #include "AudioManager.h"
 #include "TextureLoader.h"
-#include "MainMenu.h"
+#include "LevelLoader.h"
 #include "Statics.h"
+#include "GUI.h"
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings);
 
@@ -14,12 +15,10 @@ int Cleanup();
 
 void HandleResizing();
 
-
 int main()
 {
 	Start();
 	Update();
-	Render();
 
 	return Cleanup();
 }
@@ -40,7 +39,7 @@ void Start()
 	Statics::TimesNewRoman.loadFromFile("Resources/Fonts/TNR.ttf");
 
 	// Load Main Menu
-	LevelLoader::LoadLevel(new MainMenu());
+	LevelLoader::LoadLevel(LEVELS::MAINMENU);
 }
 
 void Update()
@@ -51,8 +50,11 @@ void Update()
 		PollEvents();
 
 		LevelLoader::Update();
+		GUI::GetInstance().Update();
 		
 		Render();
+
+		LevelLoader::ChangeLevelIfLoaded();
 	}
 }
 
@@ -60,16 +62,13 @@ void PollEvents()
 {
 	if (Statics::RenderWindow.pollEvent(Statics::EventHandle))
 	{
-		if ((Statics::EventHandle.type == sf::Event::KeyPressed
-			&& sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			|| Statics::EventHandle.type == sf::Event::Closed)
-		{
+		if (Statics::EventHandle.type == sf::Event::Closed)
 			Statics::RenderWindow.close();
-		}
-		if (Statics::EventHandle.type == sf::Event::Resized)
-			HandleResizing();
+		//if (Statics::EventHandle.type == sf::Event::Resized)
+		//	HandleResizing();
 
 		LevelLoader::PollEvents();
+		GUI::GetInstance().PollEvents();
 	}
 }
 
@@ -85,6 +84,7 @@ void Render()
 int Cleanup()
 {
 	LevelLoader::CleanupLevel();
+	GUI::GetInstance().CleanupElements();
 	TextureLoader::CleanupTextures();
 	AudioManager::Cleanup();
 

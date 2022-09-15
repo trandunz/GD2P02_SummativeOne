@@ -3,6 +3,33 @@
 #include "Button.h"
 #include "Utility.h"
 
+void GUI::CleanupImageElement(std::string _key)
+{
+	auto it = m_vecImages.find(_key);
+	if (it != m_vecImages.end())
+	{
+		it = m_vecImages.erase(it);
+	}
+}
+
+void GUI::CleanupButtonElement(std::string _key)
+{
+	auto it = m_vecButtons.find(_key);
+	if (it != m_vecButtons.end())
+	{
+		it = m_vecButtons.erase(it);
+	}
+}
+
+void GUI::CleanupTextElement(std::string _key)
+{
+	auto it = m_vecTexts.find(_key);
+	if (it != m_vecTexts.end())
+	{
+		it = m_vecTexts.erase(it);
+	}
+}
+
 void GUI::CleanupElements()
 {
 	CleanupMap(m_vecTexts);
@@ -79,7 +106,7 @@ void GUI::SetImageSprite(std::string _key, sf::Texture& _texture)
 	SetOriginCentre(m_vecImages[_key]);
 }
 
-void GUI::HandleEvents()
+void GUI::PollEvents()
 {
 	if (Statics::EventHandle.type == sf::Event::MouseButtonReleased
 		&& Statics::EventHandle.mouseButton.button == sf::Mouse::Left)

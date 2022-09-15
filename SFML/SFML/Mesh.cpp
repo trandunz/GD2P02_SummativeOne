@@ -25,7 +25,6 @@ void Mesh::SetScale(sf::Vector2f _scale)
 	m_Sprite.setScale({ 1,1 });
 	SetOriginCentre(m_Sprite);
 	m_Sprite.setScale(_scale);
-
 }
 
 void Mesh::SetPosition(sf::Vector2f _position)

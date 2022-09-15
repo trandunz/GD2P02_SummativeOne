@@ -3,9 +3,12 @@
 #include "JointManager.h"
 #include "GUI.h"
 #include "VFX.h"
+#include "PauseMenu.h"
+#include "TextureLoader.h"
 
 float LevelOne::m_CameraReturnDelay{ 1.0f };
 float LevelOne::m_CameraDelayTimer{ 0.0f };
+float LevelOne::m_Score{ 0.0f };
 
 LevelOne::LevelOne()
 {
@@ -33,6 +36,20 @@ LevelOne::LevelOne()
 			"Score: 10000",
 			sf::Color::Black
 		});
+
+	GUI::GetInstance().CreateButton("PauseButton",
+		{
+			"",
+			{30.0f, 30.0f},
+			{0.5f,0.5f},
+			[this]()
+			{
+				TogglePause();
+			},
+			&TextureLoader::LoadTexture("Pause.png")
+		});
+
+	m_Score = 0.0f;
 }
 
 LevelOne::~LevelOne()
@@ -50,20 +67,40 @@ LevelOne::~LevelOne()
 
 	VFX::GetInstance().CleanupElements();
 	GUI::GetInstance().CleanupElements();
+
+	if (m_PauseMenu)
+	{
+		delete m_PauseMenu;
+		m_PauseMenu = nullptr;
+	}
 }
 
 void LevelOne::PollEvents()
 {
+	if (Statics::EventHandle.type == sf::Event::KeyPressed)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			TogglePause();
+		}
+	}
+
 	if (m_FireTimer <= 0)
 	{
 		if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
 		{
-			if (m_NextBirdIndex < m_Birds.size())
-				m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
+			if (Statics::IsPaused == false)
+			{
+				if (m_NextBirdIndex < m_Birds.size())
+					m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
+			}
 		}
 		if (Statics::EventHandle.type == sf::Event::MouseMoved)
 		{
-			m_Catapult.MoveBird();
+			if (Statics::IsPaused == false)
+			{
+				m_Catapult.MoveBird();
+			}
 		}
 		if (Statics::EventHandle.type == sf::Event::MouseButtonReleased)
 		{
@@ -156,7 +193,6 @@ void LevelOne::Update()
 	VFX::GetInstance().Update();
 
 	GUI::GetInstance().SetText("Score", "Score: " + FloatToString(GetScore(), 0));
-	GUI::GetInstance().Update();
 }
 
 void LevelOne::Draw()
@@ -189,6 +225,10 @@ void LevelOne::Draw()
 
 	Statics::RenderWindow.draw(VFX::GetInstance());
 	Statics::RenderWindow.draw(GUI::GetInstance());
+	if (m_PauseMenu)
+	{
+		Statics::RenderWindow.draw(*m_PauseMenu);
+	}
 }
 
 void LevelOne::ResetCameraReturnDelay()
@@ -198,8 +238,29 @@ void LevelOne::ResetCameraReturnDelay()
 
 float& LevelOne::GetScore()
 {
-	static float score{};
-	return score;
+	return m_Score;
+}
+
+void LevelOne::TogglePause()
+{
+	Statics::TogglePaused();
+	if (Statics::IsPaused)
+	{
+		if (m_PauseMenu == nullptr)
+			m_PauseMenu = new PauseMenu();
+
+		GUI::GetInstance().GetButton("PauseButton")->SetTexture("Play.png");
+	}
+	else
+	{
+		if (m_PauseMenu)
+		{
+			delete m_PauseMenu;
+			m_PauseMenu = nullptr;
+		}
+
+		GUI::GetInstance().GetButton("PauseButton")->SetTexture("Pause.png");
+	}
 }
 
 void LevelOne::CreateCollisionLess()

@@ -1,16 +1,13 @@
 #pragma once
-
 #include "Statics.h"
-#include "Math.h"
-
-typedef void (*callback_function)(void);
 
 struct ButtonProperties
 {
 	std::string Label{};
 	sf::Vector2f Position{};
-	callback_function OnPressLambda = nullptr;
 	sf::Vector2f Scale = { 1,1 };
+	std::function<void()> OnPressLambda{ nullptr };
+	sf::Texture* Texture{ nullptr };
 };
 
 class Button : public sf::Drawable
@@ -25,10 +22,11 @@ public:
 	void SetPosition(sf::Vector2f _position);
 	void SetScale(sf::Vector2f _scale);
 	void ResetScale();
+	void SetTexture(std::string _fileName);
+	void SetTexture(sf::Texture& _texture);
+
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	
-	void SetTexture(std::string _fileName);
 
 	ButtonProperties m_Properties;
 	sf::Sprite m_Sprite;

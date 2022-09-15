@@ -1,14 +1,18 @@
 #include "Button.h"
 #include "TextureLoader.h"
+#include "Math.h"
 
 Button::Button(ButtonProperties _properties)
 {
+	m_Properties = _properties;
 	m_Label.setFont(Statics::TimesNewRoman);
 	m_Label.setString(_properties.Label);
 	m_Label.setCharacterSize(24); 
 	m_Label.setFillColor(sf::Color::Black);
-	m_Properties = _properties;
-	SetTexture("Button.png");
+	if (_properties.Texture == nullptr)
+		SetTexture("Button.png");
+	else
+		SetTexture(*_properties.Texture);
 	SetScale(_properties.Scale);
 	SetPosition(_properties.Position);
 }
@@ -65,5 +69,11 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Button::SetTexture(std::string _fileName)
 {
 	m_Sprite.setTexture(TextureLoader::LoadTexture(_fileName), true);
+	SetOriginCentre(m_Sprite);
+}
+
+void Button::SetTexture(sf::Texture& _texture)
+{
+	m_Sprite.setTexture(_texture);
 	SetOriginCentre(m_Sprite);
 }

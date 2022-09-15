@@ -25,8 +25,11 @@ public:
 		return instance;
 	}
 
+	void CleanupImageElement(std::string _key);
+	void CleanupButtonElement(std::string _key);
+	void CleanupTextElement(std::string _key);
 	void CleanupElements();
-	void HandleEvents();
+	void PollEvents();
 	void Update();
 
 	void CreateText(std::string _key, TextProperties _properties);

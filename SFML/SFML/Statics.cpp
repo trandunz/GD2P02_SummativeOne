@@ -8,6 +8,7 @@ float Statics::DeltaTime{};
 float Statics::LastTime{};
 float Statics::UnscaledDeltaTime{};
 float Statics::TimeScale{1.0f};
+bool Statics::IsPaused{false};
 
 float Statics::Scale = 30.0f;
 
@@ -19,4 +20,14 @@ void Statics::CalculateDeltaTime()
 	UnscaledDeltaTime = currentTime - LastTime;
 	DeltaTime = UnscaledDeltaTime * TimeScale;
 	LastTime = currentTime;
+}
+
+void Statics::TogglePaused()
+{
+	IsPaused = !IsPaused;
+
+	if (IsPaused)
+		TimeScale = 0;
+	else
+		TimeScale = 1;
 }

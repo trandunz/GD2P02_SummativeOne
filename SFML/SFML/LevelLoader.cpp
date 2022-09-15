@@ -1,36 +1,68 @@
 #include "LevelLoader.h"
 #include "Level.h"
+#include "MainMenu.h"
+#include "LevelOne.h"
 
-
-Level* LevelLoader::CurrentLevel = nullptr;
+Level* LevelLoader::m_CurrentLevel = nullptr;
+LEVELS LevelLoader::m_LevelToLoad = LEVELS::UNASSIGNED;
+LEVELS LevelLoader::m_CurrentLevelID = LEVELS::UNASSIGNED;
 
 void LevelLoader::PollEvents()
 {
-	if (CurrentLevel != nullptr)
-		CurrentLevel->PollEvents();
+	if (m_CurrentLevel != nullptr)
+		m_CurrentLevel->PollEvents();
 }
 
 void LevelLoader::Update()
 {
-	if (CurrentLevel != nullptr)
-		CurrentLevel->Update();
+	if (m_CurrentLevel != nullptr)
+		m_CurrentLevel->Update();
 }
 
 void LevelLoader::Draw()
 {
-	if (CurrentLevel != nullptr)
-		CurrentLevel->Draw();
+	if (m_CurrentLevel != nullptr)
+		m_CurrentLevel->Draw();
 }
 
-void LevelLoader::LoadLevel(Level* _level)
+void LevelLoader::ReloadCurrentLevel()
 {
-	CleanupLevel();
-	CurrentLevel = _level;
+	m_LevelToLoad = m_CurrentLevelID;
+}
+
+void LevelLoader::LoadLevel(LEVELS _level)
+{
+	m_LevelToLoad = _level;
+}
+
+void LevelLoader::ChangeLevelIfLoaded()
+{
+	if (m_LevelToLoad != LEVELS::UNASSIGNED)
+	{
+		CleanupLevel();
+		m_CurrentLevelID = m_LevelToLoad;
+		switch (m_LevelToLoad)
+		{
+		case LEVELS::MAINMENU:
+		{
+			m_CurrentLevel = new MainMenu;
+			break;
+		}
+		case LEVELS::LEVELONE:
+		{
+			m_CurrentLevel = new LevelOne;
+			break;
+		}
+		default:
+			break;
+		}
+		m_LevelToLoad = LEVELS::UNASSIGNED;
+	}
 }
 
 void LevelLoader::CleanupLevel()
 {
-	if (CurrentLevel)
-		delete CurrentLevel;
-	CurrentLevel = nullptr;
+	if (m_CurrentLevel)
+		delete m_CurrentLevel;
+	m_CurrentLevel = nullptr;
 }

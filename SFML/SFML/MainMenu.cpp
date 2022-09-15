@@ -1,6 +1,7 @@
 #include "MainMenu.h"
-#include "LevelOne.h"
-#include"AudioManager.h"
+#include "AudioManager.h"
+#include "GUI.h"
+#include "TextureLoader.h"
 
 MainMenu::MainMenu()
 {
@@ -12,62 +13,70 @@ MainMenu::MainMenu()
 
 MainMenu::~MainMenu()
 {
-	m_Meshes.clear();
-	m_Buttons.clear();
+	GUI::GetInstance().CleanupElements();
 }
 
 void MainMenu::PollEvents()
 {
-	if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
+	if (Statics::EventHandle.type == sf::Event::KeyPressed)
 	{
-		for (auto& button : m_Buttons)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
-			button.CallOnPress();
+			Statics::RenderWindow.close();
 		}
 	}
 }
 
 void MainMenu::Update()
 {
-
 }
-
+ 
 void MainMenu::Draw()
 {
-	for (auto& sprite : m_Meshes)
-	{
-		Statics::RenderWindow.draw(sprite);
-	}
-	for (auto& button : m_Buttons)
-	{
-		Statics::RenderWindow.draw(button);
-	}
+	Statics::RenderWindow.draw(GUI::GetInstance());
 }
 
 void MainMenu::CreateMeshes()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-	m_Meshes.emplace_back(Mesh("Title.png", { ScreenCentre.x, 100 }));
+	GUI::GetInstance().CreateImage("Title",
+		{
+			&TextureLoader::LoadTexture("Title.png"),
+			{ ScreenCentre.x, 100 }
+		});
 }
 
 void MainMenu::CreateButtons()
 {
-	m_Buttons.emplace_back(Button({ "Level One", { 640,300},
-		[]()
+	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
+	GUI::GetInstance().CreateButton("LevelOne",
 		{
-			LevelLoader::LoadLevel(new LevelOne);
-		},
-		{ 2.0f,2.0f } }));
-	m_Buttons.emplace_back(Button({"Level Two", { 640,450 },
-		[]()
+			"Level One",
+			{ ScreenCentre.x,300},
+			{2,2},
+			[]()
+			{
+				LevelLoader::LoadLevel(LEVELS::LEVELONE);
+			}
+		});
+	GUI::GetInstance().CreateButton("LevelTwo",
 		{
-			LevelLoader::LoadLevel(new LevelOne);
-		},
-		{ 2.0f,2.0f }}));
-	m_Buttons.emplace_back(Button({ "Level Three", { 640,600 },
-		[]()
+			"Level Two",
+			{ ScreenCentre.x,450},
+			{2,2},
+			[]()
+			{
+				LevelLoader::LoadLevel(LEVELS::LEVELONE);
+			}
+		});
+	GUI::GetInstance().CreateButton("LevelThree",
 		{
-			LevelLoader::LoadLevel(new LevelOne);
-		},
-		{ 2.0f,2.0f } }));
+			"Level Three",
+			{ ScreenCentre.x,600},
+			{ 2,2 },
+			[]()
+			{
+				LevelLoader::LoadLevel(LEVELS::LEVELONE);
+			}
+		});
 }

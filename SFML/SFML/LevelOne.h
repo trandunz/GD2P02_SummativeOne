@@ -6,6 +6,7 @@
 #include "Pig.h"
 #include "Destructable.h"
 
+class PauseMenu;
 class LevelOne : public Level
 {
 public:
@@ -19,6 +20,8 @@ public:
 	static void ResetCameraReturnDelay();
 	static float& GetScore();
 private:
+	void TogglePause();
+
 	void CreateCollisionLess();
 	void CreateStatics();
 	void CreateBirds();
@@ -33,6 +36,7 @@ private:
 
 	static float m_CameraDelayTimer;
 	static float m_CameraReturnDelay;
+	static float m_Score;
 
 	sf::View m_View;
 	b2World* m_World{nullptr};
@@ -47,7 +51,7 @@ private:
 	float m_FireTimer{};
 	float m_FireTime{3.0f};
 
-	
+	PauseMenu* m_PauseMenu{ nullptr };
 
 	std::vector<GameObject*> m_CollisionLess{};
 	std::vector<GameObject*> m_Statics{};

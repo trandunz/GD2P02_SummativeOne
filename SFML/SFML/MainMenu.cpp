@@ -39,44 +39,26 @@ void MainMenu::Draw()
 void MainMenu::CreateMeshes()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-	GUI::GetInstance().CreateImage("Title",
+	GUI::GetInstance().CreateImage("Splash",
 		{
-			&TextureLoader::LoadTexture("Title.png"),
-			{ ScreenCentre.x, 100 }
+			&TextureLoader::LoadTexture("SplashScreen.png"),
+			ScreenCentre,
+			{0.7f, 0.7f}
 		});
 }
 
 void MainMenu::CreateButtons()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-	GUI::GetInstance().CreateButton("LevelOne",
+	GUI::GetInstance().CreateButton("LevelSetOne",
 		{
-			"Level One",
-			{ ScreenCentre.x,300},
-			{2,2},
+			"",
+			ScreenCentre,
+			{1,1},
 			[]()
 			{
 				LevelLoader::LoadLevel(LEVELS::LEVELONE);
-			}
-		});
-	GUI::GetInstance().CreateButton("LevelTwo",
-		{
-			"Level Two",
-			{ ScreenCentre.x,450},
-			{2,2},
-			[]()
-			{
-				LevelLoader::LoadLevel(LEVELS::LEVELONE);
-			}
-		});
-	GUI::GetInstance().CreateButton("LevelThree",
-		{
-			"Level Three",
-			{ ScreenCentre.x,600},
-			{ 2,2 },
-			[]()
-			{
-				LevelLoader::LoadLevel(LEVELS::LEVELONE);
-			}
+			},
+			&TextureLoader::LoadTexture("LevelSetOne.png")
 		});
 }

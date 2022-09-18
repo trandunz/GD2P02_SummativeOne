@@ -6,7 +6,7 @@
 #include "PauseMenu.h"
 #include "TextureLoader.h"
 
-float LevelOne::m_CameraReturnDelay{ 1.0f };
+float LevelOne::m_CameraReturnDelay{ 1.5f };
 float LevelOne::m_CameraDelayTimer{ 0.0f };
 float LevelOne::m_Score{ 0.0f };
 
@@ -30,10 +30,19 @@ LevelOne::LevelOne()
 	CreateDestructables();
 	CreateJoints();
 
-	GUI::GetInstance().CreateText("Score",
+	GUI::GetInstance().CreateText("ScoreIndicator",
 		{
-			{Statics::RenderWindow.getSize().x - 100.0f, 20.0f},
+			{1280 - 200.0f, 20.0f},
 			"Score: 10000",
+			sf::Color::White,
+			sf::Color::Black
+		});
+
+	GUI::GetInstance().CreateText("ScoreValue",
+		{
+			{1280 - 75.0f, 20.0f},
+			"100000",
+			sf::Color::White,
 			sf::Color::Black
 		});
 
@@ -50,6 +59,8 @@ LevelOne::LevelOne()
 		});
 
 	m_Score = 0.0f;
+	m_CameraLerpAmount = 0;
+	m_FireTimer = m_FireTime;
 }
 
 LevelOne::~LevelOne()
@@ -192,7 +203,8 @@ void LevelOne::Update()
 
 	VFX::GetInstance().Update();
 
-	GUI::GetInstance().SetText("Score", "Score: " + FloatToString(GetScore(), 0));
+	GUI::GetInstance().SetText("ScoreIndicator", "Score:");
+	GUI::GetInstance().SetText("ScoreValue", FloatToString(GetScore(), 0));
 }
 
 void LevelOne::Draw()

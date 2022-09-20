@@ -70,7 +70,7 @@ void MainMenu::CreateButtons()
 			{
 				LevelLoader::LoadLevel(LEVELS::LEVELTWO);
 			},
-			&TextureLoader::LoadTexture("GUI/LevelSetOne.png")
+			&TextureLoader::LoadTexture("GUI/LevelSetTwo.png")
 		});
 	GUI::GetInstance().CreateButton("LevelSetThree",
 		{
@@ -81,6 +81,6 @@ void MainMenu::CreateButtons()
 			{
 				LevelLoader::LoadLevel(LEVELS::LEVELTHREE);
 			},
-			&TextureLoader::LoadTexture("GUI/LevelSetOne.png")
+			&TextureLoader::LoadTexture("GUI/LevelSetThree.png")
 		});
 }

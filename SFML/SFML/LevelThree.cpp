@@ -16,12 +16,22 @@ LevelThree::~LevelThree()
 
 void LevelThree::CreateCollisionLess()
 {
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { 1280 / 2,720 / 2 }));
-	m_CollisionLess.back()->SetTexture("Background.jpg");
-	m_CollisionLess.back()->SetScale({ 2.65f,2.65f });
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { 3 * (1280 / 2) ,720 / 2 }));
-	m_CollisionLess.back()->SetTexture("Background.jpg");
-	m_CollisionLess.back()->SetScale({ 2.65f,2.65f });
+	sf::Vector2f windowCenter = Statics::RenderWindow.getView().getCenter();
+	windowCenter.y -= 720 / 6;
+	m_CollisionLess.emplace_back(new GameObject(*m_World, windowCenter));
+	m_CollisionLess.back()->SetTexture("Background.png");
+	m_CollisionLess.emplace_back(new GameObject(*m_World, { windowCenter.x * 3, windowCenter.y }));
+	m_CollisionLess.back()->SetTexture("Background.png");
+
+	m_CollisionLess.emplace_back(new GameObject(*m_World, { -173,550 }));
+	m_CollisionLess.back()->SetTexture("Grass.png");
+	m_CollisionLess.emplace_back(new GameObject(*m_World, { 173,550 }));
+	m_CollisionLess.back()->SetTexture("Grass.png");
+	for (int i = 0; i < 5; i++)
+	{
+		m_CollisionLess.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),550 }));
+		m_CollisionLess.back()->SetTexture("Grass.png");
+	}
 }
 
 void LevelThree::CreateStatics()

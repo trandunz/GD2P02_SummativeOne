@@ -10,22 +10,43 @@ void JointManager::CreateDistanceJoint(b2DistanceJointDef _def)
 	DistanceJoints.emplace_back(new DistanceJoint(*m_World, _def));
 }
 
+void JointManager::CreateRevolutionJoint(b2RevoluteJointDef _def)
+{
+	RevolutionJoints.emplace_back(new RevolutionJoint(*m_World, _def));
+}
+
 void JointManager::CleanupMarkedJoints()
 {
-	auto it = DistanceJoints.begin();
-	while (it != DistanceJoints.end())
+	auto distanceIt = DistanceJoints.begin();
+	while (distanceIt != DistanceJoints.end())
 	{
-		if ((*it)->Destroy)
+		if ((*distanceIt)->Destroy)
 		{
-			if ((*it) != nullptr)
+			if ((*distanceIt) != nullptr)
 			{
-				delete *it;
-				*it = nullptr;
+				delete * distanceIt;
+				*distanceIt = nullptr;
 			}
-			it = DistanceJoints.erase(it);
+			distanceIt = DistanceJoints.erase(distanceIt);
 			continue;
 		}
-		it++;
+		distanceIt++;
+	}
+
+	auto revoIt = RevolutionJoints.begin();
+	while (revoIt != RevolutionJoints.end())
+	{
+		if ((*revoIt)->Destroy)
+		{
+			if ((*revoIt) != nullptr)
+			{
+				delete* revoIt;
+				*revoIt = nullptr;
+			}
+			revoIt = RevolutionJoints.erase(revoIt);
+			continue;
+		}
+		revoIt++;
 	}
 }
 
@@ -39,6 +60,15 @@ void JointManager::ForceCleanupJoints()
 	}
 	DistanceJoints.clear();
 	DistanceJoints.resize(0);
+
+	for (auto& joint : RevolutionJoints)
+	{
+		if (joint)
+			delete joint;
+		joint = nullptr;
+	}
+	RevolutionJoints.clear();
+	RevolutionJoints.resize(0);
 }
 
 JointManager::JointManager()

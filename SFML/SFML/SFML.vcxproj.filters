@@ -135,6 +135,9 @@
     <ClCompile Include="LevelThree.cpp">
       <Filter>Source Files\SceneManagement</Filter>
     </ClCompile>
+    <ClCompile Include="RevolutionJoint.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureLoader.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="LevelThree.h">
       <Filter>Header Files\SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="RevolutionJoint.h">
+      <Filter>Header Files\Components\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

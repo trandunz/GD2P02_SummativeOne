@@ -87,7 +87,10 @@ void GameLevel::PollEvents()
 {
 	if (m_LevelComplete)
 	{
-
+		if (Statics::IsPaused)
+		{
+			TogglePause();
+		}
 	}
 	else
 	{

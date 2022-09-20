@@ -168,9 +168,13 @@
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="Destructable.cpp" />
     <ClCompile Include="DistanceJoint.cpp" />
+    <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="JointManager.cpp" />
+    <ClCompile Include="LevelCompleteMenu.cpp" />
+    <ClCompile Include="LevelThree.cpp" />
+    <ClCompile Include="LevelTwo.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Statics.cpp" />
@@ -192,9 +196,13 @@
     <ClInclude Include="ContactListener.h" />
     <ClInclude Include="Destructable.h" />
     <ClInclude Include="DistanceJoint.h" />
+    <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="JointManager.h" />
+    <ClInclude Include="LevelCompleteMenu.h" />
+    <ClInclude Include="LevelThree.h" />
+    <ClInclude Include="LevelTwo.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="Statics.h" />

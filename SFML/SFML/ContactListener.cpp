@@ -2,7 +2,7 @@
 #include "Bird.h"
 #include "Pig.h"
 #include "Destructable.h"
-#include "LevelOne.h"
+#include "LevelLoader.h"
 #include "VFX.h"
 
 void ContactListener::BeginContact(b2Contact* _contact)
@@ -43,14 +43,14 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			if (userData->identifier == "Bird")
 			{
 				Bird* bird = (Bird*)(userData->data);
-				LevelOne::ResetCameraReturnDelay();
+				LevelLoader::ResetCameraReturnDelay();
 			}
 			else if (userData->identifier == "Pig")
 			{
 				Pig* pig = (Pig*)(userData->data);
 				pig->TakeDamage(10.0f);
-				LevelOne::ResetCameraReturnDelay();
-				LevelOne::GetScore() += pig->GetScoreValue();
+				LevelLoader::ResetCameraReturnDelay();
+				*LevelLoader::GetScore() += pig->GetScoreValue();
 				VFX::GetInstance().CreateAndPlayTextEffect(
 					{
 						FloatToString(pig->GetScoreValue(), 0),
@@ -63,8 +63,8 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			{
 				Destructable* destructable = (Destructable*)(userData->data);
 				destructable->TakeDamage(3.0f);
-				LevelOne::ResetCameraReturnDelay();
-				LevelOne::GetScore() += destructable->GetScoreValue();
+				LevelLoader::ResetCameraReturnDelay();
+				*LevelLoader::GetScore() += destructable->GetScoreValue();
 				VFX::GetInstance().CreateAndPlayTextEffect(
 					{ 
 						FloatToString(destructable->GetScoreValue(), 0),
@@ -81,14 +81,14 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			if (userData->identifier == "Bird")
 			{
 				Bird* bird = (Bird*)(userData->data);
-				LevelOne::ResetCameraReturnDelay();
+				LevelLoader::ResetCameraReturnDelay();
 			}
 			else if (userData->identifier == "Pig")
 			{
 				Pig* pig = (Pig*)(userData->data);
 				pig->TakeDamage(10.0f);
-				LevelOne::ResetCameraReturnDelay();
-				LevelOne::GetScore() += pig->GetScoreValue();
+				LevelLoader::ResetCameraReturnDelay();
+				*LevelLoader::GetScore() += pig->GetScoreValue();
 				VFX::GetInstance().CreateAndPlayTextEffect(
 					{
 						FloatToString(pig->GetScoreValue(), 0),
@@ -101,8 +101,8 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			{
 				Destructable* destructable = (Destructable*)(userData->data);
 				destructable->TakeDamage(3.0f);
-				LevelOne::ResetCameraReturnDelay();
-				LevelOne::GetScore() += destructable->GetScoreValue();
+				LevelLoader::ResetCameraReturnDelay();
+				*LevelLoader::GetScore() += destructable->GetScoreValue();
 				VFX::GetInstance().CreateAndPlayTextEffect(
 					{
 						FloatToString(destructable->GetScoreValue(), 0),

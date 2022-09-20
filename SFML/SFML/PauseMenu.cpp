@@ -6,9 +6,16 @@
 PauseMenu::PauseMenu()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
+
+	GUI::GetInstance().CreateImage("DullBackground",
+		{
+			&TextureLoader::LoadTexture("GUI/DullBackground.png"),
+			ScreenCentre
+		});
+	
 	GUI::GetInstance().CreateImage("Background",
 		{
-			&TextureLoader::LoadTexture("PauseMenuBackground.png"),
+			&TextureLoader::LoadTexture("GUI/PauseMenuBackground.png"),
 			ScreenCentre
 		});
 
@@ -27,18 +34,10 @@ PauseMenu::~PauseMenu()
 	m_Buttons.resize(0);
 
 	GUI::GetInstance().CleanupImageElement("Background");
+	GUI::GetInstance().CleanupImageElement("DullBackground");
 	GUI::GetInstance().CleanupTextElement("PauseMenuTitle");
 	GUI::GetInstance().CleanupButtonElement("Retry");
 	GUI::GetInstance().CleanupButtonElement("Quit");
-}
-
-void PauseMenu::PollEvents()
-{
-	if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
-	{
-		for (auto& button : m_Buttons)
-			button.CallOnPress();
-	}
 }
 
 void PauseMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const

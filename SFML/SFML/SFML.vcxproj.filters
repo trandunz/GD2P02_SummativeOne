@@ -120,8 +120,20 @@
     <ClCompile Include="VFX.cpp">
       <Filter>Source Files\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="GameLevel.cpp">
+      <Filter>Source Files\SceneManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelTwo.cpp">
+      <Filter>Source Files\SceneManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelCompleteMenu.cpp">
+      <Filter>Source Files\Prefabs</Filter>
+    </ClCompile>
     <ClCompile Include="PauseMenu.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelThree.cpp">
+      <Filter>Source Files\SceneManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,8 +203,20 @@
     <ClInclude Include="VFX.h">
       <Filter>Header Files\Components\UI</Filter>
     </ClInclude>
+    <ClInclude Include="LevelTwo.h">
+      <Filter>Header Files\SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevel.h">
+      <Filter>Header Files\SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelCompleteMenu.h">
+      <Filter>Header Files\Prefabs</Filter>
+    </ClInclude>
     <ClInclude Include="PauseMenu.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelThree.h">
+      <Filter>Header Files\SceneManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

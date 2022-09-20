@@ -95,6 +95,7 @@ void GUI::CreateImage(std::string _key, ImageProperties _properties)
 	m_vecImages[_key].setScale(_properties.Scale);
 	SetOriginCentre(m_vecImages[_key]);
 	m_vecImages[_key].setPosition(_properties.StartPos);
+	m_vecImages[_key].setRotation(_properties.Rotation);
 }
 
 sf::Sprite& GUI::GetImage(std::string _key)

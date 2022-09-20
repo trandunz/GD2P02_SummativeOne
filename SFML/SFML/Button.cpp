@@ -10,7 +10,7 @@ Button::Button(ButtonProperties _properties)
 	m_Label.setCharacterSize(24); 
 	m_Label.setFillColor(sf::Color::Black);
 	if (_properties.Texture == nullptr)
-		SetTexture("Button.png");
+		SetTexture("GUI/Button.png");
 	else
 		SetTexture(*_properties.Texture);
 	SetScale(_properties.Scale);

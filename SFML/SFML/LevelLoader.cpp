@@ -2,6 +2,8 @@
 #include "Level.h"
 #include "MainMenu.h"
 #include "LevelOne.h"
+#include "LevelTwo.h"
+#include "LevelThree.h"
 
 Level* LevelLoader::m_CurrentLevel = nullptr;
 LEVELS LevelLoader::m_LevelToLoad = LEVELS::UNASSIGNED;
@@ -53,6 +55,16 @@ void LevelLoader::ChangeLevelIfLoaded()
 			m_CurrentLevel = new LevelOne;
 			break;
 		}
+		case LEVELS::LEVELTWO:
+		{
+			m_CurrentLevel = new LevelTwo;
+			break;
+		}
+		case LEVELS::LEVELTHREE:
+		{
+			m_CurrentLevel = new LevelThree;
+			break;
+		}
 		default:
 			break;
 		}
@@ -65,4 +77,32 @@ void LevelLoader::CleanupLevel()
 	if (m_CurrentLevel)
 		delete m_CurrentLevel;
 	m_CurrentLevel = nullptr;
+}
+
+void LevelLoader::ResetCameraReturnDelay()
+{
+	if (m_CurrentLevel)
+	{
+		GameLevel* gameLevel = dynamic_cast<GameLevel*>(m_CurrentLevel);
+		if (gameLevel)
+		{
+			gameLevel->ResetCameraReturnDelay();
+		}
+	}
+}
+
+float* LevelLoader::GetScore()
+{
+	if (m_CurrentLevel)
+	{
+		GameLevel* gameLevel = dynamic_cast<GameLevel*>(m_CurrentLevel);
+		if (gameLevel)
+		{
+			return &gameLevel->GetScore();
+		}
+	}
+	else
+	{
+		return {};
+	}
 }

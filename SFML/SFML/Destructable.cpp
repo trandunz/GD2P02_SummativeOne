@@ -6,6 +6,7 @@ Destructable::Destructable(b2World& _world, sf::Vector2f _startPos, SHAPE _shape
 	m_b2UserData.identifier = "Destructable";
 	m_b2UserData.data = reinterpret_cast<uintptr_t>(this);
 
+	m_DamageLevel = DAMAGELEVEL::FRESH;
 	m_Shape = _shape;
 	m_Type = _type;
 	InitBasedOnType();
@@ -116,33 +117,30 @@ void Destructable::InitBasedOnType()
 		break;
 	}
 
-	if (m_Mesh)
+	switch (m_DamageLevel)
 	{
-		switch (m_DamageLevel)
-		{
-		case DAMAGELEVEL::FRESH:
-		{
-			SetTexture(subFolder + shape + "1).png");
-			break;
-		}
-		case DAMAGELEVEL::TIER1:
-		{
-			SetTexture(subFolder + shape + "2).png");
-			break;
-		}
-		case DAMAGELEVEL::TIER2:
-		{
-			SetTexture(subFolder + shape + "3).png");
-			break;
-		}
-		case DAMAGELEVEL::TIER3:
-		{
-			SetTexture(subFolder + shape + "4).png");
-			break;
-		}
-		default:
-			break;
-		}
+	case DAMAGELEVEL::FRESH:
+	{
+		SetTexture(subFolder + shape + "1).png");
+		break;
+	}
+	case DAMAGELEVEL::TIER1:
+	{
+		SetTexture(subFolder + shape + "2).png");
+		break;
+	}
+	case DAMAGELEVEL::TIER2:
+	{
+		SetTexture(subFolder + shape + "3).png");
+		break;
+	}
+	case DAMAGELEVEL::TIER3:
+	{
+		SetTexture(subFolder + shape + "4).png");
+		break;
+	}
+	default:
+		break;
 	}
 }
 

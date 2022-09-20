@@ -8,6 +8,7 @@ Pig::Pig(b2World& _world, sf::Vector2f _startPos, float _maxHP)
 
 	m_MaxHealth = _maxHP;
 	m_CurrentHealth = m_MaxHealth;
+	m_Mesh->SetScale({ 0.5f, 0.5f });
 }
 
 Pig::~Pig()

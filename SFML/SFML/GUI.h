@@ -15,6 +15,7 @@ struct ImageProperties
 	sf::Texture* Texture{ nullptr };
 	sf::Vector2f StartPos{};
 	sf::Vector2f Scale{ 1,1 };
+	float Rotation{};
 };
 
 class GUI : public sf::Drawable

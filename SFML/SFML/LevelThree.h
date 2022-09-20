@@ -1,11 +1,11 @@
 #pragma once
 #include "GameLevel.h"
-
-class LevelOne : public GameLevel
+class LevelThree :
+    public GameLevel
 {
 public:
-	LevelOne();
-	virtual ~LevelOne();
+	LevelThree();
+	virtual ~LevelThree();
 
 protected:
 	void CreateCollisionLess() override;
@@ -15,3 +15,4 @@ protected:
 	void CreateDestructables() override;
 	void CreateJoints() override;
 };
+

@@ -1,7 +1,6 @@
-#include "LevelOne.h"
+#include "LevelTwo.h"
 
-LevelOne::LevelOne()
-	: GameLevel()
+LevelTwo::LevelTwo()
 {
 	CreateCollisionLess();
 	CreateStatics();
@@ -11,11 +10,11 @@ LevelOne::LevelOne()
 	CreateJoints();
 }
 
-LevelOne::~LevelOne()
+LevelTwo::~LevelTwo()
 {
 }
 
-void LevelOne::CreateCollisionLess()
+void LevelTwo::CreateCollisionLess()
 {
 	m_CollisionLess.emplace_back(new GameObject(*m_World, { 1280 / 2,720 / 2 }));
 	m_CollisionLess.back()->SetTexture("Background.jpg");
@@ -25,7 +24,7 @@ void LevelOne::CreateCollisionLess()
 	m_CollisionLess.back()->SetScale({ 2.65f,2.65f });
 }
 
-void LevelOne::CreateStatics()
+void LevelTwo::CreateStatics()
 {
 	m_Statics.emplace_back(new GameObject(*m_World, { -173,680 }));
 	m_Statics.emplace_back(new GameObject(*m_World, { 173,680 }));
@@ -42,7 +41,7 @@ void LevelOne::CreateStatics()
 	}
 }
 
-void LevelOne::CreateBirds()
+void LevelTwo::CreateBirds()
 {
 	m_Birds.emplace_back(new Bird(*m_World, { 190,566 }));
 	m_Birds.emplace_back(new Bird(*m_World, { 150,566 }));
@@ -59,7 +58,7 @@ void LevelOne::CreateBirds()
 	}
 }
 
-void LevelOne::CreatePigs()
+void LevelTwo::CreatePigs()
 {
 	m_Pigs.emplace_back(new Pig(*m_World, { 1000,590 }));
 
@@ -72,7 +71,7 @@ void LevelOne::CreatePigs()
 	}
 }
 
-void LevelOne::CreateDestructables()
+void LevelTwo::CreateDestructables()
 {
 	m_Destructables.emplace_back(new Destructable(*m_World, { 950, 470 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
 	m_Destructables.back()->SetRotation(90.0f);
@@ -84,7 +83,7 @@ void LevelOne::CreateDestructables()
 	m_Destructables.emplace_back(new Destructable(*m_World, { 1100, 620 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::WOOD));
 }
 
-void LevelOne::CreateJoints()
+void LevelTwo::CreateJoints()
 {
 	//b2DistanceJointDef distanceJoint{};
 	//distanceJoint.bodyA = m_Destructables[0]->GetBody();

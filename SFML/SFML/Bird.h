@@ -13,5 +13,6 @@ public:
 	void Launch(sf::Vector2f _impulse);
 
 	float GetScoreValue();
+	void AwardUnusedBirdScore();
 };
 

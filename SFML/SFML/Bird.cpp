@@ -1,4 +1,6 @@
 #include "Bird.h"
+#include "VFX.h"
+#include "LevelLoader.h"
 
 Bird::Bird(b2World& _world, sf::Vector2f _startPos)
 	: GameObject(_world, _startPos)
@@ -18,7 +20,18 @@ void Bird::Start()
 void Bird::Update()
 {
 	GameObject::Update();
-
+	if (m_PhysicsBody)
+	{
+		if (Mag(m_PhysicsBody->GetVelocity()) <= 10.0f)
+		{
+			Destroy = true;
+		}
+	}
+	if (GetPosition().x < -m_Mesh->GetGlobalBounds().width
+		|| GetPosition().x > Statics::RenderWindow.getSize().x + m_Mesh->GetGlobalBounds().width)
+	{
+		Destroy = true;
+	}
 }
 
 sf::Vector2f Bird::GetLaunchVelocity(sf::Vector2f _launchVector)
@@ -35,4 +48,17 @@ void Bird::Launch(sf::Vector2f _impulse)
 float Bird::GetScoreValue()
 {
 	return 10000.0f;
+}
+
+void Bird::AwardUnusedBirdScore()
+{
+	VFX::GetInstance().CreateAndPlayTextEffect(
+		{
+			FloatToString(GetScoreValue(), 0),
+			GetPosition(),
+			sf::Color::Green,
+			{1.5f,1.5f}
+		}, 1.0f);
+
+	*LevelLoader::GetScore() += GetScoreValue();
 }

@@ -141,6 +141,9 @@
     <ClCompile Include="PulleyJoint.cpp">
       <Filter>Source Files\Components\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="LevelFailedMenu.cpp">
+      <Filter>Source Files\Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureLoader.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="PulleyJoint.h">
       <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelFailedMenu.h">
+      <Filter>Header Files\Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

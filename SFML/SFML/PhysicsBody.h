@@ -31,6 +31,8 @@ public:
 	float GetRotation();
 	b2Vec2 GetB2Position();
 
+	sf::Vector2f GetVelocity();
+
 	void SetSize(sf::Vector2f _size);
 
 	b2Body* GetBody();

@@ -1,6 +1,7 @@
 #include "LevelCompleteMenu.h"
 #include "GUI.h"
 #include "TextureLoader.h"
+#include "Math.h"
 #include "LevelLoader.h"
 
 LevelCompleteMenu::LevelCompleteMenu()
@@ -22,7 +23,7 @@ LevelCompleteMenu::LevelCompleteMenu()
 
 	GUI::GetInstance().CreateImage("Star1",
 		{
-			&TextureLoader::LoadTexture("GUI/Star_Full.png"),
+			&TextureLoader::LoadTexture("GUI/Star.png"),
 			{ScreenCentre.x - 75, ScreenCentre.y - 100},
 			{1.2f,1.2f},
 			45.0f
@@ -30,38 +31,91 @@ LevelCompleteMenu::LevelCompleteMenu()
 
 	GUI::GetInstance().CreateImage("Star2",
 		{
-			&TextureLoader::LoadTexture("GUI/Star_Full.png"),
+			&TextureLoader::LoadTexture("GUI/Star.png"),
 			{ScreenCentre.x, ScreenCentre.y - 110},
 			{1.5f,1.5f}
 		});
 
 	GUI::GetInstance().CreateImage("Star3",
 		{
-			&TextureLoader::LoadTexture("GUI/Star_Full.png"),
+			&TextureLoader::LoadTexture("GUI/Star.png"),
 			{ScreenCentre.x + 75, ScreenCentre.y - 100},
 			{1.2f,1.2f},
 			-45.0f
 		});
 
+	GUI::GetInstance().CreateText("Score",
+		{
+			{ScreenCentre.x, ScreenCentre.y - 20},
+			"Score: " + FloatToString(*LevelLoader::GetScore(),0),
+
+		});
+
 	CreateButtons();
+
+	SetStarsBasedOnScore();
 }
 
 LevelCompleteMenu::~LevelCompleteMenu()
 {
-	m_Buttons.clear();
-	m_Buttons.resize(0);
-
 	GUI::GetInstance().CleanupImageElement("Background");
 	GUI::GetInstance().CleanupImageElement("DullBackground");
+	GUI::GetInstance().CleanupTextElement("Score");
 	GUI::GetInstance().CleanupButtonElement("Continue");
 	GUI::GetInstance().CleanupButtonElement("Retry");
-	GUI::GetInstance().CleanupButtonElement("Quit");
 }
 
-void LevelCompleteMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void LevelCompleteMenu::SetStarsBasedOnScore()
 {
-	for (auto& button : m_Buttons)
-		target.draw(button);
+	float totalScore = *LevelLoader::GetScore();
+
+	switch (LevelLoader::GetCurrentLevelID())
+	{
+	case LEVELS::LEVELONE:
+	{
+		GUI::GetInstance().GetImage("Star1").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+
+		if (*LevelLoader::GetScore() >= 35000)
+		{
+			GUI::GetInstance().GetImage("Star2").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+		}
+		if (*LevelLoader::GetScore() >= 65000)
+		{
+			GUI::GetInstance().GetImage("Star3").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+		}
+		break;
+	}
+	case LEVELS::LEVELTWO:
+	{
+		GUI::GetInstance().GetImage("Star1").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+
+		if (*LevelLoader::GetScore() >= 40000)
+		{
+			GUI::GetInstance().GetImage("Star2").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+		}
+		if (*LevelLoader::GetScore() >= 60000)
+		{
+			GUI::GetInstance().GetImage("Star3").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+		}
+		break;
+	}
+	case LEVELS::LEVELTHREE:
+	{
+		GUI::GetInstance().GetImage("Star1").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+
+		if (*LevelLoader::GetScore() >= 40000)
+		{
+			GUI::GetInstance().GetImage("Star2").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+		}
+		if (*LevelLoader::GetScore() >= 60000)
+		{
+			GUI::GetInstance().GetImage("Star3").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
+		}
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 void LevelCompleteMenu::CreateButtons()
@@ -70,17 +124,17 @@ void LevelCompleteMenu::CreateButtons()
 	GUI::GetInstance().CreateButton("Continue",
 		{
 			"Continue",
-			{ ScreenCentre.x,ScreenCentre.y + 10},
+			{ ScreenCentre.x,ScreenCentre.y + 60},
 			{1,1},
 			[]()
 			{
-				LevelLoader::LoadLevel(LEVELS::MAINMENU);
+				LevelLoader::LoadNextLevel();
 			}
 		});
 	GUI::GetInstance().CreateButton("Retry",
 		{
 			"Retry",
-			{ ScreenCentre.x,ScreenCentre.y + 110},
+			{ ScreenCentre.x,ScreenCentre.y + 130},
 			{1,1},
 			[]()
 			{

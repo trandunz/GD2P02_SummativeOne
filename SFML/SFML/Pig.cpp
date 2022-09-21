@@ -1,4 +1,6 @@
 #include "Pig.h"
+#include "VFX.h"
+#include "LevelLoader.h"
 
 Pig::Pig(b2World& _world, sf::Vector2f _startPos, float _maxHP)
 	: GameObject(_world, _startPos)
@@ -40,6 +42,29 @@ void Pig::TakeDamage(float _amount)
 
 		if (m_CurrentHealth < 0.0f)
 			m_CurrentHealth = 0.0f;
+	}
+}
+
+void Pig::TakeDamage(float _amount, b2Vec2 _hitPos, sf::Color _pointColor)
+{
+	if (m_DamageTimer <= 0.0f)
+	{
+		m_DamageTimer = m_DamageInterval;
+
+		m_CurrentHealth -= _amount;
+
+		if (m_CurrentHealth < 0.0f)
+			m_CurrentHealth = 0.0f;
+
+		VFX::GetInstance().CreateAndPlayTextEffect(
+			{
+				FloatToString(GetScoreValue(), 0),
+				{_hitPos.x * Statics::Scale, _hitPos.y * Statics::Scale},
+				_pointColor,
+				{1.5f,1.5f}
+			}, 1.0f);
+
+		*LevelLoader::GetScore() += GetScoreValue();
 	}
 }
 

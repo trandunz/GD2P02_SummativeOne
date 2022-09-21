@@ -1,16 +1,13 @@
 #pragma once
 #include "Button.h"
-class LevelCompleteMenu : public sf::Drawable
+class LevelCompleteMenu
 {
 public:
 	LevelCompleteMenu();
 	~LevelCompleteMenu();
 
 private:
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
+	void SetStarsBasedOnScore();
 	void CreateButtons();
-
-	std::vector<Button> m_Buttons{};
 };
 

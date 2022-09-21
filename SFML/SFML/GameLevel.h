@@ -9,6 +9,7 @@
 
 class PauseMenu;
 class LevelCompleteMenu;
+class LevelFailedMenu;
 class GameLevel :
     public Level
 {
@@ -58,6 +59,7 @@ protected:
 
 	PauseMenu* m_PauseMenu{ nullptr };
 	LevelCompleteMenu* m_LevelCompleteMenu{ nullptr };
+	LevelFailedMenu* m_LevelFailedMenu{ nullptr };
 
 	std::vector<GameObject*> m_CollisionLess{};
 	std::vector<GameObject*> m_Statics{};

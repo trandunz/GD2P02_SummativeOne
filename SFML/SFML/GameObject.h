@@ -11,6 +11,7 @@ public:
 	b2Body* GetBody();
 	b2Vec2 GetBodyPosition();
 	sf::Vector2f GetPosition();
+	sf::Vector2f GetVelocity();
 	void SetPosition(sf::Vector2f _position);
 	void SetRotation(float _degrees);
 	void SetScale(sf::Vector2f _scale);;

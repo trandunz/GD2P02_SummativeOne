@@ -6,6 +6,7 @@
 #include "PauseMenu.h"
 #include "TextureLoader.h"
 #include "LevelCompleteMenu.h"
+#include "LevelFailedMenu.h"
 
 GameLevel::GameLevel()
 {
@@ -25,16 +26,12 @@ GameLevel::GameLevel()
 		{
 			{1280 - 200.0f, 20.0f},
 			"Score: 10000",
-			sf::Color::White,
-			sf::Color::Black
 		});
 
 	GUI::GetInstance().CreateText("ScoreValue",
 		{
 			{1280 - 75.0f, 20.0f},
 			"100000",
-			sf::Color::White,
-			sf::Color::Black
 		});
 
 	GUI::GetInstance().CreateButton("PauseButton",
@@ -81,6 +78,12 @@ GameLevel::~GameLevel()
 		delete m_LevelCompleteMenu;
 		m_LevelCompleteMenu = nullptr;
 	}
+
+	if (m_LevelFailedMenu)
+	{
+		delete m_LevelFailedMenu;
+		m_LevelFailedMenu = nullptr;
+	}
 }
 
 void GameLevel::PollEvents()
@@ -110,8 +113,8 @@ void GameLevel::PollEvents()
 				{
 					if (Statics::EventHandle.mouseButton.button == sf::Mouse::Left)
 					{
-						if (m_NextBirdIndex < m_Birds.size())
-							m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
+						if (m_Birds.size() > 0 )
+							m_Catapult.LoadBird(*m_Birds[0]);
 					}
 				}
 			}
@@ -128,11 +131,8 @@ void GameLevel::PollEvents()
 				{
 					if (m_Catapult.IsLoaded())
 					{
-						if (m_Catapult.GetTrajectoryPoint(200).x > 500)
-						{
-							m_CameraLerpAmount = 0;
-							m_FireTimer = m_FireTime;
-						}
+						m_CameraLerpAmount = 0;
+						m_FireTimer = m_FireTime;
 
 						for (int i = m_NextBirdIndex; i < m_Birds.size(); i++)
 							m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
@@ -214,7 +214,24 @@ void GameLevel::Update()
 		if (m_LevelComplete == false && m_Pigs.size() <= 0)
 		{
 			m_LevelComplete = true;
+
+			for (auto& bird : m_Birds)
+				bird->AwardUnusedBirdScore();
+
 			m_LevelCompleteMenu = new LevelCompleteMenu();
+		}
+		else if (m_LevelComplete == false && m_Birds.size() <= 0)
+		{
+			m_LevelComplete = true;
+			m_LevelFailedMenu = new LevelFailedMenu();
+		}
+	}
+
+	if (m_Birds.size() > 0)
+	{
+		if (Mag(m_Birds[0]->GetVelocity()) > 50.0f && m_Pigs.size() > 0)
+		{
+			ResetCameraReturnDelay();
 		}
 	}
 
@@ -262,11 +279,6 @@ void GameLevel::Draw()
 	if (m_PauseMenu)
 	{
 		Statics::RenderWindow.draw(*m_PauseMenu);
-	}
-
-	if (m_LevelCompleteMenu)
-	{
-		Statics::RenderWindow.draw(*m_LevelCompleteMenu);
 	}
 }
 

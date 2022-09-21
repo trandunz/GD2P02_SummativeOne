@@ -22,10 +22,14 @@ LevelThree::~LevelThree()
 void LevelThree::Draw()
 {
 	m_PulleyJointRope.clear();
-	m_PulleyJointRope.append({ m_Destructables[0]->GetPosition(),sf::Color::Black});
-	m_PulleyJointRope.append({ m_Statics[7]->GetPosition(),sf::Color::Black });
-	m_PulleyJointRope.append({ m_Statics[8]->GetPosition(),sf::Color::Black });
-	m_PulleyJointRope.append({ m_Destructables[1]->GetPosition(),sf::Color::Black });
+
+	if (m_Destructables.size() >= 12)
+	{
+		m_PulleyJointRope.append({ m_Destructables[0]->GetPosition(),sf::Color::Black });
+		m_PulleyJointRope.append({ m_Statics[7]->GetPosition(),sf::Color::Black });
+		m_PulleyJointRope.append({ m_Statics[8]->GetPosition(),sf::Color::Black });
+		m_PulleyJointRope.append({ m_Destructables[1]->GetPosition(),sf::Color::Black });
+	}
 
 	//
 	// Draw
@@ -65,11 +69,6 @@ void LevelThree::Draw()
 	if (m_PauseMenu)
 	{
 		Statics::RenderWindow.draw(*m_PauseMenu);
-	}
-
-	if (m_LevelCompleteMenu)
-	{
-		Statics::RenderWindow.draw(*m_LevelCompleteMenu);
 	}
 }
 

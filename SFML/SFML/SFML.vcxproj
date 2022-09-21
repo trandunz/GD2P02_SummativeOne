@@ -173,6 +173,7 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="JointManager.cpp" />
     <ClCompile Include="LevelCompleteMenu.cpp" />
+    <ClCompile Include="LevelFailedMenu.cpp" />
     <ClCompile Include="LevelThree.cpp" />
     <ClCompile Include="LevelTwo.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="JointManager.h" />
     <ClInclude Include="LevelCompleteMenu.h" />
+    <ClInclude Include="LevelFailedMenu.h" />
     <ClInclude Include="LevelThree.h" />
     <ClInclude Include="LevelTwo.h" />
     <ClInclude Include="PauseMenu.h" />

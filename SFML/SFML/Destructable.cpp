@@ -1,4 +1,6 @@
 #include "Destructable.h"
+#include "VFX.h"
+#include "LevelLoader.h"
 
 Destructable::Destructable(b2World& _world, sf::Vector2f _startPos, SHAPE _shape, TYPE _type)
 	: GameObject(_world, _startPos)
@@ -50,6 +52,31 @@ void Destructable::TakeDamage(float _amount)
 
 		UpdateDamageLevelFromHealth();
 		InitBasedOnType();
+	}
+}
+
+void Destructable::TakeDamage(float _amount, b2Vec2 _hitPos, sf::Color _pointColor)
+{
+	if (m_DamageTimer <= 0.0f && m_Type != TYPE::DIAMOND)
+	{
+		m_DamageTimer = m_DamageInterval;
+		m_CurrentHealth -= _amount;
+
+		if (m_CurrentHealth < 0.0f)
+			m_CurrentHealth = 0.0f;
+
+		UpdateDamageLevelFromHealth();
+		InitBasedOnType();
+
+		VFX::GetInstance().CreateAndPlayTextEffect(
+			{
+				FloatToString(GetScoreValue(), 0),
+				{_hitPos.x * Statics::Scale, _hitPos.y * Statics::Scale},
+				_pointColor,
+				{1.5f,1.5f}
+			}, 1.0f);
+
+		*LevelLoader::GetScore() += GetScoreValue();
 	}
 }
 

@@ -11,6 +11,7 @@ public:
 	virtual void Update() override;
 
 	void TakeDamage(float _amount);
+	void TakeDamage(float _amount, b2Vec2 _hitPos, sf::Color _pointColor = sf::Color::Green);
 
 	float GetScoreValue();
 private:

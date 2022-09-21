@@ -37,6 +37,35 @@ void LevelLoader::LoadLevel(LEVELS _level)
 	m_LevelToLoad = _level;
 }
 
+void LevelLoader::LoadNextLevel()
+{
+	switch (m_CurrentLevelID)
+	{
+	case LEVELS::MAINMENU:
+	{
+		m_LevelToLoad = LEVELS::LEVELONE;
+		break;
+	}
+	case LEVELS::LEVELONE:
+	{
+		m_LevelToLoad = LEVELS::LEVELTWO;
+		break;
+	}
+	case LEVELS::LEVELTWO:
+	{
+		m_LevelToLoad = LEVELS::LEVELTHREE;
+		break;
+	}
+	case LEVELS::LEVELTHREE:
+	{
+		m_LevelToLoad = LEVELS::MAINMENU;
+		break;
+	}
+	default:
+		break;
+	}
+}
+
 void LevelLoader::ChangeLevelIfLoaded()
 {
 	if (m_LevelToLoad != LEVELS::UNASSIGNED)
@@ -105,4 +134,9 @@ float* LevelLoader::GetScore()
 	{
 		return {};
 	}
+}
+
+LEVELS LevelLoader::GetCurrentLevelID()
+{
+	return m_CurrentLevelID;
 }

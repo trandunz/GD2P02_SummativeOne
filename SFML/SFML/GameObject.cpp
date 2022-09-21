@@ -45,6 +45,14 @@ sf::Vector2f GameObject::GetPosition()
 	return m_Mesh->GetPosition();
 }
 
+sf::Vector2f GameObject::GetVelocity()
+{
+	if (m_PhysicsBody != nullptr)
+		return m_PhysicsBody->GetVelocity();
+	else
+		return {};
+}
+
 void GameObject::SetPosition(sf::Vector2f _position)
 {
 	m_Mesh->SetPosition(_position);

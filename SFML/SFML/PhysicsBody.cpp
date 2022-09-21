@@ -85,6 +85,15 @@ b2Vec2 PhysicsBody::GetB2Position()
 	return {};
 }
 
+sf::Vector2f PhysicsBody::GetVelocity()
+{
+	if (m_Body != nullptr)
+	{
+		return { m_Body->GetLinearVelocity().x * Statics::Scale,  m_Body->GetLinearVelocity().y * Statics::Scale };
+	}
+	return {};
+}
+
 void PhysicsBody::SetSize(sf::Vector2f _size)
 {
 	m_Size = _size;
@@ -141,7 +150,7 @@ void PhysicsBody::SetupBody()
 	bodyDef.type = m_BodyType;
 	bodyDef.bullet = false;
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
-	bodyDef.angularDamping = 0.5f;
+	bodyDef.angularDamping = 2.0f;
 	m_Body = m_World->CreateBody(&bodyDef);
 
 	b2Shape* shape{ nullptr };
@@ -199,7 +208,7 @@ void PhysicsBody::SetupBody()
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = m_Density;
 	fixtureDef.shape = &*shape;
-	fixtureDef.restitution = 0.6f;
+	fixtureDef.restitution = 0.3f;
 	m_Body->CreateFixture(&fixtureDef);
 	m_Body->SetFixedRotation(false);
 
@@ -220,7 +229,7 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	bodyDef.bullet = false;
 	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(&_userData);
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
-	bodyDef.angularDamping = 0.5f;
+	bodyDef.angularDamping = 2.0f;
 	m_Body = m_World->CreateBody(&bodyDef);
 	
 	b2Shape* shape{ nullptr };
@@ -278,7 +287,7 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = m_Density;
 	fixtureDef.shape = &*shape;
-	fixtureDef.restitution = 0.6f;
+	fixtureDef.restitution = 0.3f;
 	m_Body->CreateFixture(&fixtureDef);
 	m_Body->SetFixedRotation(false);
 

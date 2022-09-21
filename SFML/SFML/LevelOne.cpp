@@ -111,7 +111,7 @@ void LevelOne::CreateJoints()
 	revolutionJoint.Initialize(m_Destructables[0]->GetBody(), m_Destructables[1]->GetBody(), m_Destructables[1]->GetBody()->GetWorldCenter());
 	revolutionJoint.collideConnected = false;
 	revolutionJoint.enableMotor = true;
-	revolutionJoint.motorSpeed = 20.0f;
-	revolutionJoint.maxMotorTorque = 20.0f;
+	revolutionJoint.motorSpeed = 1000.0f;
+	revolutionJoint.maxMotorTorque = 10.0f;
 	JointManager::GetInstance().CreateRevolutionJoint(revolutionJoint);
 }

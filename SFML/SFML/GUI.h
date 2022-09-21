@@ -5,8 +5,8 @@ struct TextProperties
 {
 	sf::Vector2f StartPos{};
 	std::string String{};
-	sf::Color FillColor{};
-	sf::Color OutlineColor{};
+	sf::Color FillColor{ sf::Color::White };
+	sf::Color OutlineColor{ sf::Color::Black };
 	int iCharacterSize{ 36 };
 };
 

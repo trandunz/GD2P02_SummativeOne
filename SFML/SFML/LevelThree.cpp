@@ -17,18 +17,38 @@ LevelThree::LevelThree()
 
 LevelThree::~LevelThree()
 {
+	if (m_PulleyBlockA)
+		delete m_PulleyBlockA;
+	m_PulleyBlockA = nullptr;
+
+	if (m_PulleyBlockB)
+		delete m_PulleyBlockB;
+	m_PulleyBlockB = nullptr;
+}
+
+void LevelThree::Update()
+{
+	GameLevel::Update();
+	if (m_PulleyBlockA)
+	{
+		m_PulleyBlockA->Update();
+	}
+	if (m_PulleyBlockB)
+	{
+		m_PulleyBlockB->Update();
+	}
 }
 
 void LevelThree::Draw()
 {
 	m_PulleyJointRope.clear();
 
-	if (m_Destructables.size() >= 12)
+	if (m_PulleyBlockA && m_PulleyBlockB)
 	{
-		m_PulleyJointRope.append({ m_Destructables[0]->GetPosition(),sf::Color::Black });
+		m_PulleyJointRope.append({ m_PulleyBlockA->GetPosition(),sf::Color::Black });
 		m_PulleyJointRope.append({ m_Statics[7]->GetPosition(),sf::Color::Black });
 		m_PulleyJointRope.append({ m_Statics[8]->GetPosition(),sf::Color::Black });
-		m_PulleyJointRope.append({ m_Destructables[1]->GetPosition(),sf::Color::Black });
+		m_PulleyJointRope.append({ m_PulleyBlockB->GetPosition(),sf::Color::Black });
 	}
 
 	//
@@ -52,6 +72,14 @@ void LevelThree::Draw()
 	for (auto& object : m_Destructables)
 	{
 		Statics::RenderWindow.draw(*object);
+	}
+	if (m_PulleyBlockA)
+	{
+		Statics::RenderWindow.draw(*m_PulleyBlockA);
+	}
+	if (m_PulleyBlockB)
+	{
+		Statics::RenderWindow.draw(*m_PulleyBlockB);
 	}
 	for (auto& object : m_Pigs)
 	{
@@ -104,14 +132,12 @@ void LevelThree::CreateStatics()
 	for (auto& object : m_Statics)
 	{
 		object->SetTexture("Ground.png");
-		object->SetBodyType(b2_staticBody);
 		object->CreateBody();
 	}
 
 	m_Statics.emplace_back(new GameObject(*m_World, { 600, 10 }));
 	m_Statics.back()->SetTexture("Diamond/BigWheel (1).png");
 	m_Statics.back()->SetScale({ 0.25f,0.25f });
-	m_Statics.back()->SetBodyType(b2_staticBody);
 	m_Statics.back()->CreateBody();
 
 	m_Statics.emplace_back(new GameObject(*m_World, { 1400, 10 }));
@@ -128,14 +154,6 @@ void LevelThree::CreateBirds()
 	m_Birds.emplace_back(new Bird(*m_World, { 110,566 }));
 	m_Birds.emplace_back(new Bird(*m_World, { 70,566 }));
 	m_Birds.emplace_back(new Bird(*m_World, { 30,566 }));
-
-	for (auto& bird : m_Birds)
-	{
-		bird->SetTexture("Bird.png");
-		bird->SetScale({ 0.25f,0.25f });
-		bird->SetShapeType(BODYSHAPE::CIRCLE);
-		bird->SetBodyType(b2_dynamicBody);
-	}
 }
 
 void LevelThree::CreatePigs()
@@ -147,22 +165,15 @@ void LevelThree::CreatePigs()
 
 	m_Pigs.emplace_back(new Pig(*m_World, { 1400,500 }));
 	m_Pigs.emplace_back(new Pig(*m_World, { 600,500 }));
-
-	for (auto& pig : m_Pigs)
-	{
-		pig->SetTexture("Pig.png");
-		pig->SetShapeType(BODYSHAPE::CIRCLE);
-		pig->SetBodyType(b2_dynamicBody);
-		pig->CreateBody();
-	}
 }
 
 void LevelThree::CreateDestructables()
 {
-	m_Destructables.emplace_back(new Destructable(*m_World, { 600, 150 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::ICE));
-	m_Destructables.back()->SetRotation(90.0f);
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1400, 150 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::ICE));
-	m_Destructables.back()->SetRotation(-90.0f);
+	m_PulleyBlockA = new Destructable(*m_World, { 600, 150 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::ICE);
+	m_PulleyBlockA->SetRotation(90.0f);
+
+	m_PulleyBlockB = new Destructable(*m_World, { 1400, 150 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::ICE);
+	m_PulleyBlockB->SetRotation(-90.0f);
 
 	m_Destructables.emplace_back(new Destructable(*m_World, { 900, 370 }, Destructable::SHAPE::PLANK, Destructable::TYPE::STONE));
 	m_Destructables.emplace_back(new Destructable(*m_World, { 1100, 370 }, Destructable::SHAPE::PLANK, Destructable::TYPE::STONE));
@@ -191,8 +202,8 @@ void LevelThree::CreateDestructables()
 void LevelThree::CreateJoints()
 {
 	b2PulleyJointDef pulleyJoint{};
-	pulleyJoint.bodyA = m_Destructables[0]->GetBody();
-	pulleyJoint.bodyB = m_Destructables[1]->GetBody();
+	pulleyJoint.bodyA = m_PulleyBlockA->GetBody();
+	pulleyJoint.bodyB = m_PulleyBlockB->GetBody();
 	pulleyJoint.collideConnected = false;
 	pulleyJoint.groundAnchorA.Set(600 / Statics::Scale, 80 / Statics::Scale);
 	pulleyJoint.groundAnchorB.Set(1400 / Statics::Scale, 80 / Statics::Scale);
@@ -200,4 +211,25 @@ void LevelThree::CreateJoints()
 	pulleyJoint.lengthB = 150 / Statics::Scale;
 
 	JointManager::GetInstance().CreatePulleyJoint(pulleyJoint);
+}
+
+void LevelThree::CleanupDestroyedDestructables(std::vector<Destructable*>& _vector)
+{
+	GameLevel::CleanupDestroyedDestructables(_vector);
+	if (m_PulleyBlockA)
+	{
+		if (m_PulleyBlockA->Destroy)
+		{
+			delete m_PulleyBlockA;
+			m_PulleyBlockA = nullptr;
+		}
+	}
+	if (m_PulleyBlockB)
+	{
+		if (m_PulleyBlockB->Destroy)
+		{
+			delete m_PulleyBlockB;
+			m_PulleyBlockB = nullptr;
+		}
+	}
 }

@@ -23,7 +23,7 @@ public:
 	virtual void Start();
 	virtual void Update();
 
-	void CreateBody();
+	virtual void CreateBody();
 	void DestroyBody();
 
 	bool Destroy = false;

@@ -8,6 +8,8 @@ GameObject::GameObject(b2World& _world, sf::Vector2f _startPos)
 	m_b2UserData = UserData();
 	m_b2UserData.identifier = "GameObject";
 	m_b2UserData.data = reinterpret_cast<uintptr_t>(this);
+
+	SetBodyType(b2_staticBody);
 }
 
 GameObject::~GameObject()

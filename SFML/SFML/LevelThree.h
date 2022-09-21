@@ -7,7 +7,8 @@ public:
 	LevelThree();
 	virtual ~LevelThree();
 
-	virtual void Draw() override;
+	void Update() override;
+	void Draw() override;
 
 protected:
 	void CreateCollisionLess() override;
@@ -17,7 +18,11 @@ protected:
 	void CreateDestructables() override;
 	void CreateJoints() override;
 
+	void CleanupDestroyedDestructables(std::vector <Destructable*>& _vector) override;
+
 private:
 	sf::VertexArray m_PulleyJointRope{ sf::LinesStrip };
+	Destructable* m_PulleyBlockA{ nullptr };
+	Destructable* m_PulleyBlockB{ nullptr };
 };
 

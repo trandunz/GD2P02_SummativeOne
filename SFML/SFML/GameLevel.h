@@ -36,7 +36,7 @@ protected:
 	void CleanupDestroyedGameObjects(std::vector <GameObject*>& _vector);
 	void CleanupDestroyedPigs(std::vector <Pig*>& _vector);
 	void CleanupDestroyedBirds(std::vector <Bird*>& _vector);
-	void CleanupDestroyedDestructables(std::vector <Destructable*>& _vector);
+	virtual void CleanupDestroyedDestructables(std::vector <Destructable*>& _vector);
 
 	float m_CameraDelayTimer{ 0.0f };
 	float m_CameraReturnDelay{ 1.5f };
@@ -47,7 +47,6 @@ protected:
 	ContactListener m_ContactListener{};
 	Catapult m_Catapult{ { 225.0f, 520.0f } };
 
-	int m_NextBirdIndex{ 0 };
 	sf::Vector2f m_CameraStartPos{};
 	sf::Vector2f m_CameraTargetPos{};
 	bool m_LerpRight{ true };

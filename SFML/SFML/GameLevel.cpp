@@ -105,7 +105,7 @@ void GameLevel::PollEvents()
 			}
 		}
 
-		if (m_FireTimer <= 0)
+		if (m_FireTimer > 0)
 		{
 			if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
 			{
@@ -113,8 +113,26 @@ void GameLevel::PollEvents()
 				{
 					if (Statics::EventHandle.mouseButton.button == sf::Mouse::Left)
 					{
-						if (m_Birds.size() > 0 )
+						if (m_Birds.size() > 0)
+						{
+							m_Birds[0]->SpecialAbility();
+						}
+					}
+				}
+			}
+		}
+		else if (m_FireTimer <= 0)
+		{
+			if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
+			{
+				if (Statics::IsPaused == false)
+				{
+					if (Statics::EventHandle.mouseButton.button == sf::Mouse::Left)
+					{
+						if (m_Birds.size() > 0)
+						{
 							m_Catapult.LoadBird(*m_Birds[0]);
+						}
 					}
 				}
 			}
@@ -134,7 +152,7 @@ void GameLevel::PollEvents()
 						m_CameraLerpAmount = 0;
 						m_FireTimer = m_FireTime;
 
-						for (int i = m_NextBirdIndex; i < m_Birds.size(); i++)
+						for (int i = 0; i < m_Birds.size(); i++)
 							m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
 
 						m_Catapult.ReleaseBird();
@@ -179,6 +197,7 @@ void GameLevel::Update()
 
 	if (m_FireTimer > 0)
 	{
+
 		if (m_CameraDelayTimer > 0.0f && m_CameraLerpAmount >= 1.0f)
 		{
 			m_CameraDelayTimer -= Statics::DeltaTime;
@@ -229,7 +248,7 @@ void GameLevel::Update()
 
 	if (m_Birds.size() > 0)
 	{
-		if (Mag(m_Birds[0]->GetVelocity()) > 50.0f && m_Pigs.size() > 0)
+		if (Mag(m_Birds[0]->GetVelocity()) > 10.0f && m_Pigs.size() > 0)
 		{
 			ResetCameraReturnDelay();
 		}
@@ -351,7 +370,6 @@ void GameLevel::CreateBirds()
 
 	for (auto& bird : m_Birds)
 	{
-		bird->SetTexture("Bird.png");
 		bird->SetScale({ 0.25f,0.25f });
 		bird->SetShapeType(BODYSHAPE::CIRCLE);
 		bird->SetBodyType(b2_dynamicBody);

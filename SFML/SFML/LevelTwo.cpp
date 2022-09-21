@@ -54,19 +54,11 @@ void LevelTwo::CreateStatics()
 
 void LevelTwo::CreateBirds()
 {
-	m_Birds.emplace_back(new Bird(*m_World, { 190,566 }));
-	m_Birds.emplace_back(new Bird(*m_World, { 150,566 }));
-	m_Birds.emplace_back(new Bird(*m_World, { 110,566 }));
-	m_Birds.emplace_back(new Bird(*m_World, { 70,566 }));
-	m_Birds.emplace_back(new Bird(*m_World, { 30,566 }));
-
-	for (auto& bird : m_Birds)
-	{
-		bird->SetTexture("Bird.png");
-		bird->SetScale({ 0.25f,0.25f });
-		bird->SetShapeType(BODYSHAPE::CIRCLE);
-		bird->SetBodyType(b2_dynamicBody);
-	}
+	m_Birds.emplace_back(new Bird(*m_World, { 190,566 }, Bird::TYPE::DIVEBOMB));
+	m_Birds.emplace_back(new Bird(*m_World, { 150,566 }, Bird::TYPE::DIVEBOMB));
+	m_Birds.emplace_back(new Bird(*m_World, { 110,566 }, Bird::TYPE::DIVEBOMB));
+	m_Birds.emplace_back(new Bird(*m_World, { 70,566 }, Bird::TYPE::DIVEBOMB));
+	m_Birds.emplace_back(new Bird(*m_World, { 30,566 }, Bird::TYPE::DIVEBOMB));
 }
 
 void LevelTwo::CreatePigs()
@@ -74,14 +66,6 @@ void LevelTwo::CreatePigs()
 	m_Pigs.emplace_back(new Pig(*m_World, { 1120,170 }));
 	m_Pigs.emplace_back(new Pig(*m_World, { 1038, 500 }));
 	m_Pigs.emplace_back(new Pig(*m_World, { 1198,500 }));
-
-	for (auto& pig : m_Pigs)
-	{
-		pig->SetTexture("Pig.png");
-		pig->SetShapeType(BODYSHAPE::CIRCLE);
-		pig->SetBodyType(b2_dynamicBody);
-		pig->CreateBody();
-	}
 }
 
 void LevelTwo::CreateDestructables()

@@ -175,9 +175,9 @@ void PhysicsBody::SetupBody()
 		b2PolygonShape polygonShape;
 		std::vector<b2Vec2> vertices
 		{
-			{0, (m_Size.y / 2) / Statics::Scale},
-			{(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale},
-			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
+			{-(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
+			{0, -(m_Size.y / 2) / Statics::Scale},
+			{(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale}
 		};
 		polygonShape.Set(&vertices[0], vertices.size());
 		shape = new b2PolygonShape(polygonShape);
@@ -188,9 +188,9 @@ void PhysicsBody::SetupBody()
 		b2PolygonShape polygonShape;
 		std::vector<b2Vec2> vertices
 		{
+			{(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
 			{-(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
-			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale},
-			{(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
+			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
 		};
 		polygonShape.Set(&vertices[0], vertices.size());
 		shape = new b2PolygonShape(polygonShape);
@@ -255,8 +255,8 @@ void PhysicsBody::SetupBody(UserData& _userData)
 		std::vector<b2Vec2> vertices
 		{
 			{-(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
-			{(m_Size.x / 2.0f) / Statics::Scale, 0},
-			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
+			{0, -(m_Size.y / 2) / Statics::Scale},
+			{(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale}
 		};
 		polygonShape.Set(&vertices[0], vertices.size());
 		shape = new b2PolygonShape(polygonShape);

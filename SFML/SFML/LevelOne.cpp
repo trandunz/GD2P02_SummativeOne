@@ -100,8 +100,9 @@ void LevelOne::CreateDestructables()
 	m_Destructables.emplace_back(new Destructable(*m_World, { 880, 620 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::STONE));
 	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 620 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::STONE));
 
-	m_Destructables.emplace_back(new Destructable(*m_World, { 880, 520 }, Destructable::SHAPE::TRIANGLE, Destructable::TYPE::WOOD));
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 520 }, Destructable::SHAPE::TRIANGLE, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 880, 520 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(-90.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 520 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
 }
 
 void LevelOne::CreateJoints()
@@ -110,7 +111,7 @@ void LevelOne::CreateJoints()
 	revolutionJoint.Initialize(m_Destructables[0]->GetBody(), m_Destructables[1]->GetBody(), m_Destructables[1]->GetBody()->GetWorldCenter());
 	revolutionJoint.collideConnected = false;
 	revolutionJoint.enableMotor = true;
-	revolutionJoint.motorSpeed = 10.0f;
-	revolutionJoint.maxMotorTorque = 10.0f;
+	revolutionJoint.motorSpeed = 20.0f;
+	revolutionJoint.maxMotorTorque = 20.0f;
 	JointManager::GetInstance().CreateRevolutionJoint(revolutionJoint);
 }

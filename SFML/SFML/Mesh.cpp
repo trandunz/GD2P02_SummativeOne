@@ -52,6 +52,11 @@ sf::Vector2f Mesh::GetSize()
 	return { m_Sprite.getLocalBounds().width * m_Sprite.getScale().x,  m_Sprite.getLocalBounds().height * m_Sprite.getScale().y };
 }
 
+float Mesh::GetRotation()
+{
+	return m_Sprite.getRotation();
+}
+
 void Mesh::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_Sprite);

@@ -110,7 +110,8 @@ void GameObject::CreateBody()
 		m_Mesh->GetPosition(), // Pos
 		{ m_Mesh->GetSize().x,m_Mesh->GetSize().y }, // Size
 		m_BodyShape,
-		m_BodyType
+		m_BodyType,
+		m_Mass
 	);
 }
 

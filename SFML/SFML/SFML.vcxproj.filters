@@ -138,6 +138,9 @@
     <ClCompile Include="RevolutionJoint.cpp">
       <Filter>Source Files\Components\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="PulleyJoint.cpp">
+      <Filter>Source Files\Components\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureLoader.h">
@@ -222,6 +225,9 @@
       <Filter>Header Files\SceneManagement</Filter>
     </ClInclude>
     <ClInclude Include="RevolutionJoint.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PulleyJoint.h">
       <Filter>Header Files\Components\Physics</Filter>
     </ClInclude>
   </ItemGroup>

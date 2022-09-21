@@ -16,6 +16,7 @@ public:
 	sf::FloatRect GetLocalBounds();
 	sf::FloatRect GetGlobalBounds();
 	sf::Vector2f GetSize();
+	float GetRotation();
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

@@ -15,6 +15,11 @@ void JointManager::CreateRevolutionJoint(b2RevoluteJointDef _def)
 	RevolutionJoints.emplace_back(new RevolutionJoint(*m_World, _def));
 }
 
+void JointManager::CreatePulleyJoint(b2PulleyJointDef _def)
+{
+	PulleyJoints.emplace_back(new PulleyJoint(*m_World, _def));
+}
+
 void JointManager::CleanupMarkedJoints()
 {
 	auto distanceIt = DistanceJoints.begin();
@@ -48,6 +53,22 @@ void JointManager::CleanupMarkedJoints()
 		}
 		revoIt++;
 	}
+
+	auto pulleyIt = PulleyJoints.begin();
+	while (pulleyIt != PulleyJoints.end())
+	{
+		if ((*pulleyIt)->Destroy)
+		{
+			if ((*pulleyIt) != nullptr)
+			{
+				delete* pulleyIt;
+				*pulleyIt = nullptr;
+			}
+			pulleyIt = PulleyJoints.erase(pulleyIt);
+			continue;
+		}
+		pulleyIt++;
+	}
 }
 
 void JointManager::ForceCleanupJoints()
@@ -69,6 +90,15 @@ void JointManager::ForceCleanupJoints()
 	}
 	RevolutionJoints.clear();
 	RevolutionJoints.resize(0);
+
+	for (auto& joint : PulleyJoints)
+	{
+		if (joint)
+			delete joint;
+		joint = nullptr;
+	}
+	PulleyJoints.clear();
+	PulleyJoints.resize(0);
 }
 
 JointManager::JointManager()

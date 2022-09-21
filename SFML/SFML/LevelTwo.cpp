@@ -1,4 +1,5 @@
 #include "LevelTwo.h"
+#include "JointManager.h"
 
 LevelTwo::LevelTwo()
 {
@@ -70,7 +71,9 @@ void LevelTwo::CreateBirds()
 
 void LevelTwo::CreatePigs()
 {
-	m_Pigs.emplace_back(new Pig(*m_World, { 1000,590 }));
+	m_Pigs.emplace_back(new Pig(*m_World, { 1120,170 }));
+	m_Pigs.emplace_back(new Pig(*m_World, { 1038, 500 }));
+	m_Pigs.emplace_back(new Pig(*m_World, { 1198,500 }));
 
 	for (auto& pig : m_Pigs)
 	{
@@ -83,25 +86,98 @@ void LevelTwo::CreatePigs()
 
 void LevelTwo::CreateDestructables()
 {
-	m_Destructables.emplace_back(new Destructable(*m_World, { 950, 470 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
-	m_Destructables.back()->SetRotation(90.0f);
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1050, 470 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
-	m_Destructables.back()->SetRotation(90.0f);
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1000, 390 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 190 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1220, 190 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1010, 190 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(-90.0f);
 
-	m_Destructables.emplace_back(new Destructable(*m_World, { 900, 620 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::WOOD));
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1100, 620 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 320 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(90.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 260 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(90.0f);
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 800, 500 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 800, 550 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 880, 550 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 960, 550 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 880, 500 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 360 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 380 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(90.0f);
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 880, 380 }, Destructable::SHAPE::CORNER, Destructable::TYPE::STONE));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 880, 380 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(180.0f);
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 960, 500 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 960, 500 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(180.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 960, 380 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::WOOD));
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1040, 550 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1040, 550 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.back()->SetRotation(180.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 550 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1120, 550 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.back()->SetRotation(180.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1198, 550 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1198, 550 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.back()->SetRotation(180.0f);
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1278, 500 }, Destructable::SHAPE::CORNER, Destructable::TYPE::ICE));
+	m_Destructables.back()->SetRotation(-90.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1278, 500 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(90.0f);
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1038, 500 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1118, 500 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1198, 500 }, Destructable::SHAPE::WIDE, Destructable::TYPE::WOOD));
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1358, 380 }, Destructable::SHAPE::CORNER, Destructable::TYPE::STONE));
+	m_Destructables.back()->SetRotation(-90.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1358, 380 }, Destructable::SHAPE::CORNER, Destructable::TYPE::WOOD));
+	m_Destructables.back()->SetRotation(90.0f);
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1278, 380 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::WOOD));
+
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1278, 550 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1358, 500 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1358, 550 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1428, 550 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1428, 500 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::DIAMOND));
 }
 
 void LevelTwo::CreateJoints()
 {
-	//b2DistanceJointDef distanceJoint{};
-	//distanceJoint.bodyA = m_Destructables[0]->GetBody();
-	//distanceJoint.bodyB = m_Destructables[1]->GetBody();
-	//distanceJoint.collideConnected = false;
-	//distanceJoint.length = 0.0f;
-	//distanceJoint.minLength = 0.0f;
-	//distanceJoint.maxLength = 0.0f;
-	//
-	//JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+	b2DistanceJointDef distanceJoint{};
+	distanceJoint.bodyA = m_Destructables[0]->GetBody();
+	distanceJoint.bodyB = m_Destructables[1]->GetBody();
+	distanceJoint.collideConnected = false;
+	distanceJoint.length = 0.1f;
+	distanceJoint.minLength = 0.0f;
+	distanceJoint.maxLength = 0.1f;
+	distanceJoint.localAnchorA = { 2,2 };
+	
+	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+
+	distanceJoint.bodyA = m_Destructables[0]->GetBody();
+	distanceJoint.bodyB = m_Destructables[2]->GetBody();
+	distanceJoint.collideConnected = false;
+	distanceJoint.length = 0.1f;
+	distanceJoint.minLength = 0.0f;
+	distanceJoint.maxLength = 0.1f;
+	distanceJoint.localAnchorA = { -2,2 };
+
+	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+
+	distanceJoint.bodyA = m_Destructables[0]->GetBody();
+	distanceJoint.bodyB = m_Pigs[0]->GetBody();
+	distanceJoint.collideConnected = false;
+	distanceJoint.length = 0.1f;
+	distanceJoint.minLength = 0.0f;
+	distanceJoint.maxLength = 0.1f;
+	distanceJoint.localAnchorA = { 0,-1.8f };
+
+	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
 }

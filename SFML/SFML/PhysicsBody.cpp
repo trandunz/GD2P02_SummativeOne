@@ -1,22 +1,24 @@
 #include "PhysicsBody.h"
 
-PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, BODYSHAPE _shape, b2BodyType _bodyType, float _restitution, float _density)
+PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, BODYSHAPE _shape, b2BodyType _bodyType, float _density, float _restitution)
 {
 	m_World = &_world;
 	m_Position = _startPos;
 	m_Size = _size;
 	m_BodyType = _bodyType;
 	m_BodyShape = _shape;
+	m_Density = _density;
 	SetupBody();
 }
 
-PhysicsBody::PhysicsBody(b2World& _world, UserData& _userData, sf::Vector2f _startPos, sf::Vector2f _size, BODYSHAPE _shape, b2BodyType _bodyType, float _restitution, float _density)
+PhysicsBody::PhysicsBody(b2World& _world, UserData& _userData, sf::Vector2f _startPos, sf::Vector2f _size, BODYSHAPE _shape, b2BodyType _bodyType, float _density, float _restitution)
 {
 	m_World = &_world;
 	m_Position = _startPos;
 	m_Size = _size;
 	m_BodyType = _bodyType;
 	m_BodyShape = _shape;
+	m_Density = _density;
 	SetupBody(_userData);
 }
 
@@ -139,6 +141,7 @@ void PhysicsBody::SetupBody()
 	bodyDef.type = m_BodyType;
 	bodyDef.bullet = false;
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
+	bodyDef.angularDamping = 0.5f;
 	m_Body = m_World->CreateBody(&bodyDef);
 
 	b2Shape* shape{ nullptr };
@@ -158,6 +161,32 @@ void PhysicsBody::SetupBody()
 		shape = new b2CircleShape(circleShape);
 		break;
 	}
+	case BODYSHAPE::TRIANGLE:
+	{
+		b2PolygonShape polygonShape;
+		std::vector<b2Vec2> vertices
+		{
+			{0, (m_Size.y / 2) / Statics::Scale},
+			{(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale},
+			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
+		};
+		polygonShape.Set(&vertices[0], vertices.size());
+		shape = new b2PolygonShape(polygonShape);
+		break;
+	}
+	case BODYSHAPE::CORNER:
+	{
+		b2PolygonShape polygonShape;
+		std::vector<b2Vec2> vertices
+		{
+			{-(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
+			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale},
+			{(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
+		};
+		polygonShape.Set(&vertices[0], vertices.size());
+		shape = new b2PolygonShape(polygonShape);
+		break;
+	}
 	default:
 	{
 		b2PolygonShape polygonShape;
@@ -168,7 +197,7 @@ void PhysicsBody::SetupBody()
 	}
 
 	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1.0f;
+	fixtureDef.density = m_Density;
 	fixtureDef.shape = &*shape;
 	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);
@@ -191,6 +220,7 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	bodyDef.bullet = false;
 	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(&_userData);
 	bodyDef.position = b2Vec2(m_Position.x / Statics::Scale, m_Position.y / Statics::Scale);
+	bodyDef.angularDamping = 0.5f;
 	m_Body = m_World->CreateBody(&bodyDef);
 	
 	b2Shape* shape{ nullptr };
@@ -210,6 +240,32 @@ void PhysicsBody::SetupBody(UserData& _userData)
 		shape = new b2CircleShape(circleShape);
 		break;
 	}
+	case BODYSHAPE::TRIANGLE:
+	{
+		b2PolygonShape polygonShape;
+		std::vector<b2Vec2> vertices
+		{
+			{-(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
+			{(m_Size.x / 2.0f) / Statics::Scale, 0},
+			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
+		};
+		polygonShape.Set(&vertices[0], vertices.size());
+		shape = new b2PolygonShape(polygonShape);
+		break;
+	}
+	case BODYSHAPE::CORNER:
+	{
+		b2PolygonShape polygonShape;
+		std::vector<b2Vec2> vertices
+		{
+			{(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
+			{-(m_Size.x / 2.0f) / Statics::Scale, (m_Size.y / 2) / Statics::Scale},
+			{-(m_Size.x / 2.0f) / Statics::Scale, -(m_Size.y / 2) / Statics::Scale}
+		};
+		polygonShape.Set(&vertices[0], vertices.size());
+		shape = new b2PolygonShape(polygonShape);
+		break;
+	}
 	default:
 	{
 		b2PolygonShape polygonShape;
@@ -220,7 +276,7 @@ void PhysicsBody::SetupBody(UserData& _userData)
 	}
 
 	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1.0f;
+	fixtureDef.density = m_Density;
 	fixtureDef.shape = &*shape;
 	fixtureDef.restitution = 0.6f;
 	m_Body->CreateFixture(&fixtureDef);

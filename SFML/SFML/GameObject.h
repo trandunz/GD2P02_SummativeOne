@@ -30,6 +30,7 @@ public:
 protected:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	
+	float m_Mass{ 1.0f };
 	UserData m_b2UserData;
 	b2World* m_World = nullptr;
 	BODYSHAPE m_BodyShape = BODYSHAPE::POLYGON;

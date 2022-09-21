@@ -34,13 +34,13 @@ void Destructable::Update()
 
 	GameObject::Update();
 
-	if (m_CurrentHealth <= 0.0f)
+	if (m_CurrentHealth <= 0.0f && m_Type != TYPE::DIAMOND)
 		Destroy = true;
 }
 
 void Destructable::TakeDamage(float _amount)
 {
-	if (m_DamageTimer <= 0.0f)
+	if (m_DamageTimer <= 0.0f && m_Type != TYPE::DIAMOND)
 	{
 		m_DamageTimer = m_DamageInterval;
 		m_CurrentHealth -= _amount;
@@ -66,19 +66,29 @@ void Destructable::InitBasedOnType()
 	case TYPE::WOOD:
 	{
 		m_MaxHealth = 10.0f;
+		m_Mass = 1.0f;
 		subFolder = "Wood/";
 		break;
 	}
 	case TYPE::STONE:
 	{
 		m_MaxHealth = 20.0f;
+		m_Mass = 2.0f;
 		subFolder = "Stone/";
 		break;
 	}
 	case TYPE::ICE:
 	{
 		m_MaxHealth = 5.0f;
+		m_Mass = 1.0f;
 		subFolder = "Ice/";
+		break;
+	}
+	case TYPE::DIAMOND:
+	{
+		m_MaxHealth = 5.0f;
+		m_Mass = 2.0f;
+		subFolder = "Diamond/";
 		break;
 	}
 	default:
@@ -100,7 +110,14 @@ void Destructable::InitBasedOnType()
 	}
 	case SHAPE::TRIANGLE:
 	{
+		m_BodyShape = BODYSHAPE::TRIANGLE;
 		shape = "Triangle (";
+		break;
+	}
+	case SHAPE::CORNER:
+	{
+		m_BodyShape = BODYSHAPE::CORNER;
+		shape = "Corner (";
 		break;
 	}
 	case SHAPE::WIDE:
@@ -110,6 +127,7 @@ void Destructable::InitBasedOnType()
 	}
 	case SHAPE::WHEEL:
 	{
+		m_BodyShape = BODYSHAPE::CIRCLE;
 		shape = "BigWheel (";
 		break;
 	}

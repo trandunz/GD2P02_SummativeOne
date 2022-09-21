@@ -13,7 +13,8 @@ public:
 		SQUARE,
 		TRIANGLE,
 		WIDE,
-		WHEEL
+		WHEEL,
+		CORNER
 	};
 	enum class TYPE
 	{
@@ -21,7 +22,8 @@ public:
 
 		WOOD,
 		STONE,
-		ICE
+		ICE,
+		DIAMOND
 	};
 	enum class DAMAGELEVEL
 	{

@@ -177,6 +177,7 @@
     <ClCompile Include="LevelTwo.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Pig.cpp" />
+    <ClCompile Include="PulleyJoint.cpp" />
     <ClCompile Include="RevolutionJoint.cpp" />
     <ClCompile Include="Statics.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="LevelTwo.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Pig.h" />
+    <ClInclude Include="PulleyJoint.h" />
     <ClInclude Include="RevolutionJoint.h" />
     <ClInclude Include="Statics.h" />
     <ClInclude Include="Level.h" />

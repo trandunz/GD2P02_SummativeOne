@@ -7,6 +7,8 @@ public:
 	LevelThree();
 	virtual ~LevelThree();
 
+	virtual void Draw() override;
+
 protected:
 	void CreateCollisionLess() override;
 	void CreateStatics() override;
@@ -14,5 +16,8 @@ protected:
 	void CreatePigs() override;
 	void CreateDestructables() override;
 	void CreateJoints() override;
+
+private:
+	sf::VertexArray m_PulleyJointRope{ sf::LinesStrip };
 };
 

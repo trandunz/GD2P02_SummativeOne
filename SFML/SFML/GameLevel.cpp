@@ -108,8 +108,11 @@ void GameLevel::PollEvents()
 			{
 				if (Statics::IsPaused == false)
 				{
-					if (m_NextBirdIndex < m_Birds.size())
-						m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
+					if (Statics::EventHandle.mouseButton.button == sf::Mouse::Left)
+					{
+						if (m_NextBirdIndex < m_Birds.size())
+							m_Catapult.LoadBird(*m_Birds[m_NextBirdIndex++]);
+					}
 				}
 			}
 			if (Statics::EventHandle.type == sf::Event::MouseMoved)
@@ -121,19 +124,22 @@ void GameLevel::PollEvents()
 			}
 			if (Statics::EventHandle.type == sf::Event::MouseButtonReleased)
 			{
-				if (m_Catapult.IsLoaded())
+				if (Statics::EventHandle.mouseButton.button == sf::Mouse::Left)
 				{
-					if (m_Catapult.GetTrajectoryPoint(200).x > 500)
+					if (m_Catapult.IsLoaded())
 					{
-						m_CameraLerpAmount = 0;
-						m_FireTimer = m_FireTime;
+						if (m_Catapult.GetTrajectoryPoint(200).x > 500)
+						{
+							m_CameraLerpAmount = 0;
+							m_FireTimer = m_FireTime;
+						}
+
+						for (int i = m_NextBirdIndex; i < m_Birds.size(); i++)
+							m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
+
+						m_Catapult.ReleaseBird();
 					}
-
-					for (int i = m_NextBirdIndex; i < m_Birds.size(); i++)
-						m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
 				}
-
-				m_Catapult.ReleaseBird();
 			}
 		}
 	}

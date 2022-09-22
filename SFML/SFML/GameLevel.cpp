@@ -115,7 +115,7 @@ void GameLevel::PollEvents()
 					{
 						if (m_Birds.size() > 0)
 						{
-							m_Birds[0]->SpecialAbility();
+							m_Birds[0]->SpecialAbility(m_Pigs, m_Destructables);
 						}
 					}
 				}

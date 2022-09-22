@@ -9,6 +9,7 @@ public:
 	virtual ~GameObject();
 
 	b2Body* GetBody();
+	PhysicsBody* GetPhysicsBody();
 	b2Vec2 GetBodyPosition();
 	sf::Vector2f GetPosition();
 	sf::Vector2f GetVelocity();

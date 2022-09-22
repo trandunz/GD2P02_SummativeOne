@@ -1,6 +1,8 @@
 #include "Bird.h"
 #include "VFX.h"
 #include "LevelLoader.h"
+#include "Pig.h"
+#include "Destructable.h"
 
 Bird::Bird(b2World& _world, sf::Vector2f _startPos, TYPE _birdType)
 	: GameObject(_world, _startPos)
@@ -39,7 +41,7 @@ void Bird::Update()
 	}
 }
 
-void Bird::SpecialAbility()
+void Bird::SpecialAbility(std::vector<Pig*>& _pigs, std::vector<Destructable*>& _destructables)
 {
 	if (m_AbilityUsed == false)
 	{
@@ -50,8 +52,33 @@ void Bird::SpecialAbility()
 			{
 			case TYPE::DIVEBOMB:
 			{
-				m_PhysicsBody->ApplyImpulse(-m_PhysicsBody->GetVelocity() / Statics::Scale);
-				m_PhysicsBody->ApplyImpulse({ 0, 50.0f });
+				m_PhysicsBody->ApplyImpulse({0.0f, 25.0f });
+				break;
+			}
+			case TYPE::DASH:
+			{
+				m_PhysicsBody->ApplyImpulse({ 18.0f, 0.0f });
+				break;
+			}
+			case TYPE::EXPLOSIVE:
+			{
+				for (auto& pig : _pigs)
+				{
+					sf::Vector2f directionToPig = pig->GetPosition() - m_PhysicsBody->GetPosition();
+					if (Mag(directionToPig) <= 200.0f)
+					{
+						pig->GetPhysicsBody()->ApplyImpulse(Normalize(directionToPig) * 10.0f);
+					}
+				}
+				for (auto& destructable : _destructables)
+				{
+					sf::Vector2f directionToDestructable = destructable->GetPosition() - m_PhysicsBody->GetPosition();
+					if (Mag(directionToDestructable) <= 200.0f)
+					{
+						destructable->GetPhysicsBody()->ApplyImpulse(Normalize(directionToDestructable) * 10.0f);
+					}
+				}
+				Destroy = true;
 				break;
 			}
 			default:
@@ -106,7 +133,19 @@ void Bird::SetTextureBasedOnType()
 	case TYPE::DIVEBOMB:
 	{
 		m_Mesh->SetTexture("Bird_DiveBomb.png");
+		m_BodyShape = BODYSHAPE::CIRCLE;
+		break;
+	}
+	case TYPE::DASH:
+	{
+		m_Mesh->SetTexture("Bird_Dash.png");
 		m_BodyShape = BODYSHAPE::TRIANGLE;
+		break;
+	}
+	case TYPE::EXPLOSIVE:
+	{
+		m_Mesh->SetTexture("Bird_Explosive.png");
+		m_BodyShape = BODYSHAPE::CIRCLE;
 		break;
 	}
 	default:

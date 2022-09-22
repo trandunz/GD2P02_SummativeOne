@@ -56,9 +56,9 @@ void LevelTwo::CreateBirds()
 {
 	m_Birds.emplace_back(new Bird(*m_World, { 190,566 }, Bird::TYPE::DIVEBOMB));
 	m_Birds.emplace_back(new Bird(*m_World, { 150,566 }, Bird::TYPE::DIVEBOMB));
-	m_Birds.emplace_back(new Bird(*m_World, { 110,566 }, Bird::TYPE::DIVEBOMB));
+	m_Birds.emplace_back(new Bird(*m_World, { 110,566 }, Bird::TYPE::DASH));
 	m_Birds.emplace_back(new Bird(*m_World, { 70,566 }, Bird::TYPE::DIVEBOMB));
-	m_Birds.emplace_back(new Bird(*m_World, { 30,566 }, Bird::TYPE::DIVEBOMB));
+	m_Birds.emplace_back(new Bird(*m_World, { 30,566 }, Bird::TYPE::EXPLOSIVE));
 }
 
 void LevelTwo::CreatePigs()

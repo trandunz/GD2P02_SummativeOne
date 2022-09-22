@@ -89,7 +89,7 @@ void LevelCompleteMenu::SetStarsBasedOnScore()
 	{
 		GUI::GetInstance().GetImage("Star1").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
 
-		if (*LevelLoader::GetScore() >= 50000)
+		if (*LevelLoader::GetScore() >= 55000)
 		{
 			GUI::GetInstance().GetImage("Star2").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
 		}
@@ -103,11 +103,11 @@ void LevelCompleteMenu::SetStarsBasedOnScore()
 	{
 		GUI::GetInstance().GetImage("Star1").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
 
-		if (*LevelLoader::GetScore() >= 40000)
+		if (*LevelLoader::GetScore() >= 50000)
 		{
 			GUI::GetInstance().GetImage("Star2").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
 		}
-		if (*LevelLoader::GetScore() >= 60000)
+		if (*LevelLoader::GetScore() >= 70000)
 		{
 			GUI::GetInstance().GetImage("Star3").setTexture(TextureLoader::LoadTexture("GUI/Star_Full.png"), true);
 		}

@@ -34,6 +34,18 @@ b2Body* GameObject::GetBody()
 	}
 }
 
+PhysicsBody* GameObject::GetPhysicsBody()
+{
+	if (m_PhysicsBody != nullptr)
+	{
+		return m_PhysicsBody;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
 b2Vec2 GameObject::GetBodyPosition()
 {
 	if (m_PhysicsBody != nullptr)

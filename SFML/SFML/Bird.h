@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class Pig;
+class Destructable;
 class Bird : public GameObject
 {
 public:
@@ -8,7 +10,9 @@ public:
 	{
 		DEFAULT = 0,
 
-		DIVEBOMB
+		DASH,
+		DIVEBOMB,
+		EXPLOSIVE
 	};
 
 	Bird(b2World& _world, sf::Vector2f _startPos, TYPE _birdType = TYPE::DEFAULT);
@@ -18,7 +22,7 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 	
-	virtual void SpecialAbility();
+	virtual void SpecialAbility(std::vector<Pig*>& _pigs, std::vector<Destructable*>& _destructables);
 
 	sf::Vector2f GetLaunchVelocity(sf::Vector2f _launchVector);
 	void Launch(sf::Vector2f _impulse);

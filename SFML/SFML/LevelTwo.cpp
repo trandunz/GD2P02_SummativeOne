@@ -143,7 +143,7 @@ void LevelTwo::CreateJoints()
 	distanceJoint.maxLength = 0.1f;
 	distanceJoint.localAnchorA = { 2,2 };
 	
-	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+	JointManager::GetInstance().CreateJoint(distanceJoint);
 
 	distanceJoint.bodyA = m_Destructables[0]->GetBody();
 	distanceJoint.bodyB = m_Destructables[2]->GetBody();
@@ -153,7 +153,7 @@ void LevelTwo::CreateJoints()
 	distanceJoint.maxLength = 0.1f;
 	distanceJoint.localAnchorA = { -2,2 };
 
-	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+	JointManager::GetInstance().CreateJoint(distanceJoint);
 
 	distanceJoint.bodyA = m_Destructables[0]->GetBody();
 	distanceJoint.bodyB = m_Pigs[0]->GetBody();
@@ -163,5 +163,5 @@ void LevelTwo::CreateJoints()
 	distanceJoint.maxLength = 0.1f;
 	distanceJoint.localAnchorA = { 0,-1.8f };
 
-	JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
+	JointManager::GetInstance().CreateJoint(distanceJoint);
 }

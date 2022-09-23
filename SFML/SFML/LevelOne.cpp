@@ -97,5 +97,5 @@ void LevelOne::CreateJoints()
 	revolutionJoint.enableMotor = true;
 	revolutionJoint.motorSpeed = 1000.0f;
 	revolutionJoint.maxMotorTorque = 10.0f;
-	JointManager::GetInstance().CreateRevolutionJoint(revolutionJoint);
+	JointManager::GetInstance().CreateJoint(revolutionJoint);
 }

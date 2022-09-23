@@ -210,7 +210,7 @@ void LevelThree::CreateJoints()
 	pulleyJoint.lengthA = 150 / Statics::Scale;
 	pulleyJoint.lengthB = 150 / Statics::Scale;
 
-	JointManager::GetInstance().CreatePulleyJoint(pulleyJoint);
+	JointManager::GetInstance().CreateJoint(pulleyJoint);
 }
 
 void LevelThree::CleanupDestroyedDestructables(std::vector<Destructable*>& _vector)

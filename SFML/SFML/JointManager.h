@@ -13,9 +13,9 @@ public:
 	}
 
 	void SetWorld(b2World& _world);
-	void CreateDistanceJoint(b2DistanceJointDef _def);
-	void CreateRevolutionJoint(b2RevoluteJointDef _def);
-	void CreatePulleyJoint(b2PulleyJointDef _def);
+	void CreateJoint(b2DistanceJointDef _def);
+	void CreateJoint(b2RevoluteJointDef _def);
+	void CreateJoint(b2PulleyJointDef _def);
 	void CleanupMarkedJoints();
 	void ForceCleanupJoints();
 

@@ -5,17 +5,17 @@ void JointManager::SetWorld(b2World& _world)
 	m_World = &_world;
 }
 
-void JointManager::CreateDistanceJoint(b2DistanceJointDef _def)
+void JointManager::CreateJoint(b2DistanceJointDef _def)
 {
 	DistanceJoints.emplace_back(new DistanceJoint(*m_World, _def));
 }
 
-void JointManager::CreateRevolutionJoint(b2RevoluteJointDef _def)
+void JointManager::CreateJoint(b2RevoluteJointDef _def)
 {
 	RevolutionJoints.emplace_back(new RevolutionJoint(*m_World, _def));
 }
 
-void JointManager::CreatePulleyJoint(b2PulleyJointDef _def)
+void JointManager::CreateJoint(b2PulleyJointDef _def)
 {
 	PulleyJoints.emplace_back(new PulleyJoint(*m_World, _def));
 }

@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: Math.h 
+// Description  : Math Header File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <box2d/b2_math.h>

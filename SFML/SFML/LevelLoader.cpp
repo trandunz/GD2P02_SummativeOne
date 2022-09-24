@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: LevelLoader.cpp 
+// Description  : LevelLoader Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "LevelLoader.h"
 #include "Level.h"
 #include "MainMenu.h"

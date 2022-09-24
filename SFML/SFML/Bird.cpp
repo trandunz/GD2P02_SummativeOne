@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: Bird.cpp 
+// Description  : Bird Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "Bird.h"
 #include "VFX.h"
 #include "LevelLoader.h"

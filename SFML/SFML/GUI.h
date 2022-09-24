@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: GUI.h 
+// Description  : GUI Header File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #pragma once
 #include "Button.h"
 

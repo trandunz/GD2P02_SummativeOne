@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: PauseMenu.cpp 
+// Description  : PauseMenu Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "PauseMenu.h"
 #include "GUI.h"
 #include "TextureLoader.h"

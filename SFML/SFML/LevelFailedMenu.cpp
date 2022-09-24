@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: LevelFailedMenu.cpp 
+// Description  : LevelFailedMenu Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "LevelFailedMenu.h"
 #include "GUI.h"
 #include "TextureLoader.h"

@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: Pig.cpp 
+// Description  : Pig Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "Pig.h"
 #include "VFX.h"
 #include "LevelLoader.h"

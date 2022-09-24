@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: AudioManager.h 
+// Description  : AudioManager Header File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #pragma once
 #include <SFML/Audio.hpp>
 #include <map>

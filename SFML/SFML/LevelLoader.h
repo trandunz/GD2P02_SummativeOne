@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: LevelLoader.h 
+// Description  : LevelLoader Header File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #pragma once
 
 enum class LEVELS
@@ -25,11 +36,18 @@ public:
 	static void CleanupLevel();
 
 	static void ResetCameraReturnDelay();
-	static float* GetScore();
-	static LEVELS GetCurrentLevelID();
+
 private:
 	static Level* m_CurrentLevel;
 	static LEVELS m_LevelToLoad;
 	static LEVELS m_CurrentLevelID;
+
+public:
+	///////////////////////
+	// Getters & Setters //
+	///////////////////////
+
+	static float* GetScore();
+	static LEVELS GetCurrentLevelID();
 };
 

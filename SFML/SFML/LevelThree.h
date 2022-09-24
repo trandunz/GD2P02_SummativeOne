@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: LevelThree.h 
+// Description  : LevelThree Header File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #pragma once
 #include "GameLevel.h"
 class LevelThree :
@@ -5,6 +16,9 @@ class LevelThree :
 {
 public:
 	LevelThree();
+	/// <summary>
+	/// LevelThree Destructor
+	/// </summary>	
 	virtual ~LevelThree();
 
 	void Update() override;

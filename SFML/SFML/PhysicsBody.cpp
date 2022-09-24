@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: PhysicsBody.cpp 
+// Description  : PhysicsBody Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "PhysicsBody.h"
 
 PhysicsBody::PhysicsBody(b2World& _world, sf::Vector2f _startPos, sf::Vector2f _size, BODYSHAPE _shape, b2BodyType _bodyType, float _density, float _restitution)

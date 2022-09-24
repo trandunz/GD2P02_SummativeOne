@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: JointManager.cpp 
+// Description  : JointManager Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "JointManager.h"
 
 void JointManager::SetWorld(b2World& _world)

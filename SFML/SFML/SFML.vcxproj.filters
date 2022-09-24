@@ -99,9 +99,6 @@
     <ClCompile Include="Pig.cpp">
       <Filter>Source Files\Prefabs</Filter>
     </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>Source Files\Statics</Filter>
-    </ClCompile>
     <ClCompile Include="Statics.cpp">
       <Filter>Source Files\Statics</Filter>
     </ClCompile>

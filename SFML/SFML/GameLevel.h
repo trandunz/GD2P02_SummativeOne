@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: GameLevel.h 
+// Description  : GameLevel Header File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #pragma once
 #include "ContactListener.h"
 #include "Utility.h"
@@ -15,6 +26,9 @@ class GameLevel :
 {
 public:
 	GameLevel();
+	/// <summary>
+	/// GameLevel Destructor
+	/// </summary>
 	virtual ~GameLevel();
 
 	virtual void PollEvents() override;
@@ -22,7 +36,7 @@ public:
 	virtual void Draw() override;
 
 	void ResetCameraReturnDelay();
-	float& GetScore();
+
 protected:
 	void TogglePause();
 
@@ -65,5 +79,12 @@ protected:
 	std::vector<Bird*> m_Birds{};
 	std::vector<Pig*> m_Pigs{};
 	std::vector<Destructable*> m_Destructables{};
+
+public:
+	///////////////////////
+	// Getters & Setters //
+	///////////////////////
+
+	float& GetScore();
 };
 

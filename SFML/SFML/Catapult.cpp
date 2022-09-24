@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: Catapult.cpp 
+// Description  : Catapult Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "Catapult.h"
 #include "TextureLoader.h"
 

@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: GameObject.cpp 
+// Description  : GameObject Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "GameObject.h"
 
 GameObject::GameObject(b2World& _world, sf::Vector2f _startPos)

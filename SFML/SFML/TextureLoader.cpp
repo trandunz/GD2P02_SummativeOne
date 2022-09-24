@@ -1,3 +1,15 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: TextureLoader.cpp 
+// Description  : TextureLoader Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
+
 #include "TextureLoader.h"
 
 void TextureLoader::InitTextures(std::vector<std::string> _texturesToPreload)

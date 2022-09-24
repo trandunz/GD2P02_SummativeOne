@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: LevelCompleteMenu.cpp 
+// Description  : LevelCompleteMenu Implementation File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #include "LevelCompleteMenu.h"
 #include "GUI.h"
 #include "TextureLoader.h"

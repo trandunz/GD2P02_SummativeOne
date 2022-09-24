@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// 
+// File Name	: GameObject.h 
+// Description  : GameObject Header File
+// Author		: William Inman
+// Email		: william.inman@mds.ac.nz
+
 #pragma once
 #include "PhysicsBody.h"
 #include "Mesh.h"
@@ -6,20 +17,10 @@ class GameObject : public sf::Drawable
 {
 public:
 	GameObject(b2World& _world, sf::Vector2f _startPos);
+	/// <summary>
+	/// GameObject Destructor
+	/// </summary>
 	virtual ~GameObject();
-
-	b2Body* GetBody();
-	PhysicsBody* GetPhysicsBody();
-	b2Vec2 GetBodyPosition();
-	sf::Vector2f GetPosition();
-	sf::Vector2f GetVelocity();
-	void SetPosition(sf::Vector2f _position);
-	void SetRotation(float _degrees);
-	void SetScale(sf::Vector2f _scale);;
-
-	void SetTexture(std::string _location);
-	void SetShapeType(BODYSHAPE _shapeType);
-	void SetBodyType(b2BodyType _bodyType);
 
 	virtual void Start();
 	virtual void Update();
@@ -39,5 +40,31 @@ protected:
 	b2BodyType m_BodyType = b2_staticBody;
 	PhysicsBody* m_PhysicsBody = nullptr;
 	Mesh* m_Mesh = nullptr;
+
+public:
+	///////////////////////
+	// Getters & Setters //
+	///////////////////////
+
+	b2Body* GetBody();
+
+	PhysicsBody* GetPhysicsBody();
+
+	b2Vec2 GetBodyPosition();
+
+	sf::Vector2f GetPosition();
+	void SetPosition(sf::Vector2f _position);
+
+	sf::Vector2f GetVelocity();
+
+	void SetRotation(float _degrees);
+
+	void SetScale(sf::Vector2f _scale);
+
+	void SetTexture(std::string _location);
+
+	void SetShapeType(BODYSHAPE _shapeType);
+
+	void SetBodyType(b2BodyType _bodyType);
 };
 

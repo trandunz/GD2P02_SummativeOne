@@ -25,13 +25,24 @@ class Button : public sf::Drawable
 {
 public:
 	Button() {}
+	/// <summary>
+	/// Button Constructor
+	/// </summary>
+	/// <param name="_properties"></param>
 	Button(ButtonProperties _properties);
 	/// <summary>
 	/// Button Destructor
 	/// </summary>
 	~Button();
 
+	/// <summary>
+	/// Calls the buttons on press function if mouse is over it
+	/// </summary>
 	void CallOnPress();
+
+	/// <summary>
+	/// Resets the buttons scale to what it was on creation
+	/// </summary>
 	void ResetScale();
 
 

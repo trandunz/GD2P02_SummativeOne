@@ -16,6 +16,12 @@
 class Mesh : public sf::Drawable
 {
 public:
+	/// <summary>
+	/// Mesh Constructor
+	/// </summary>
+	/// <param name="_spriteName"></param>
+	/// <param name="_position"></param>
+	/// <param name="_scale"></param>
 	Mesh(std::string _spriteName, sf::Vector2f _position = { 0,0 }, sf::Vector2f _scale = { 1,1 });
 	/// <summary>
 	/// Mesh Destructor

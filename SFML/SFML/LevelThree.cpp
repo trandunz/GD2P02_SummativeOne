@@ -15,6 +15,9 @@
 #include "VFX.h"
 #include "PauseMenu.h"
 #include "LevelCompleteMenu.h"
+#include "Utility.h"
+#include "Pig.h"
+#include "Destructable.h"
 
 LevelThree::LevelThree()
 {
@@ -104,48 +107,15 @@ void LevelThree::Draw()
 
 	Statics::RenderWindow.draw(VFX::GetInstance());
 	Statics::RenderWindow.draw(GUI::GetInstance());
-
-	if (m_PauseMenu)
-	{
-		Statics::RenderWindow.draw(*m_PauseMenu);
-	}
-}
-
-void LevelThree::CreateCollisionLess()
-{
-	sf::Vector2f windowCenter = Statics::RenderWindow.getView().getCenter();
-	windowCenter.y -= 720 / 6;
-	m_CollisionLess.emplace_back(new GameObject(*m_World, windowCenter));
-	m_CollisionLess.back()->SetTexture("Background.png");
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { windowCenter.x * 3, windowCenter.y }));
-	m_CollisionLess.back()->SetTexture("Background.png");
-
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { -173,550 }));
-	m_CollisionLess.back()->SetTexture("Grass.png");
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { 173,550 }));
-	m_CollisionLess.back()->SetTexture("Grass.png");
-	for (int i = 0; i < 5; i++)
-	{
-		m_CollisionLess.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),550 }));
-		m_CollisionLess.back()->SetTexture("Grass.png");
-	}
 }
 
 void LevelThree::CreateStatics()
 {
-	m_Statics.emplace_back(new GameObject(*m_World, { -173,680 }));
-	m_Statics.emplace_back(new GameObject(*m_World, { 173,680 }));
-	for (int i = 0; i < 5; i++)
-	{
-		m_Statics.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),680 }));
-	}
+	GameLevel::CreateStatics();
 
-	for (auto& object : m_Statics)
-	{
-		object->SetTexture("Ground.png");
-		object->CreateBody();
-	}
-
+	//
+	// Create Pulley Pivot Indicator objects
+	//
 	m_Statics.emplace_back(new GameObject(*m_World, { 600, 10 }));
 	m_Statics.back()->SetTexture("Diamond/BigWheel (1).png");
 	m_Statics.back()->SetScale({ 0.25f,0.25f });
@@ -227,6 +197,8 @@ void LevelThree::CreateJoints()
 void LevelThree::CleanupDestroyedDestructables(std::vector<Destructable*>& _vector)
 {
 	GameLevel::CleanupDestroyedDestructables(_vector);
+
+	// Cleanup pulley block A if marked for destroy
 	if (m_PulleyBlockA)
 	{
 		if (m_PulleyBlockA->Destroy)
@@ -235,6 +207,7 @@ void LevelThree::CleanupDestroyedDestructables(std::vector<Destructable*>& _vect
 			m_PulleyBlockA = nullptr;
 		}
 	}
+	// Cleanup pulley block B if marked for destroy
 	if (m_PulleyBlockB)
 	{
 		if (m_PulleyBlockB->Destroy)

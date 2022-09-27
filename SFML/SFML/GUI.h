@@ -43,10 +43,14 @@ public:
 	/// </summary>
 	void CleanupElements();
 
+	void CleanupImageElement(std::string _key);
+	void CleanupButtonElement(std::string _key);
+	void CleanupTextElement(std::string _key);
+
 	/// <summary>
 	/// Handles all GUI events such as clicking a button
 	/// </summary>
-	void HandleEvents();
+	void PollEvents();
 
 	/// <summary>
 	/// Updates all GUI elements

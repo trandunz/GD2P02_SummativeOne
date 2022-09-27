@@ -25,16 +25,44 @@ class Level;
 class LevelLoader
 {
 public:
+	/// <summary>
+	/// Calls pollEvents on the current level if one is active
+	/// </summary>
 	static void PollEvents();
+	/// <summary>
+	/// Calls update on the current level if one is active
+	/// </summary>
 	static void Update();
+	/// <summary>
+	/// Draws the current level if one is active
+	/// </summary>
 	static void Draw();
 	
+	/// <summary>
+	/// Reloads the current level if one is active
+	/// </summary>
 	static void ReloadCurrentLevel();
+	/// <summary>
+	/// Marks the specified level to be loaded at the end of the frame
+	/// </summary>
+	/// <param name="_level"></param>
 	static void LoadLevel(LEVELS _level);
+	/// <summary>
+	/// Loads the next level in the sequence e.g LevelOne -> LevelTwo
+	/// </summary>
 	static void LoadNextLevel();
+	/// <summary>
+	/// Cleans up the current level and creates the pending level
+	/// </summary>
 	static void ChangeLevelIfLoaded();
+	/// <summary>
+	/// Cleans up the current level
+	/// </summary>
 	static void CleanupLevel();
 
+	/// <summary>
+	/// Calls ResetCameraReturnDelay on the current level if one is active
+	/// </summary>
 	static void ResetCameraReturnDelay();
 
 private:

@@ -15,6 +15,9 @@
 class LevelOne : public GameLevel
 {
 public:
+	/// <summary>
+	/// LevelOne Constructor
+	/// </summary>
 	LevelOne();
 	/// <summary>
 	/// LevelOne Destructor
@@ -22,10 +25,20 @@ public:
 	virtual ~LevelOne();
 
 protected:
-	void CreateCollisionLess() override;
-	void CreateStatics() override;
-	void CreateBirds() override;
-	void CreatePigs() override;
-	void CreateDestructables() override;
-	void CreateJoints() override;
+	/// <summary>
+	/// Handles the creation of all birds
+	/// </summary>
+	virtual void CreateBirds() override;
+	/// <summary>
+	/// Handles the creation of all pigs
+	/// </summary>
+	virtual void CreatePigs() override;
+	/// <summary>
+	/// Handles the creation of all Destructables
+	/// </summary>
+	virtual void CreateDestructables() override;
+	/// <summary>
+	/// Handles the creation of all Joints
+	/// </summary>
+	virtual void CreateJoints() override;
 };

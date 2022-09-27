@@ -16,6 +16,8 @@
 #include "LevelLoader.h"
 #include "VFX.h"
 
+#define IMPULSE_THRESHHOLD 10.0f
+
 void ContactListener::BeginContact(b2Contact* _contact)
 {
 
@@ -33,35 +35,42 @@ void ContactListener::PreSolve(b2Contact* _contact, const b2Manifold* _oldManifo
 
 void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _impulse)
 {
-	float largestImpulse = 0.0f;
+	// Get the largest impulse of the two
+	float largestImpulse{};
 	for (auto& impulse : _impulse->normalImpulses)
 	{
-		if (impulse > 10.0f && impulse > largestImpulse)
+		if (impulse > IMPULSE_THRESHHOLD && impulse > largestImpulse)
 		{
 			largestImpulse = impulse;
 		}
 	}
 
-	if (largestImpulse > 10.0f)
+	if (largestImpulse > IMPULSE_THRESHHOLD)
 	{
+		// Get world manifold / Contact positions
 		b2WorldManifold worldManifold{};
 		_contact->GetWorldManifold(&worldManifold);
 
+		// Get body 1 user data
 		auto& body1UserData = _contact->GetFixtureA()->GetBody()->GetUserData();
 		if (body1UserData.pointer)
 		{
+			// Cast to userData
 			UserData* userData = (UserData*)(body1UserData.pointer);
+			// If bird took damage
 			if (userData->identifier == "Bird")
 			{
 				Bird* bird = (Bird*)(userData->data);
 				LevelLoader::ResetCameraReturnDelay();
 			}
+			// If pig took damage
 			else if (userData->identifier == "Pig")
 			{
 				Pig* pig = (Pig*)(userData->data);
 				pig->TakeDamage(10.0f, worldManifold.points[0]);
 				LevelLoader::ResetCameraReturnDelay();
 			}
+			// If destructable took damage
 			else if (userData->identifier == "Destructable")
 			{
 				Destructable* destructable = (Destructable*)(userData->data);
@@ -70,21 +79,26 @@ void ContactListener::PostSolve(b2Contact* _contact, const b2ContactImpulse* _im
 			}
 		}
 
+		// Get body 2 user data
 		auto& body2UserData = _contact->GetFixtureB()->GetBody()->GetUserData();
 		if (body2UserData.pointer)
 		{
+			// Cast to userData
 			UserData* userData = (UserData*)(body2UserData.pointer);
+			// If bird took damage
 			if (userData->identifier == "Bird")
 			{
 				Bird* bird = (Bird*)(userData->data);
 				LevelLoader::ResetCameraReturnDelay();
 			}
+			// If pig took damage
 			else if (userData->identifier == "Pig")
 			{
 				Pig* pig = (Pig*)(userData->data);
 				pig->TakeDamage(10.0f, worldManifold.points[0]);
 				LevelLoader::ResetCameraReturnDelay();
 			}
+			// If destructable took damage
 			else if (userData->identifier == "Destructable")
 			{
 				Destructable* destructable = (Destructable*)(userData->data);

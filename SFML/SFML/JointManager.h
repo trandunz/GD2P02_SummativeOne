@@ -23,10 +23,29 @@ public:
 		return instance;
 	}
 
+	/// <summary>
+	/// Create a distance joint with the specified definition
+	/// </summary>
+	/// <param name="_def"></param>
 	void CreateJoint(b2DistanceJointDef _def);
+	/// <summary>
+	/// Create a revolution joint with the specified definition
+	/// </summary>
+	/// <param name="_def"></param>
 	void CreateJoint(b2RevoluteJointDef _def);
+	/// <summary>
+	/// Create a Pulley joint with the specified definition
+	/// </summary>
+	/// <param name="_def"></param>
 	void CreateJoint(b2PulleyJointDef _def);
+
+	/// <summary>
+	/// Cleanup any joints marked for cleanup
+	/// </summary>
 	void CleanupMarkedJoints();
+	/// <summary>
+	/// Force cleans up all joints
+	/// </summary>
 	void ForceCleanupJoints();
 
 	std::vector<DistanceJoint*> DistanceJoints{};

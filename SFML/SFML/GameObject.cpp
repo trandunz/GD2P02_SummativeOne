@@ -14,9 +14,12 @@
 GameObject::GameObject(b2World& _world, sf::Vector2f _startPos)
 {
 	m_World = &_world;
+
+	// Make the mesh and set position
 	m_Mesh = new Mesh("Wood/Plank (1).png");
 	m_Mesh->SetPosition(_startPos);
-	m_b2UserData = UserData();
+
+	// Setup user data
 	m_b2UserData.identifier = "GameObject";
 	m_b2UserData.data = reinterpret_cast<uintptr_t>(this);
 
@@ -47,14 +50,7 @@ b2Body* GameObject::GetBody()
 
 PhysicsBody* GameObject::GetPhysicsBody()
 {
-	if (m_PhysicsBody != nullptr)
-	{
-		return m_PhysicsBody;
-	}
-	else
-	{
-		return nullptr;
-	}
+	return m_PhysicsBody;
 }
 
 b2Vec2 GameObject::GetBodyPosition()
@@ -115,15 +111,13 @@ void GameObject::SetBodyType(b2BodyType _bodyType)
 		m_PhysicsBody->SetBodyType(_bodyType);
 }
 
-void GameObject::Start()
-{
-}
-
 void GameObject::Update()
 {
 	if (m_PhysicsBody != nullptr)
 	{
 		m_PhysicsBody->Update();
+
+		// Set mesh transform to bodies
 		m_Mesh->SetPosition(m_PhysicsBody->GetPosition());
 		m_Mesh->SetRotation(m_PhysicsBody->GetRotation());
 	}
@@ -135,16 +129,19 @@ void GameObject::Update()
 
 void GameObject::CreateBody()
 {
+	// Destroy body if its present
 	DestroyBody();
+
+	// Create the body
 	m_PhysicsBody = new PhysicsBody
 	(
-		*m_World,
-		m_b2UserData,
+		*m_World, // world
+		m_b2UserData, // userdata
 		m_Mesh->GetPosition(), // Pos
-		{ m_Mesh->GetSize().x,m_Mesh->GetSize().y }, // Size
-		m_BodyShape,
-		m_BodyType,
-		m_Mass
+		{ m_Mesh->GetSize().x,m_Mesh->GetSize().y }, // Body Size
+		m_BodyShape, // Shape
+		m_BodyType, // Type e.g static, dynamic
+		m_Density // Density
 	);
 }
 
@@ -159,5 +156,6 @@ void GameObject::DestroyBody()
 
 void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(*m_Mesh);
+	if (m_Mesh)
+		target.draw(*m_Mesh);
 }

@@ -19,6 +19,7 @@ DistanceJoint::DistanceJoint(b2World& _world, b2DistanceJointDef _def)
 
 DistanceJoint::~DistanceJoint()
 {
+	// Cleanup this joint
 	for (auto joint = m_World->GetJointList(); joint; joint = joint->GetNext())
 	{
 		if (m_Joint == joint)

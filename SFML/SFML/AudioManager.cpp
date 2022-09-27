@@ -52,8 +52,9 @@ sf::SoundBuffer& AudioManager::LoadSound(std::string _sound)
 	if (m_LoadedSounds[_sound] == nullptr)
 	{
 		m_LoadedSounds.insert_or_assign(_sound, new sf::SoundBuffer());
+
+		// Load the sound
 		m_LoadedSounds[_sound]->loadFromFile("Resources/Sounds/" + _sound);
-		
 	}
 	return *m_LoadedSounds[_sound];
 }
@@ -68,6 +69,7 @@ void AudioManager::SetSound(std::string _audioSource, std::string _sound)
 
 void AudioManager::Cleanup()
 {
+	// Cleanup all audio sources
 	for (auto& audioSource : m_AudioSources)
 	{
 		if (audioSource.second != nullptr)
@@ -76,6 +78,7 @@ void AudioManager::Cleanup()
 			audioSource.second = nullptr;
 		}
 	}
+	// Cleanup all loaded sounds
 	for (auto& buffer : m_LoadedSounds)
 	{
 		if (buffer.second != nullptr)

@@ -19,6 +19,7 @@ RevolutionJoint::RevolutionJoint(b2World& _world, b2RevoluteJointDef _def)
 
 RevolutionJoint::~RevolutionJoint()
 {
+	// Cleanup this joint
 	for (auto joint = m_World->GetJointList(); joint; joint = joint->GetNext())
 	{
 		if (m_Joint == joint)

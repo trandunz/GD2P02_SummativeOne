@@ -10,11 +10,13 @@
 // Email		: william.inman@mds.ac.nz
 
 #pragma once
-#include "Button.h"
 
 class LevelFailedMenu
 {
 public:
+	/// <summary>
+	/// LevelFailedMenu Constructor
+	/// </summary>
 	LevelFailedMenu();
 	/// <summary>
 	/// LevelFailedMenu Destructor
@@ -22,6 +24,17 @@ public:
 	~LevelFailedMenu();
 
 private:
+	/// <summary>
+	/// Creates the background for the menu
+	/// </summary>
+	void CreateMenuBackground();
+	/// <summary>
+	/// Handles creation of menu buttons
+	/// </summary>
 	void CreateButtons();
+	/// <summary>
+	/// Handles creation of menu text (e.g score)
+	/// </summary>
+	void CreateText();
 };
 

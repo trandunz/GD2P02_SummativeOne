@@ -20,7 +20,7 @@ public:
 	/// </summary>
 	~PulleyJoint();
 
-	bool Destroy = false;
+	bool Destroy{ false };
 private:
 	b2PulleyJoint* m_Joint{ nullptr };
 	b2World* m_World{ nullptr };

@@ -85,12 +85,12 @@ private:
 	void SetupBody();
 
 	sf::Vector2f m_Size{};
-	b2BodyType m_BodyType = b2_staticBody;
-	b2World* m_World = nullptr;
+	b2BodyType m_BodyType{ b2_staticBody };
+	b2World* m_World{ nullptr };
 	sf::Vector2f m_Position{};
 	float m_Rotation{};
 	float m_Density{ 1.0f };
-	b2Body* m_Body = nullptr;
+	b2Body* m_Body{ nullptr };
 	BODYSHAPE m_BodyShape{ BODYSHAPE::POLYGON };
 
 public:

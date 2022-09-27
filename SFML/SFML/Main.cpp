@@ -15,16 +15,37 @@
 #include "Statics.h"
 #include "GUI.h"
 
+/// <summary>
+/// Initalize the render window with the specified parameter
+/// </summary>
+/// <param name="_size"></param>
+/// <param name="_title"></param>
+/// <param name="_style"></param>
+/// <param name="_settings"></param>
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings);
 
+/// <summary>
+/// Main Start Function
+/// </summary>
 void Start();
+/// <summary>
+/// Main Update Loop
+/// </summary>
 void Update();
+/// <summary>
+/// Main Event Polling
+/// </summary>
 void PollEvents();
+/// <summary>
+/// Main Render Function
+/// </summary>
 void Render();
 
+/// <summary>
+/// Cleanup everything and return 0 if no error
+/// </summary>
+/// <returns></returns>
 int Cleanup();
-
-void HandleResizing();
 
 int main()
 {
@@ -100,16 +121,4 @@ int Cleanup()
 	AudioManager::Cleanup();
 
 	return 0;
-}
-
-void HandleResizing()
-{
-	sf::Vector2f size = (sf::Vector2f)Statics::RenderWindow.getSize();
-
-	if (size.x < 426)
-		size.x = 426;
-	if (size.y < 240)
-		size.y = 240;
-
-	Statics::RenderWindow.setSize((sf::Vector2u)size);
 }

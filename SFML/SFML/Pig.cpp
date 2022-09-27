@@ -24,16 +24,13 @@ Pig::Pig(b2World& _world, sf::Vector2f _startPos, float _maxHP)
 
 	SetTexture("Pig.png");
 	m_Mesh->SetScale({ 0.5f, 0.5f });
+
 	SetShapeType(BODYSHAPE::CIRCLE);
 	SetBodyType(b2_dynamicBody);
 	CreateBody();
 }
 
 Pig::~Pig()
-{
-}
-
-void Pig::Start()
 {
 }
 
@@ -72,14 +69,16 @@ void Pig::TakeDamage(float _amount, b2Vec2 _hitPos, sf::Color _pointColor)
 		if (m_CurrentHealth < 0.0f)
 			m_CurrentHealth = 0.0f;
 
+		// Make a score text effect
 		VFX::GetInstance().CreateAndPlayTextEffect(
 			{
-				FloatToString(GetScoreValue(), 0),
-				{_hitPos.x * Statics::Scale, _hitPos.y * Statics::Scale},
-				_pointColor,
-				{1.5f,1.5f}
-			}, 1.0f);
+				FloatToString(GetScoreValue(), 0),  // Text / label
+				{_hitPos.x * Statics::Scale, _hitPos.y * Statics::Scale}, // Pos
+				_pointColor, // Color
+				{1.5f,1.5f} // Scale
+			}, 1.0f); // Lifetime
 
+		// Add the score
 		*LevelLoader::GetScore() += GetScoreValue();
 	}
 }

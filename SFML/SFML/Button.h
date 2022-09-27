@@ -49,9 +49,9 @@ public:
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	ButtonProperties m_Properties;
-	sf::Sprite m_Sprite;
-	sf::Text m_Label;
+	ButtonProperties m_Properties{};
+	sf::Sprite m_Sprite{};
+	sf::Text m_Label{};
 
 public:
 	///////////////////////

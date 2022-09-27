@@ -10,24 +10,37 @@
 // Email		: william.inman@mds.ac.nz
 
 #pragma once
-#include "LevelLoader.h"
 #include "Level.h"
 
 class MainMenu : public Level
 {
 public:
+    /// <summary>
+    /// Main Menu Constructor
+    /// </summary>
     MainMenu();
     /// <summary>
     /// MainMenu Destructor
     /// </summary>	
     ~MainMenu();
 
+    /// <summary>
+    /// Handles all sfml events such as mouse pressed
+    /// </summary>
     virtual void PollEvents() override;
-    virtual void Update() override;
+    /// <summary>
+    /// Handles drawing everything in the scene
+    /// </summary>
     virtual void Draw() override;
 
 private:
+    /// <summary>
+    /// Handles the creation of all meshes
+    /// </summary>
     void CreateMeshes();
+    /// <summary>
+    /// Handles the creation of all buttons
+    /// </summary>
     void CreateButtons();
 };
 

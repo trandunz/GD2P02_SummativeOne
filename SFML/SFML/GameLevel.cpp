@@ -18,48 +18,29 @@
 #include "TextureLoader.h"
 #include "LevelCompleteMenu.h"
 #include "LevelFailedMenu.h"
+#include "Utility.h"
+#include "Pig.h"
+#include "Destructable.h"
 
 GameLevel::GameLevel()
 {
+	AudioManager::StopMusic();
+
+	// Setup view
 	m_View.setSize(Statics::RenderWindow.getDefaultView().getSize());
 	m_View.setCenter(Statics::RenderWindow.getDefaultView().getCenter());
-	m_CameraStartPos = m_View.getCenter();
-	m_CameraTargetPos = m_CameraStartPos;
-	m_CameraTargetPos.x = 1000;
 	Statics::RenderWindow.setView(m_View);
 
-	AudioManager::StopMusic();
+	// Setup camera 
+	m_CameraStartPos = m_View.getCenter();
+	m_CameraTargetPos = { 1000, m_CameraStartPos.y };
+
+	// Setip b2World
 	m_World = new b2World({ 0,10.0f });
 	m_World->SetContactListener(&m_ContactListener);
 	JointManager::GetInstance().SetWorld(*m_World);
 
-	GUI::GetInstance().CreateText("ScoreIndicator",
-		{
-			{1280 - 200.0f, 20.0f},
-			"Score: 10000",
-		});
-
-	GUI::GetInstance().CreateText("ScoreValue",
-		{
-			{1280 - 75.0f, 20.0f},
-			"100000",
-		});
-
-	GUI::GetInstance().CreateButton("PauseButton",
-		{
-			"",
-			{30.0f, 30.0f},
-			{0.5f,0.5f},
-			[this]()
-			{
-				TogglePause();
-			},
-			&TextureLoader::LoadTexture("GUI/Pause.png")
-		});
-
-	m_Score = 0.0f;
-	m_CameraLerpAmount = 0;
-	m_FireTimer = m_FireTime;
+	CreateGUIElements();
 }
 
 GameLevel::~GameLevel()
@@ -72,8 +53,10 @@ GameLevel::~GameLevel()
 	CleanupVector(m_Destructables);
 
 	if (m_World)
+	{
 		delete m_World;
-	m_World = nullptr;
+		m_World = nullptr;
+	}
 
 	VFX::GetInstance().CleanupElements();
 	GUI::GetInstance().CleanupElements();
@@ -99,6 +82,7 @@ GameLevel::~GameLevel()
 
 void GameLevel::PollEvents()
 {
+	// If level is complete and game is paused, resume play
 	if (m_LevelComplete)
 	{
 		if (Statics::IsPaused)
@@ -108,6 +92,7 @@ void GameLevel::PollEvents()
 	}
 	else
 	{
+		// Pause / Resume if escape is pressed
 		if (Statics::EventHandle.type == sf::Event::KeyPressed)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -116,6 +101,7 @@ void GameLevel::PollEvents()
 			}
 		}
 
+		// If Camera is panning towards pigs and mouse button is pressed
 		if (m_FireTimer > 0)
 		{
 			if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
@@ -126,14 +112,17 @@ void GameLevel::PollEvents()
 					{
 						if (m_Birds.size() > 0)
 						{
+							// Fire its special ability
 							m_Birds[0]->SpecialAbility(m_Pigs, m_Destructables);
 						}
 					}
 				}
 			}
 		}
+		// Else if camera is still and looking at the birds
 		else if (m_FireTimer <= 0)
 		{
+			// if mouse is pressed, load a bird
 			if (Statics::EventHandle.type == sf::Event::MouseButtonPressed)
 			{
 				if (Statics::IsPaused == false)
@@ -147,6 +136,7 @@ void GameLevel::PollEvents()
 					}
 				}
 			}
+			// if mouse is moved, move the currently loaded bird (if applicable)
 			if (Statics::EventHandle.type == sf::Event::MouseMoved)
 			{
 				if (Statics::IsPaused == false)
@@ -154,18 +144,22 @@ void GameLevel::PollEvents()
 					m_Catapult.MoveBird();
 				}
 			}
+			// If mouse is released, fire the loaded bird and begin camera pan / lerp
 			if (Statics::EventHandle.type == sf::Event::MouseButtonReleased)
 			{
 				if (Statics::EventHandle.mouseButton.button == sf::Mouse::Left)
 				{
 					if (m_Catapult.IsLoaded())
 					{
+						// Start camera lerp
 						m_CameraLerpAmount = 0;
 						m_FireTimer = m_FireTime;
 
+						// Move all birds a bird width closer to the slingshot
 						for (int i = 0; i < m_Birds.size(); i++)
 							m_Birds[i]->SetPosition(m_Birds[i]->GetPosition() + sf::Vector2f{ 40.0f,0.0f });
 
+						// Fire the loaded bird
 						m_Catapult.ReleaseBird();
 					}
 				}
@@ -176,8 +170,10 @@ void GameLevel::PollEvents()
 
 void GameLevel::Update()
 {
-	m_World->Step(Statics::TimeScale / 60.0f, 10, 10);
+	// apply physics step
+	m_World->Step(Statics::TimeScale / 60.0f, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 
+	// Update everything
 	for (auto& staticObject : m_Statics)
 	{
 		staticObject->Update();
@@ -199,86 +195,30 @@ void GameLevel::Update()
 		collisionLess->Update();
 	}
 
-	CleanupDestroyedGameObjects(m_Statics);
-	CleanupDestroyedDestructables(m_Destructables);
-	CleanupDestroyedGameObjects(m_CollisionLess);
-	CleanupDestroyedPigs(m_Pigs);
-	CleanupDestroyedBirds(m_Birds);
-	JointManager::GetInstance().CleanupMarkedJoints();
+	CameraPanUpdate();
 
-	if (m_FireTimer > 0)
-	{
+	HandleWinLossConditions();
 
-		if (m_CameraDelayTimer > 0.0f && m_CameraLerpAmount >= 1.0f)
-		{
-			m_CameraDelayTimer -= Statics::DeltaTime;
-		}
-		else
-		{
-			if (m_LerpRight)
-			{
-				m_CameraLerpAmount += (Statics::DeltaTime / m_FireTime) * 2;
-
-				if (m_CameraLerpAmount >= 1.0f)
-				{
-					m_CameraLerpAmount = 1.0f;
-					m_LerpRight = false;
-					m_CameraDelayTimer = m_CameraReturnDelay;
-				}
-			}
-			else
-			{
-				m_CameraLerpAmount -= (Statics::DeltaTime / m_FireTime) * 2;
-				if (m_CameraLerpAmount <= 0.0f)
-				{
-					m_CameraLerpAmount = 0.0f;
-					m_LerpRight = true;
-				}
-			}
-
-			m_FireTimer -= Statics::DeltaTime;
-		}
-	}
-	else
-	{
-		if (m_LevelComplete == false && m_Pigs.size() <= 0)
-		{
-			m_LevelComplete = true;
-
-			for (auto& bird : m_Birds)
-				bird->AwardUnusedBirdScore();
-
-			m_LevelCompleteMenu = new LevelCompleteMenu();
-		}
-		else if (m_LevelComplete == false && m_Birds.size() <= 0)
-		{
-			m_LevelComplete = true;
-			m_LevelFailedMenu = new LevelFailedMenu();
-		}
-	}
-
-	if (m_Birds.size() > 0)
-	{
-		if (Mag(m_Birds[0]->GetVelocity()) > 10.0f && m_Pigs.size() > 0)
-		{
-			ResetCameraReturnDelay();
-		}
-	}
-
+	// Update the view too the lerped position of camera start and camera target
 	m_View.setCenter({
 		std::lerp(m_CameraStartPos.x, m_CameraTargetPos.x, m_CameraLerpAmount)
 		, std::lerp(m_CameraStartPos.y, m_CameraTargetPos.y, m_CameraLerpAmount) });
 
 	VFX::GetInstance().Update();
 
-	GUI::GetInstance().SetText("ScoreIndicator", "Score:");
-	GUI::GetInstance().SetText("ScoreValue", FloatToString(GetScore(), 0));
+	UpdateLevelScoreGUI();
+
+	HandleGarbageCollection();
 }
 
 void GameLevel::Draw()
 {
+	// Set to game view
 	Statics::RenderWindow.setView(m_View);
-
+	
+	//
+	// Draw all world elements
+	//
 	for (auto& object : m_CollisionLess)
 	{
 		Statics::RenderWindow.draw(*object);
@@ -303,13 +243,11 @@ void GameLevel::Draw()
 	}
 	m_Catapult.DrawFront();
 
+	//
+	// Draw all screen / GUI elements
+	//
 	Statics::RenderWindow.draw(VFX::GetInstance());
 	Statics::RenderWindow.draw(GUI::GetInstance());
-
-	if (m_PauseMenu)
-	{
-		Statics::RenderWindow.draw(*m_PauseMenu);
-	}
 }
 
 void GameLevel::ResetCameraReturnDelay()
@@ -330,6 +268,7 @@ void GameLevel::TogglePause()
 		if (m_PauseMenu == nullptr)
 			m_PauseMenu = new PauseMenu();
 
+		// Update pause button texture
 		GUI::GetInstance().GetButton("PauseButton")->SetTexture("GUI/Play.png");
 	}
 	else
@@ -340,22 +279,39 @@ void GameLevel::TogglePause()
 			m_PauseMenu = nullptr;
 		}
 
+		// Update pause button texture
 		GUI::GetInstance().GetButton("PauseButton")->SetTexture("GUI/Pause.png");
 	}
 }
 
 void GameLevel::CreateCollisionLess()
 {
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { 1280 / 2,720 / 2 }));
-	m_CollisionLess.back()->SetTexture("Background.jpg");
-	m_CollisionLess.back()->SetScale({ 2.65f,2.65f });
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { 3 * (1280 / 2) ,720 / 2 }));
-	m_CollisionLess.back()->SetTexture("Background.jpg");
-	m_CollisionLess.back()->SetScale({ 2.65f,2.65f });
+	sf::Vector2f windowCenter = Statics::RenderWindow.getView().getCenter();
+	windowCenter.y -= 720 / 6;
+
+	// Create background
+	m_CollisionLess.emplace_back(new GameObject(*m_World, windowCenter));
+	m_CollisionLess.back()->SetTexture("Background.png");
+	m_CollisionLess.emplace_back(new GameObject(*m_World, { windowCenter.x * 3, windowCenter.y }));
+	m_CollisionLess.back()->SetTexture("Background.png");
+
+	// Create grass
+	m_CollisionLess.emplace_back(new GameObject(*m_World, { -173,550 }));
+	m_CollisionLess.back()->SetTexture("Grass.png");
+	m_CollisionLess.emplace_back(new GameObject(*m_World, { 173,550 }));
+	m_CollisionLess.back()->SetTexture("Grass.png");
+	for (int i = 0; i < 5; i++)
+	{
+		m_CollisionLess.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),550 }));
+		m_CollisionLess.back()->SetTexture("Grass.png");
+	}
 }
 
 void GameLevel::CreateStatics()
 {
+	//
+	// Create ground objects
+	//
 	m_Statics.emplace_back(new GameObject(*m_World, { -173,680 }));
 	m_Statics.emplace_back(new GameObject(*m_World, { 173,680 }));
 	for (int i = 0; i < 5; i++)
@@ -404,25 +360,18 @@ void GameLevel::CreateDestructables()
 {
 	m_Destructables.emplace_back(new Destructable(*m_World, { 950, 470 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
 	m_Destructables.back()->SetRotation(90.0f);
+
 	m_Destructables.emplace_back(new Destructable(*m_World, { 1050, 470 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
 	m_Destructables.back()->SetRotation(90.0f);
-	m_Destructables.emplace_back(new Destructable(*m_World, { 1000, 390 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
 
+	m_Destructables.emplace_back(new Destructable(*m_World, { 1000, 390 }, Destructable::SHAPE::PLANK, Destructable::TYPE::WOOD));
+	
 	m_Destructables.emplace_back(new Destructable(*m_World, { 900, 620 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::WOOD));
 	m_Destructables.emplace_back(new Destructable(*m_World, { 1100, 620 }, Destructable::SHAPE::SQUARE, Destructable::TYPE::WOOD));
 }
 
 void GameLevel::CreateJoints()
 {
-	//b2DistanceJointDef distanceJoint{};
-	//distanceJoint.bodyA = m_Destructables[0]->GetBody();
-	//distanceJoint.bodyB = m_Destructables[1]->GetBody();
-	//distanceJoint.collideConnected = false;
-	//distanceJoint.length = 0.0f;
-	//distanceJoint.minLength = 0.0f;
-	//distanceJoint.maxLength = 0.0f;
-	//
-	//JointManager::GetInstance().CreateDistanceJoint(distanceJoint);
 }
 
 void GameLevel::CleanupDestroyedGameObjects(std::vector<GameObject*>& _vector)
@@ -487,4 +436,123 @@ void GameLevel::CleanupDestroyedDestructables(std::vector<Destructable*>& _vecto
 		}
 		it++;
 	}
+}
+
+void GameLevel::CreateGUIElements()
+{
+	GUI::GetInstance().CreateText("ScoreIndicator", // Key
+		{
+			{1280 - 200.0f, 20.0f}, // Position
+			"Score: 10000", // Text / label
+		});
+
+	GUI::GetInstance().CreateText("ScoreValue", // Key
+		{
+			{1280 - 75.0f, 20.0f}, // Position
+			"100000", // Text / label
+		});
+
+	GUI::GetInstance().CreateButton("PauseButton", // Key
+		{
+			"", // Text / label
+			{30.0f, 30.0f}, // Position
+			{0.5f,0.5f}, // Scale
+			[this]()
+			{
+				TogglePause(); // On Press Function
+			},
+			&TextureLoader::LoadTexture("GUI/Pause.png") // Texture
+		});
+}
+
+void GameLevel::HandleGarbageCollection()
+{
+	CleanupDestroyedGameObjects(m_Statics);
+	CleanupDestroyedDestructables(m_Destructables);
+	CleanupDestroyedGameObjects(m_CollisionLess);
+	CleanupDestroyedPigs(m_Pigs);
+	CleanupDestroyedBirds(m_Birds);
+	JointManager::GetInstance().CleanupMarkedJoints();
+}
+
+void GameLevel::CameraPanUpdate()
+{
+	// If bird has been fired
+	if (m_FireTimer > 0)
+	{
+		// If camera return delay is active and camera has reached the end of its pan,
+		// Reduce the camera return delay timer
+		if (m_CameraDelayTimer > 0.0f && m_CameraLerpAmount >= 1.0f)
+		{
+			m_CameraDelayTimer -= Statics::DeltaTime;
+		}
+		else
+		{
+			// else if camera is lerping right,
+			if (m_LerpRight)
+			{
+				// Increase lerp amount by fire time / rate of fire
+				m_CameraLerpAmount += (Statics::DeltaTime / m_FireTime) * 2;
+
+				// If lerp has reached its end, start camera return delay and lerp right to false
+				if (m_CameraLerpAmount >= 1.0f)
+				{
+					m_CameraLerpAmount = 1.0f;
+					m_LerpRight = false;
+					m_CameraDelayTimer = m_CameraReturnDelay;
+				}
+			}
+			else
+			{
+				// else, start panning left by reducing the lerp ratio
+				m_CameraLerpAmount -= (Statics::DeltaTime / m_FireTime) * 2;
+
+				// set lerp right for next shot if camera has returned to birds
+				if (m_CameraLerpAmount <= 0.0f)
+				{
+					m_CameraLerpAmount = 0.0f;
+					m_LerpRight = true;
+				}
+			}
+
+			// Reduce the fire timer
+			m_FireTimer -= Statics::DeltaTime;
+		}
+	}
+
+	// If bird is moving and there are pigs alive, reset the camera return delay
+	if (m_Birds.size() > 0)
+	{
+		if (Mag(m_Birds[0]->GetVelocity()) > 10.0f && m_Pigs.size() > 0)
+		{
+			ResetCameraReturnDelay();
+		}
+	}
+}
+
+void GameLevel::HandleWinLossConditions()
+{
+	if (m_FireTimer <= 0.0f)
+	{
+		if (m_LevelComplete == false && m_Pigs.size() <= 0)
+		{
+			m_LevelComplete = true;
+
+			for (auto& bird : m_Birds)
+				bird->AwardUnusedBirdScore();
+
+			m_LevelCompleteMenu = new LevelCompleteMenu();
+		}
+		else if (m_LevelComplete == false && m_Birds.size() <= 0)
+		{
+			m_LevelComplete = true;
+			m_LevelFailedMenu = new LevelFailedMenu();
+		}
+	}
+}
+
+void GameLevel::UpdateLevelScoreGUI()
+{
+	GUI::GetInstance().SetText("ScoreIndicator", "Score:");
+	GUI::GetInstance().SetText("ScoreValue", FloatToString(GetScore(), 0));
 }

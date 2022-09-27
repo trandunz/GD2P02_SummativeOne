@@ -16,14 +16,17 @@
 Destructable::Destructable(b2World& _world, sf::Vector2f _startPos, SHAPE _shape, TYPE _type)
 	: GameObject(_world, _startPos)
 {
+	// Set user data
 	m_b2UserData.identifier = "Destructable";
 	m_b2UserData.data = reinterpret_cast<uintptr_t>(this);
 
-	m_DamageLevel = DAMAGELEVEL::FRESH;
 	m_Shape = _shape;
 	m_Type = _type;
+
 	InitBasedOnType();
-	m_CurrentHealth = m_MaxHealth;
+
+	SetHealthToMax();
+
 	SetBodyType(b2_dynamicBody);
 	CreateBody();
 }
@@ -36,10 +39,6 @@ Destructable::~Destructable()
 	}
 }
 
-void Destructable::Start()
-{
-}
-
 void Destructable::Update()
 {
 	if (m_DamageTimer > 0.0f)
@@ -47,6 +46,7 @@ void Destructable::Update()
 
 	GameObject::Update();
 
+	// Destory the object if health is 0, EXCLUDING diamond objects
 	if (m_CurrentHealth <= 0.0f && m_Type != TYPE::DIAMOND)
 		Destroy = true;
 }
@@ -79,14 +79,16 @@ void Destructable::TakeDamage(float _amount, b2Vec2 _hitPos, sf::Color _pointCol
 		UpdateDamageLevelFromHealth();
 		InitBasedOnType();
 
+		// Make a score text effect
 		VFX::GetInstance().CreateAndPlayTextEffect(
 			{
-				FloatToString(GetScoreValue(), 0),
-				{_hitPos.x * Statics::Scale, _hitPos.y * Statics::Scale},
-				_pointColor,
-				{1.5f,1.5f}
-			}, 1.0f);
+				FloatToString(GetScoreValue(), 0), // Text / label
+				{_hitPos.x * Statics::Scale, _hitPos.y * Statics::Scale}, // position
+				_pointColor, // color
+				{1.5f,1.5f} // scale
+			}, 1.0f); // lifetime
 
+		// Add the score
 		*LevelLoader::GetScore() += GetScoreValue();
 	}
 }
@@ -104,28 +106,28 @@ void Destructable::InitBasedOnType()
 	case TYPE::WOOD:
 	{
 		m_MaxHealth = 10.0f;
-		m_Mass = 1.0f;
+		m_Density = 1.0f;
 		subFolder = "Wood/";
 		break;
 	}
 	case TYPE::STONE:
 	{
 		m_MaxHealth = 20.0f;
-		m_Mass = 2.0f;
+		m_Density = 2.0f;
 		subFolder = "Stone/";
 		break;
 	}
 	case TYPE::ICE:
 	{
 		m_MaxHealth = 5.0f;
-		m_Mass = 1.0f;
+		m_Density = 1.0f;
 		subFolder = "Ice/";
 		break;
 	}
 	case TYPE::DIAMOND:
 	{
 		m_MaxHealth = 5.0f;
-		m_Mass = 2.0f;
+		m_Density = 2.0f;
 		subFolder = "Diamond/";
 		break;
 	}
@@ -219,4 +221,9 @@ void Destructable::UpdateDamageLevelFromHealth()
 	{
 		m_DamageLevel = DAMAGELEVEL::FRESH;
 	}
+}
+
+void Destructable::SetHealthToMax()
+{
+	m_CurrentHealth = m_MaxHealth;
 }

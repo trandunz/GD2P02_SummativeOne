@@ -15,6 +15,9 @@
 class LevelTwo : public GameLevel
 {
 public:
+	/// <summary>
+	/// LevelTwo Constructor
+	/// </summary>
 	LevelTwo();
 	/// <summary>
 	/// LevelTwo Destructor
@@ -22,10 +25,20 @@ public:
 	virtual ~LevelTwo();
 
 protected:
-	void CreateCollisionLess() override;
-	void CreateStatics() override;
-	void CreateBirds() override;
-	void CreatePigs() override;
-	void CreateDestructables() override;
-	void CreateJoints() override;
+	/// <summary>
+	/// Handles the creation of all birds
+	/// </summary>
+	virtual void CreateBirds() override;
+	/// <summary>
+	/// Handles the creation of all pigs
+	/// </summary>
+	virtual void CreatePigs() override;
+	/// <summary>
+	/// Handles the creation of all Destructables
+	/// </summary>
+	virtual void CreateDestructables() override;
+	/// <summary>
+	/// Handles the creation of all Joints
+	/// </summary>
+	virtual void CreateJoints() override;
 };

@@ -11,6 +11,9 @@
 
 #include "LevelTwo.h"
 #include "JointManager.h"
+#include "Utility.h"
+#include "Pig.h"
+#include "Destructable.h"
 
 LevelTwo::LevelTwo()
 {
@@ -24,43 +27,6 @@ LevelTwo::LevelTwo()
 
 LevelTwo::~LevelTwo()
 {
-}
-
-void LevelTwo::CreateCollisionLess()
-{
-	sf::Vector2f windowCenter = Statics::RenderWindow.getView().getCenter();
-	windowCenter.y -= 720 / 6;
-	m_CollisionLess.emplace_back(new GameObject(*m_World, windowCenter));
-	m_CollisionLess.back()->SetTexture("Background.png");
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { windowCenter.x * 3, windowCenter.y }));
-	m_CollisionLess.back()->SetTexture("Background.png");
-
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { -173,550 }));
-	m_CollisionLess.back()->SetTexture("Grass.png");
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { 173,550 }));
-	m_CollisionLess.back()->SetTexture("Grass.png");
-	for (int i = 0; i < 5; i++)
-	{
-		m_CollisionLess.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),550 }));
-		m_CollisionLess.back()->SetTexture("Grass.png");
-	}
-}
-
-void LevelTwo::CreateStatics()
-{
-	m_Statics.emplace_back(new GameObject(*m_World, { -173,680 }));
-	m_Statics.emplace_back(new GameObject(*m_World, { 173,680 }));
-	for (int i = 0; i < 5; i++)
-	{
-		m_Statics.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),680 }));
-	}
-
-	for (auto& object : m_Statics)
-	{
-		object->SetTexture("Ground.png");
-		object->SetBodyType(b2_staticBody);
-		object->CreateBody();
-	}
 }
 
 void LevelTwo::CreateBirds()
@@ -146,6 +112,7 @@ void LevelTwo::CreateDestructables()
 void LevelTwo::CreateJoints()
 {
 	b2DistanceJointDef distanceJoint{};
+
 	distanceJoint.bodyA = m_Destructables[0]->GetBody();
 	distanceJoint.bodyB = m_Destructables[1]->GetBody();
 	distanceJoint.collideConnected = false;
@@ -153,7 +120,6 @@ void LevelTwo::CreateJoints()
 	distanceJoint.minLength = 0.0f;
 	distanceJoint.maxLength = 0.1f;
 	distanceJoint.localAnchorA = { 2,2 };
-	
 	JointManager::GetInstance().CreateJoint(distanceJoint);
 
 	distanceJoint.bodyA = m_Destructables[0]->GetBody();
@@ -163,7 +129,6 @@ void LevelTwo::CreateJoints()
 	distanceJoint.minLength = 0.0f;
 	distanceJoint.maxLength = 0.1f;
 	distanceJoint.localAnchorA = { -2,2 };
-
 	JointManager::GetInstance().CreateJoint(distanceJoint);
 
 	distanceJoint.bodyA = m_Destructables[0]->GetBody();
@@ -173,6 +138,5 @@ void LevelTwo::CreateJoints()
 	distanceJoint.minLength = 0.0f;
 	distanceJoint.maxLength = 0.1f;
 	distanceJoint.localAnchorA = { 0,-1.8f };
-
 	JointManager::GetInstance().CreateJoint(distanceJoint);
 }

@@ -11,6 +11,9 @@
 
 #include "LevelOne.h"
 #include "JointManager.h"
+#include "Utility.h"
+#include "Pig.h"
+#include "Destructable.h"
 
 LevelOne::LevelOne()
 	: GameLevel()
@@ -25,43 +28,6 @@ LevelOne::LevelOne()
 
 LevelOne::~LevelOne()
 {
-}
-
-void LevelOne::CreateCollisionLess()
-{
-	sf::Vector2f windowCenter = Statics::RenderWindow.getView().getCenter();
-	windowCenter.y -= 720 / 6;
-	m_CollisionLess.emplace_back(new GameObject(*m_World, windowCenter));
-	m_CollisionLess.back()->SetTexture("Background.png");
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { windowCenter.x * 3, windowCenter.y }));
-	m_CollisionLess.back()->SetTexture("Background.png");
-
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { -173,550 }));
-	m_CollisionLess.back()->SetTexture("Grass.png");
-	m_CollisionLess.emplace_back(new GameObject(*m_World, { 173,550 }));
-	m_CollisionLess.back()->SetTexture("Grass.png");
-	for (int i = 0; i < 5; i++)
-	{
-		m_CollisionLess.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),550 }));
-		m_CollisionLess.back()->SetTexture("Grass.png");
-	}
-}
-
-void LevelOne::CreateStatics()
-{
-	m_Statics.emplace_back(new GameObject(*m_World, { -173,680 }));
-	m_Statics.emplace_back(new GameObject(*m_World, { 173,680 }));
-	for (int i = 0; i < 5; i++)
-	{
-		m_Statics.emplace_back(new GameObject(*m_World, { 519 + 173.0f * (i * 2),680 }));
-	}
-
-	for (auto& object : m_Statics)
-	{
-		object->SetTexture("Ground.png");
-		object->SetBodyType(b2_staticBody);
-		object->CreateBody();
-	}
 }
 
 void LevelOne::CreateBirds()

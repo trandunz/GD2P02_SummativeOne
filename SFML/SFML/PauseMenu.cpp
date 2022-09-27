@@ -16,34 +16,13 @@
 
 PauseMenu::PauseMenu()
 {
-	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-
-	GUI::GetInstance().CreateImage("DullBackground",
-		{
-			&TextureLoader::LoadTexture("GUI/DullBackground.png"),
-			ScreenCentre
-		});
-	
-	GUI::GetInstance().CreateImage("Background",
-		{
-			&TextureLoader::LoadTexture("GUI/PauseMenuBackground.png"),
-			ScreenCentre
-		});
-
-	GUI::GetInstance().CreateText("PauseMenuTitle",
-		{
-			{ScreenCentre.x, ScreenCentre.y - 80},
-			"Paused"
-		});
-
+	CreateMenuBackground();
+	CreateText();
 	CreateButtons();
 }
 
 PauseMenu::~PauseMenu()
 {
-	m_Buttons.clear();
-	m_Buttons.resize(0);
-
 	GUI::GetInstance().CleanupImageElement("Background");
 	GUI::GetInstance().CleanupImageElement("DullBackground");
 	GUI::GetInstance().CleanupTextElement("PauseMenuTitle");
@@ -51,35 +30,57 @@ PauseMenu::~PauseMenu()
 	GUI::GetInstance().CleanupButtonElement("Quit");
 }
 
-void PauseMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	for (auto& button : m_Buttons)
-		target.draw(button);
-}
-
 void PauseMenu::CreateButtons()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-	GUI::GetInstance().CreateButton("Retry",
+	GUI::GetInstance().CreateButton("Retry", // Key
 		{
-			"Retry",
-			{ ScreenCentre.x,ScreenCentre.y},
-			{1,1},
+			"Retry", // Label / String
+			{ ScreenCentre.x,ScreenCentre.y}, // Position
+			{1,1}, // Scale
 			[]()
 			{
-				LevelLoader::ReloadCurrentLevel();
+				LevelLoader::ReloadCurrentLevel();	// On Press Lambda
 				Statics::TogglePaused();
 			}
 		});
-	GUI::GetInstance().CreateButton("Quit",
+	GUI::GetInstance().CreateButton("Quit", // Key
 		{
-			"Quit",
-			{ ScreenCentre.x,ScreenCentre.y + 80},
-			{1,1},
+			"Quit", // Label / String
+			{ ScreenCentre.x,ScreenCentre.y + 80}, // Position
+			{1,1}, // Scale
 			[]()
 			{
-				LevelLoader::LoadLevel(LEVELS::MAINMENU);
+				LevelLoader::LoadLevel(LEVELS::MAINMENU); // On Press Lambda
 				Statics::TogglePaused();
 			}
+		});
+}
+
+void PauseMenu::CreateText()
+{
+	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
+
+	GUI::GetInstance().CreateText("PauseMenuTitle", // Key
+		{
+			{ScreenCentre.x, ScreenCentre.y - 80}, // Position
+			"Paused" // Label / String
+		});
+}
+
+void PauseMenu::CreateMenuBackground()
+{
+	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
+
+	GUI::GetInstance().CreateImage("DullBackground", // Key
+		{
+			&TextureLoader::LoadTexture("GUI/DullBackground.png"), // Texture
+			ScreenCentre // Position
+		});
+
+	GUI::GetInstance().CreateImage("Background", // Key
+		{
+			&TextureLoader::LoadTexture("GUI/PauseMenuBackground.png"), // Texture
+			ScreenCentre // Position
 		});
 }

@@ -25,6 +25,9 @@ float Statics::Scale = 30.0f;
 
 sf::Font Statics::TimesNewRoman{};
 
+/// <summary>
+/// Calculates both Unscaled deltatime and normal deltaTime
+/// </summary>
 void Statics::CalculateDeltaTime()
 {
 	float currentTime = Time.getElapsedTime().asSeconds();

@@ -17,33 +17,8 @@
 
 LevelFailedMenu::LevelFailedMenu()
 {
-	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-
-	GUI::GetInstance().CreateImage("DullBackground",
-		{
-			&TextureLoader::LoadTexture("GUI/DullBackground.png"),
-			ScreenCentre
-		});
-
-	GUI::GetInstance().CreateImage("Background",
-		{
-			&TextureLoader::LoadTexture("GUI/PauseMenuBackground.png"),
-			ScreenCentre,
-			{1.5f,1.5f}
-		});
-
-	GUI::GetInstance().CreateText("Score",
-		{
-			{ScreenCentre.x, ScreenCentre.y - 20},
-			"Score: " + FloatToString(*LevelLoader::GetScore(),0)
-		});
-
-	GUI::GetInstance().CreateText("MissionFailed",
-		{
-			{ScreenCentre.x, ScreenCentre.y - 110},
-			"Mission Failed!"
-		});
-
+	CreateMenuBackground();
+	CreateText();
 	CreateButtons();
 }
 
@@ -57,29 +32,63 @@ LevelFailedMenu::~LevelFailedMenu()
 	GUI::GetInstance().CleanupButtonElement("Retry");
 }
 
+void LevelFailedMenu::CreateMenuBackground()
+{
+	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
+	GUI::GetInstance().CreateImage("DullBackground", // Key
+		{
+			&TextureLoader::LoadTexture("GUI/DullBackground.png"), // Set Texture
+			ScreenCentre // Position
+		});
+
+	GUI::GetInstance().CreateImage("Background", // Key
+		{
+			&TextureLoader::LoadTexture("GUI/PauseMenuBackground.png"), // Set Texture
+			ScreenCentre, // Position
+			{1.5f,1.5f} // Scale
+		});
+}
+
 void LevelFailedMenu::CreateButtons()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-	GUI::GetInstance().CreateButton("Retry",
+	GUI::GetInstance().CreateButton("Retry", // Key
 		{
-			"Retry",
-			{ ScreenCentre.x,ScreenCentre.y + 60},
-			{1,1},
+			"Retry", // Label / string
+			{ ScreenCentre.x,ScreenCentre.y + 60}, // Position
+			{1,1}, // Scale
 			[]()
 			{
-				LevelLoader::ReloadCurrentLevel();
+				LevelLoader::ReloadCurrentLevel(); // On Press Lambda
 			}
 		});
 
-	GUI::GetInstance().CreateButton("Quit",
+	GUI::GetInstance().CreateButton("Quit", // Key
 		{
-			"Quit",
-			{ ScreenCentre.x,ScreenCentre.y + 130},
-			{1,1},
+			"Quit", // Label / string
+			{ ScreenCentre.x,ScreenCentre.y + 130}, // Position
+			{1,1}, // Scale
 			[]()
 			{
-				LevelLoader::LoadLevel(LEVELS::MAINMENU);
+				LevelLoader::LoadLevel(LEVELS::MAINMENU); // On Press Lambda
 			}
 		});
 
+}
+
+void LevelFailedMenu::CreateText()
+{
+	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
+
+	GUI::GetInstance().CreateText("Score", // Key
+		{
+			{ScreenCentre.x, ScreenCentre.y - 20}, // Position
+			"Score: " + FloatToString(*LevelLoader::GetScore(),0) // Label / string
+		});
+
+	GUI::GetInstance().CreateText("MissionFailed", // Key
+		{
+			{ScreenCentre.x, ScreenCentre.y - 110}, // Position
+			"Mission Failed!" // Label / string
+		});
 }

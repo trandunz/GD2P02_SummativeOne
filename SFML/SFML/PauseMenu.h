@@ -10,8 +10,7 @@
 // Email		: william.inman@mds.ac.nz
 
 #pragma once
-#include "Button.h"
-class PauseMenu : public sf::Drawable
+class PauseMenu
 {
 public:
 	PauseMenu();
@@ -21,10 +20,17 @@ public:
 	~PauseMenu();
 
 private:
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
+	/// <summary>
+	/// Handles creation of menu buttons
+	/// </summary>
 	void CreateButtons();
-
-	std::vector<Button> m_Buttons{};
+	/// <summary>
+	/// Handles creation of menu text
+	/// </summary>
+	void CreateText();
+	/// <summary>
+	/// Creates the background for the menu
+	/// </summary>
+	void CreateMenuBackground();
 };
 

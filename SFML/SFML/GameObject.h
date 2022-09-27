@@ -16,30 +16,43 @@
 class GameObject : public sf::Drawable
 {
 public:
+	/// <summary>
+	/// GameObject Constructor
+	/// </summary>
+	/// <param name="_world"></param>
+	/// <param name="_startPos"></param>
 	GameObject(b2World& _world, sf::Vector2f _startPos);
 	/// <summary>
 	/// GameObject Destructor
 	/// </summary>
 	virtual ~GameObject();
 
-	virtual void Start();
+	/// <summary>
+	/// Updates the gameobject
+	/// </summary>
 	virtual void Update();
 
+	/// <summary>
+	/// Creates the physics body
+	/// </summary>
 	virtual void CreateBody();
+	/// <summary>
+	/// Destroys the physics body
+	/// </summary>
 	void DestroyBody();
 
-	bool Destroy = false;
+	bool Destroy{ false };
 
 protected:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	
-	float m_Mass{ 1.0f };
-	UserData m_b2UserData;
-	b2World* m_World = nullptr;
-	BODYSHAPE m_BodyShape = BODYSHAPE::POLYGON;
-	b2BodyType m_BodyType = b2_staticBody;
-	PhysicsBody* m_PhysicsBody = nullptr;
-	Mesh* m_Mesh = nullptr;
+	float m_Density{ 1.0f };
+	UserData m_b2UserData{};
+	b2World* m_World{ nullptr };
+	BODYSHAPE m_BodyShape{ BODYSHAPE::POLYGON };
+	b2BodyType m_BodyType{ b2_staticBody };
+	PhysicsBody* m_PhysicsBody{ nullptr };
+	Mesh* m_Mesh{ nullptr };
 
 public:
 	///////////////////////

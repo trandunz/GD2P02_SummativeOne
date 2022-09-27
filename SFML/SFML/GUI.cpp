@@ -16,6 +16,7 @@
 
 void GUI::CleanupImageElement(std::string _key)
 {
+	// Find the element in the map and erase it
 	auto it = m_vecImages.find(_key);
 	if (it != m_vecImages.end())
 	{
@@ -25,6 +26,7 @@ void GUI::CleanupImageElement(std::string _key)
 
 void GUI::CleanupButtonElement(std::string _key)
 {
+	// Find the element in the map and erase it
 	auto it = m_vecButtons.find(_key);
 	if (it != m_vecButtons.end())
 	{
@@ -34,6 +36,7 @@ void GUI::CleanupButtonElement(std::string _key)
 
 void GUI::CleanupTextElement(std::string _key)
 {
+	// Find the element in the map and erase it
 	auto it = m_vecTexts.find(_key);
 	if (it != m_vecTexts.end())
 	{
@@ -55,6 +58,7 @@ void GUI::CreateButton(std::string _key, ButtonProperties _properties)
 
 Button* GUI::GetButton(std::string _key)
 {
+	// Return the element if it exists
 	if (m_vecButtons.contains(_key))
 		return &m_vecButtons[_key];
 	else
@@ -72,13 +76,20 @@ void GUI::ResetAllButtonsScale()
 void GUI::CreateText(std::string _key, TextProperties _properties)
 {
 	m_vecTexts.insert_or_assign(_key, sf::Text());
+
+	// Font
 	m_vecTexts[_key].setFont(Statics::TimesNewRoman);
 	m_vecTexts[_key].setCharacterSize(_properties.iCharacterSize);
+
+	// Color and outline
 	m_vecTexts[_key].setFillColor(_properties.FillColor);
 	m_vecTexts[_key].setOutlineColor(_properties.OutlineColor);
 	m_vecTexts[_key].setOutlineThickness(1.0f);
+
 	m_vecTexts[_key].setString(_properties.String);
+
 	SetOriginCentre(m_vecTexts[_key]);
+
 	m_vecTexts[_key].setPosition(_properties.StartPos);
 }
 
@@ -90,21 +101,28 @@ sf::Text& GUI::GetText(std::string _key)
 void GUI::SetText(std::string _key, std::string _value)
 {
 	m_vecTexts[_key].setString(_value);
+
+	// Reset origin
 	SetOriginCentre(m_vecTexts[_key]);
 }
 
 void GUI::AppendText(std::string _key, std::string _value)
 {
 	m_vecTexts[_key].setString(m_vecTexts[_key].getString() + _value);
+
+	// Reset origin
 	SetOriginCentre(m_vecTexts[_key]);
 }
 
 void GUI::CreateImage(std::string _key, ImageProperties _properties)
 {
 	m_vecImages.insert_or_assign(_key, sf::Sprite());
+
 	m_vecImages[_key].setTexture(*_properties.Texture, true);
-	m_vecImages[_key].setScale(_properties.Scale);
+
 	SetOriginCentre(m_vecImages[_key]);
+
+	m_vecImages[_key].setScale(_properties.Scale);
 	m_vecImages[_key].setPosition(_properties.StartPos);
 	m_vecImages[_key].setRotation(_properties.Rotation);
 }
@@ -117,11 +135,13 @@ sf::Sprite& GUI::GetImage(std::string _key)
 void GUI::SetImageSprite(std::string _key, sf::Texture& _texture)
 {
 	m_vecImages[_key].setTexture(_texture, true);
+
 	SetOriginCentre(m_vecImages[_key]);
 }
 
 void GUI::PollEvents()
 {
+	// If mouse button left has been released, check if mouse is over any and then call onpress
 	if (Statics::EventHandle.type == sf::Event::MouseButtonReleased
 		&& Statics::EventHandle.mouseButton.button == sf::Mouse::Left)
 	{

@@ -16,14 +16,20 @@
 Button::Button(ButtonProperties _properties)
 {
 	m_Properties = _properties;
+
 	m_Label.setFont(Statics::TimesNewRoman);
+	m_Label.setCharacterSize(24);
+
 	m_Label.setString(_properties.Label);
-	m_Label.setCharacterSize(24); 
+
 	m_Label.setFillColor(sf::Color::Black);
+
+	// Set texture if one was given in properties
 	if (_properties.Texture == nullptr)
 		SetTexture("GUI/Button.png");
 	else
 		SetTexture(*_properties.Texture);
+
 	SetScale(_properties.Scale);
 	SetPosition(_properties.Position);
 }
@@ -37,6 +43,7 @@ void Button::CallOnPress()
 {
 	if (m_Properties.OnPressLambda != nullptr)
 	{
+		// Check if mouse position is over the sprite
 		sf::Vector2f mousePos = { (float)sf::Mouse::getPosition(Statics::RenderWindow).x, (float)sf::Mouse::getPosition(Statics::RenderWindow).y };
 		if (m_Sprite.getGlobalBounds().contains(mousePos))
 		{

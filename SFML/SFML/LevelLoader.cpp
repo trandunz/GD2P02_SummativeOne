@@ -83,6 +83,8 @@ void LevelLoader::ChangeLevelIfLoaded()
 	{
 		CleanupLevel();
 		m_CurrentLevelID = m_LevelToLoad;
+
+		// Create the new level
 		switch (m_LevelToLoad)
 		{
 		case LEVELS::MAINMENU:
@@ -108,6 +110,8 @@ void LevelLoader::ChangeLevelIfLoaded()
 		default:
 			break;
 		}
+
+		// Reset level to load
 		m_LevelToLoad = LEVELS::UNASSIGNED;
 	}
 }
@@ -141,10 +145,8 @@ float* LevelLoader::GetScore()
 			return &gameLevel->GetScore();
 		}
 	}
-	else
-	{
-		return {};
-	}
+
+	return nullptr;
 }
 
 LEVELS LevelLoader::GetCurrentLevelID()

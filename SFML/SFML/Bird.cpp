@@ -18,11 +18,11 @@
 Bird::Bird(b2World& _world, sf::Vector2f _startPos, TYPE _birdType)
 	: GameObject(_world, _startPos)
 {
+	// Set user data
 	m_b2UserData.identifier = "Bird";
 	m_b2UserData.data = reinterpret_cast<uintptr_t>(this);
-	m_Type = _birdType;
 
-	SetTextureBasedOnType();
+	SetBirdType(_birdType);
 	SetScale({ 0.25f,0.25f });
 	SetBodyType(b2_dynamicBody);
 }
@@ -31,13 +31,11 @@ Bird::~Bird()
 {
 }
 
-void Bird::Start()
-{
-}
-
 void Bird::Update()
 {
 	GameObject::Update();
+
+	// Mark for destroy if body is almost stopped or goes out of window bounds
 	if (m_PhysicsBody)
 	{
 		if (Mag(m_PhysicsBody->GetVelocity()) <= 10.0f)
@@ -45,10 +43,13 @@ void Bird::Update()
 			Destroy = true;
 		}
 	}
-	if (GetPosition().x < -m_Mesh->GetGlobalBounds().width
-		|| GetPosition().x > Statics::RenderWindow.getSize().x + m_Mesh->GetGlobalBounds().width)
+	if (m_Mesh)
 	{
-		Destroy = true;
+		if (GetPosition().x < -m_Mesh->GetGlobalBounds().width
+			|| GetPosition().x > Statics::RenderWindow.getSize().x + m_Mesh->GetGlobalBounds().width)
+		{
+			Destroy = true;
+		}
 	}
 }
 
@@ -63,16 +64,19 @@ void Bird::SpecialAbility(std::vector<Pig*>& _pigs, std::vector<Destructable*>& 
 			{
 			case TYPE::DIVEBOMB:
 			{
+				// Apply a force down
 				m_PhysicsBody->ApplyImpulse({0.0f, 25.0f });
 				break;
 			}
 			case TYPE::DASH:
 			{
+				// Apply a force too the right
 				m_PhysicsBody->ApplyImpulse({ 18.0f, 0.0f });
 				break;
 			}
 			case TYPE::EXPLOSIVE:
 			{
+				// Loop over all pigs and apply an impulse away
 				for (auto& pig : _pigs)
 				{
 					sf::Vector2f directionToPig = pig->GetPosition() - m_PhysicsBody->GetPosition();
@@ -81,6 +85,7 @@ void Bird::SpecialAbility(std::vector<Pig*>& _pigs, std::vector<Destructable*>& 
 						pig->GetPhysicsBody()->ApplyImpulse(Normalize(directionToPig) * 10.0f);
 					}
 				}
+				// Loop over all destructables and apply an impulse away 
 				for (auto& destructable : _destructables)
 				{
 					sf::Vector2f directionToDestructable = destructable->GetPosition() - m_PhysicsBody->GetPosition();
@@ -119,14 +124,16 @@ float Bird::GetScoreValue()
 
 void Bird::AwardUnusedBirdScore()
 {
+	// Make a score text effect
 	VFX::GetInstance().CreateAndPlayTextEffect(
 		{
-			FloatToString(GetScoreValue(), 0),
-			GetPosition(),
-			sf::Color::Green,
-			{1.5f,1.5f}
-		}, 1.0f);
+			FloatToString(GetScoreValue(), 0), // Text / label
+			GetPosition(), // position
+			sf::Color::Green, // Green
+			{1.5f,1.5f} // Scale
+		}, 1.0f); // Lifetime
 
+	// Add the score
 	*LevelLoader::GetScore() += GetScoreValue();
 }
 
@@ -134,10 +141,10 @@ void Bird::SetBirdType(TYPE _birdType)
 {
 	m_Type = _birdType;
 
-	SetTextureBasedOnType();
+	SetTextureAndBodyBasedOnType();
 }
 
-void Bird::SetTextureBasedOnType()
+void Bird::SetTextureAndBodyBasedOnType()
 {
 	switch (m_Type)
 	{

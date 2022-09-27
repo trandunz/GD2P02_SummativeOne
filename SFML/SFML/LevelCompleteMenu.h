@@ -10,10 +10,13 @@
 // Email		: william.inman@mds.ac.nz
 
 #pragma once
-#include "Button.h"
+
 class LevelCompleteMenu
 {
 public:
+	/// <summary>
+	/// LevelCompleteMenu Constructor
+	/// </summary>
 	LevelCompleteMenu();
 	/// <summary>
 	/// LevelCompleteMenu Destructor
@@ -21,7 +24,25 @@ public:
 	~LevelCompleteMenu();
 
 private:
-	void SetStarsBasedOnScore();
+	/// <summary>
+	/// Creates the background for the menu
+	/// </summary>
+	void CreateMenuBackground();
+	/// <summary>
+	/// Creeates the three star GUI images
+	/// </summary>
+	void CreateStarImages();
+	/// <summary>
+	/// Updates the number of starts based on the score value for that level
+	/// </summary>
+	void SetStarTexturesBasedOnScore();
+	/// <summary>
+	/// Handles creation of menu buttons
+	/// </summary>
 	void CreateButtons();
+	/// <summary>
+	/// Handles creation of menu text (e.g score)
+	/// </summary>
+	void CreateText();
 };
 

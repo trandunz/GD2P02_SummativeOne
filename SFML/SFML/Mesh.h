@@ -31,7 +31,7 @@ public:
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	sf::Sprite m_Sprite;
+	sf::Sprite m_Sprite{};
 
 public:
 	///////////////////////

@@ -13,6 +13,7 @@
 #include "AudioManager.h"
 #include "GUI.h"
 #include "TextureLoader.h"
+#include "LevelLoader.h"
 
 MainMenu::MainMenu()
 {
@@ -37,10 +38,6 @@ void MainMenu::PollEvents()
 		}
 	}
 }
-
-void MainMenu::Update()
-{
-}
  
 void MainMenu::Draw()
 {
@@ -50,48 +47,48 @@ void MainMenu::Draw()
 void MainMenu::CreateMeshes()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-	GUI::GetInstance().CreateImage("Splash",
+	GUI::GetInstance().CreateImage("Splash", // Key
 		{
-			&TextureLoader::LoadTexture("GUI/SplashScreen.png"),
-			ScreenCentre,
-			{0.7f, 0.7f}
+			&TextureLoader::LoadTexture("GUI/SplashScreen.png"), // Texture
+			ScreenCentre, // Position
+			{0.7f, 0.7f} // Scale
 		});
 }
 
 void MainMenu::CreateButtons()
 {
 	sf::Vector2f ScreenCentre = Statics::RenderWindow.getView().getCenter();
-	GUI::GetInstance().CreateButton("LevelSetOne",
+	GUI::GetInstance().CreateButton("LevelSetOne", // Key
 		{
-			"",
-			{ScreenCentre.x - 250, ScreenCentre.y},
-			{1,1},
+			"", // String / Label
+			{ScreenCentre.x - 250, ScreenCentre.y}, // Position
+			{1,1}, // Scale
 			[]()
 			{
-				LevelLoader::LoadLevel(LEVELS::LEVELONE);
+				LevelLoader::LoadLevel(LEVELS::LEVELONE); // On press Lambda
 			},
-			&TextureLoader::LoadTexture("GUI/LevelSetOne.png")
+			&TextureLoader::LoadTexture("GUI/LevelSetOne.png") // Texture
 		});
-	GUI::GetInstance().CreateButton("LevelSetTwo",
+	GUI::GetInstance().CreateButton("LevelSetTwo", // Key
 		{
-			"",
-			{ScreenCentre.x, ScreenCentre.y},
-			{1,1},
+			"", // String / Label
+			{ScreenCentre.x, ScreenCentre.y}, // Position
+			{1,1}, // Scale
 			[]()
 			{
-				LevelLoader::LoadLevel(LEVELS::LEVELTWO);
+				LevelLoader::LoadLevel(LEVELS::LEVELTWO); // On press Lambda
 			},
-			&TextureLoader::LoadTexture("GUI/LevelSetTwo.png")
+			&TextureLoader::LoadTexture("GUI/LevelSetTwo.png") // Texture
 		});
-	GUI::GetInstance().CreateButton("LevelSetThree",
+	GUI::GetInstance().CreateButton("LevelSetThree", // Key
 		{
-			"",
-			{ScreenCentre.x + 250, ScreenCentre.y},
-			{1,1},
+			"", // String / Label
+			{ScreenCentre.x + 250, ScreenCentre.y}, // Position
+			{1,1}, // Scale
 			[]()
 			{
-				LevelLoader::LoadLevel(LEVELS::LEVELTHREE);
+				LevelLoader::LoadLevel(LEVELS::LEVELTHREE); // On press Lambda
 			},
-			&TextureLoader::LoadTexture("GUI/LevelSetThree.png")
+			&TextureLoader::LoadTexture("GUI/LevelSetThree.png") // Texture
 		});
 }

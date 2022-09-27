@@ -19,6 +19,7 @@ PulleyJoint::PulleyJoint(b2World& _world, b2PulleyJointDef _def)
 
 PulleyJoint::~PulleyJoint()
 {
+	// Cleanup this joint
 	for (auto joint = m_World->GetJointList(); joint; joint = joint->GetNext())
 	{
 		if (m_Joint == joint)

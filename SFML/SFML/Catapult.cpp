@@ -14,14 +14,18 @@
 
 Catapult::Catapult(sf::Vector2f _position)
 {
+	// Seet projectile primitive type
 	m_TrajectoryLine.setPrimitiveType(sf::Lines);
 
 	SetTexture(m_BackMesh, "Slingshot_Back.png");
 	m_BackMesh.setPosition(_position);
 	m_BackMesh.setScale({ 0.12f,0.12f });
+
 	SetTexture(m_FrontMesh, "Slingshot_Front.png");
 	m_FrontMesh.setPosition(_position);
 	m_FrontMesh.setScale({ 0.12f,0.12f });
+
+	// Set the firing anchor to the top of the slingshot
 	m_FirePosition = { m_FrontMesh.getPosition().x, m_FrontMesh.getPosition().y - m_FrontMesh.getGlobalBounds().height/2 };
 }
 
@@ -33,56 +37,53 @@ Catapult::~Catapult()
 void Catapult::LoadBird(Bird& _bird)
 {
 	m_LoadedBird = &_bird;
+
 	m_LoadedBird->DestroyBody();
-	m_FireVector = Statics::RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(Statics::RenderWindow)) - m_FirePosition;
 	
+	// Calculate the firing vector
 	 sf::Vector2f mousePos = Statics::RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(Statics::RenderWindow));
 	m_FireVector = mousePos - m_FirePosition;
 
-	if (Mag(m_FireVector) > 100.0f)
+	// Clamp the firing vector
+	if (Mag(m_FireVector) > CATAPULT_DRAW_LENGTH)
 	{
-		m_FireVector = Normalize(m_FireVector) * 100.0f;
+		m_FireVector = Normalize(m_FireVector) * CATAPULT_DRAW_LENGTH;
 	}
+	// Set the birds position
 	m_LoadedBird->SetPosition(m_FirePosition + m_FireVector);
 
-	m_TrajectoryLine.clear();
-	for (float i = 0; i < 150; i++)
-	{
-		sf::Vector2f trajectoryPosition = GetTrajectoryPoint(i);
-		m_TrajectoryLine.append({ { trajectoryPosition.x, trajectoryPosition.y },sf::Color::Black });
-	}
+	AddPositionsToTrajectoryLine();
 }
 
 void Catapult::MoveBird()
 {
 	m_TrajectoryLine.clear();
+
 	if (m_LoadedBird)
 	{
+		// Calculate the firing vector
 		sf::Vector2f mousePos = Statics::RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(Statics::RenderWindow));
 		m_FireVector = mousePos - m_FirePosition;
 
-		if (Mag(m_FireVector) > 100.0f)
+		// Clamp the firing vector
+		if (Mag(m_FireVector) > CATAPULT_DRAW_LENGTH)
 		{
-			m_FireVector = Normalize(m_FireVector) * 100.0f;
+			m_FireVector = Normalize(m_FireVector) * CATAPULT_DRAW_LENGTH;
 		}
-
+		// Set the birds position
 		m_LoadedBird->SetPosition(m_FirePosition + m_FireVector);
 
-		for (float i = 0; i < 150; i++)
-		{
-			sf::Vector2f trajectoryPosition = GetTrajectoryPoint(i);
-			m_TrajectoryLine.append({ { trajectoryPosition.x, trajectoryPosition.y },sf::Color::Black });
-		}
+		AddPositionsToTrajectoryLine();
 	}
 }
 
 void Catapult::ReleaseBird()
 {
 	m_TrajectoryLine.clear();
+
 	if (m_LoadedBird)
-	{
 		m_LoadedBird->Launch(m_FireVector * -1.0f * m_LaunchStrength);
-	}
+
 	m_LoadedBird = nullptr;
 }
 
@@ -109,17 +110,31 @@ void Catapult::SetTexture(sf::Sprite& _sprite, std::string _fileName)
 	SetOriginCentre(_sprite);
 }
 
+void Catapult::AddPositionsToTrajectoryLine()
+{
+	m_TrajectoryLine.clear();
+	for (float i = 0; i < 150; i++)
+	{
+		sf::Vector2f trajectoryPosition = GetTrajectoryPoint(i);
+		m_TrajectoryLine.append({ { trajectoryPosition.x, trajectoryPosition.y },sf::Color::Black });
+	}
+}
+
 sf::Vector2f Catapult::GetTrajectoryPoint(float _predictionTime)
 {
 	if (m_LoadedBird)
 	{
-		float t = 1 / 60.0f;
-		sf::Vector2f launchVelocity = m_FireVector * -1.0f * m_LaunchStrength;
-		b2Vec2 stepVelocity = t * b2Vec2(launchVelocity.x, launchVelocity.y);
-		b2Vec2 stepGravity = t * t* b2Vec2{0,10.0f};
+		float timeStep = 1 / 60.0f;
+		float predictionTimeSquared = _predictionTime * _predictionTime;
+		sf::Vector2f launchVelocity = -m_FireVector * m_LaunchStrength;
+		b2Vec2 stepVelocity = timeStep * b2Vec2(launchVelocity.x, launchVelocity.y);
+		b2Vec2 stepGravity = timeStep * timeStep * b2Vec2{0,10.0f};
 		sf::Vector2f position = m_LoadedBird->GetPosition();
-		b2Vec2 Prediction = b2Vec2{ position.x / Statics::Scale,   position.y / Statics::Scale } + _predictionTime * stepVelocity + 0.5f * (_predictionTime * _predictionTime + _predictionTime) * stepGravity;
-		return  { Prediction .x * Statics::Scale, Prediction .y * Statics::Scale };
+		b2Vec2 prediction = b2Vec2{ position.x / Statics::Scale,   position.y / Statics::Scale } + _predictionTime * stepVelocity + 0.5f * (predictionTimeSquared + _predictionTime) * stepGravity;
+		return  { prediction.x * Statics::Scale, prediction.y * Statics::Scale };
 	}
-	return {};
+	else
+	{
+		return {};
+	}
 }

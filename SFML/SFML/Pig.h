@@ -15,16 +15,34 @@
 class Pig : public GameObject
 {
 public:
+	/// <summary>
+	/// Pig Constructor
+	/// </summary>
+	/// <param name="_world"></param>
+	/// <param name="_startPos"></param>
+	/// <param name="_maxHP"></param>
 	Pig(b2World& _world, sf::Vector2f _startPos, float _maxHP = 10.0f);
 	/// <summary>
 	/// Pig Destructor
 	/// </summary>
 	~Pig();
 
-	virtual void Start() override;
+	/// <summary>
+	/// Handles updating the pig
+	/// </summary>
 	virtual void Update() override;
 
+	/// <summary>
+	/// Handles taking the specified amount of damage
+	/// </summary>
+	/// <param name="_amount"></param>
 	void TakeDamage(float _amount);
+	/// <summary>
+	/// Handles taking damage and also spawns a points indicator at the hitPos
+	/// </summary>
+	/// <param name="_amount"></param>
+	/// <param name="_hitPos"></param>
+	/// <param name="_pointColor"></param>
 	void TakeDamage(float _amount, b2Vec2 _hitPos, sf::Color _pointColor = sf::Color::Green);
 
 private:

@@ -22,11 +22,13 @@ void TextureLoader::InitTextures(std::vector<std::string> _texturesToPreload)
 
 sf::Texture& TextureLoader::LoadTexture(std::string _fileName)
 {
+    // If texture is present, return it
     if (m_LoadedTextures[_fileName] != nullptr)
     {
         return *m_LoadedTextures[_fileName];
     }
 
+    // else, load a new texture and add it too the vector of loaded textures
     sf::Texture* texture = new sf::Texture();
     texture->loadFromFile("Resources/Sprites/" + _fileName);
     m_LoadedTextures[_fileName] = texture;
@@ -37,6 +39,7 @@ sf::Texture& TextureLoader::LoadTexture(std::string _fileName)
 
 void TextureLoader::CleanupTextures()
 {
+    // Delete all stored textures
     for (auto& texture : m_LoadedTextures)
     {
         if (texture.second != nullptr)

@@ -38,6 +38,10 @@ void MainMenu::PollEvents()
 		}
 	}
 }
+
+void MainMenu::Update()
+{
+}
  
 void MainMenu::Draw()
 {

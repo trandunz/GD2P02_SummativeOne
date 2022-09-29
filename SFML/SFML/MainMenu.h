@@ -29,6 +29,10 @@ public:
     /// </summary>
     virtual void PollEvents() override;
     /// <summary>
+    /// Handles updating everything in the scene
+    /// </summary>
+    virtual void Update() override;
+    /// <summary>
     /// Handles drawing everything in the scene
     /// </summary>
     virtual void Draw() override;
